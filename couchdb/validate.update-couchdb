@@ -1,0 +1,5 @@
+function(newDoc, oldDoc, userCtx) {
+	var role = "author";
+    if (userCtx.roles.indexOf(role) >= 0) { newDoc.author = userCtx.name; }
+	else { throw({forbidden : "Permission required for " + userCtx.name}); }
+}
