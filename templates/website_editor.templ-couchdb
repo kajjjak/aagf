@@ -1,0 +1,46 @@
+	<!-- load the Aloha Editor https://gist.github.com/evo42/1448270 -->
+    <link rel="stylesheet" href="http://cdn.aloha-editor.org/current/css/aloha.css" type="text/css">
+    <script src="http://cdn.aloha-editor.org/current/lib/require.js"></script>
+    <script src="http://cdn.aloha-editor.org/current/lib/aloha.js"
+      data-aloha-plugins="common/ui,common/format,common/highlighteditables,common/link,common/image"></script>
+    <!-- load the Aloha Editor - ends -->   
+    <script type="text/javascript">
+        Aloha.ready( function() {
+            Aloha.jQuery(".editable").aloha();
+            Aloha.require( ["aloha", "aloha/jquery"], function( Aloha, jQuery) {
+                
+                /* save all changes after leaving an editable */
+                Aloha.bind("aloha-editable-deactivated", function(){
+                    var content = Aloha.activeEditable.getContents();
+                    var contentId = Aloha.activeEditable.obj[0].id;
+                    var pageId = window.location.pathname;
+        
+                    /* textarea handling -- html id is "xy" and will be "xy-aloha" for the aloha editable */
+                    if ( contentId.match(/-aloha$/gi) ) {
+                        contentId = contentId.replace( /-aloha/gi, "" );
+                    }
+                    saveDocument("{{{_id}}}", contentId, content);
+                });
+            });
+        });
+        $.getScript("/_utils/script/jquery.couch.js");
+	    function saveDocument(uid, attrib, value){
+	        var db_name = "ghostburster";
+	        $.couch.db(db_name).openDoc(uid, {
+	            success: function(doc) {
+	                doc[attrib] = value;
+	                $.couch.db(db_name).saveDoc(doc, {
+	                    success: function(data) {
+	                        console.log("Saved:" + data.ok);
+	                    },
+	                    error: function(status) {
+	                        console.log(status);
+	                    }
+	                });             
+	            },
+	            error: function(status) {
+	                console.log(JSON.stringify(status));
+	            }
+	        });
+	    }
+    </script>
