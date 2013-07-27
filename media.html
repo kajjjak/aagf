@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Media library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <!-- Le styles -->
+    <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/cerulean/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+  
+  	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+  
+	<script id="media-template" type="text/template">
+	    <% for (file_name in doc._attachments){ var f = doc._attachments[file_name]; var file_url = media_url + "/" + file_name; %>
+		<li class="span4">
+			<div class="thumbnail">
+			  <img src="<%= file_url %>" alt="">
+			  <h3><%= file_name %></h3>
+			  <p>Path:<%= file_url %></p>
+			  <p>Size:<%= f.length %></p>
+			  <p><a class="btn btn-warning" href="#" onclick="deleteFile('<%= file_name %>');">Delete</a></p>
+			</div>
+		</li>
+		<% } %>
+	</script>
+
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Ævintyr á gönguför</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/ghostburster/_design/html/_rewrite/Files/editmap.html">Gönguleiðir</a></li>
+              <li><a href="mobilemap.html" target="mobile">Appið</a></li>
+              <li><a href="/ghostburster/_design/html/_rewrite/"  target="website">Vefsiðan</a></li>
+              <li class="active"><a href="#">Myndir</a></li>
+              <li><a href="/ghostburster/_design/html/_rewrite/admin/">Innskráning/Útskráning</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+		<h1>Skráarsafn</h1>
+		<p>Hér má bæta við og taka i burtu myndir sem er hægt að nota i forritið.</p>
+		
+		<div class="span9">
+			<form action="/" method="post" name="upload">
+			  <input type="file" name="file" />
+			  <button type="submit" name="submit">Upload</button>
+			</form>        
+		</div>
+		
+		<ul id="media_thumbnails" class="thumbnails">
+		</ul>		
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var baseUrl = '/ghostburster/';
+		var media_document = '_design/media';
+		var media_database = baseUrl + media_document;
+		
+		function deleteFile(file_name){
+			$.getJSON(media_database, function(doc) {
+				if(doc){
+					var url = media_database + "/" + file_name + "?rev=" + doc._rev;
+					$.ajax({
+					  dataType: "json",
+					  type: "DELETE",
+					  url: url,
+					  success: function(){
+							updateDocumentView();
+					  }
+					});
+				}
+			});
+		}
+		
+    	function updateDocumentView(){
+    		loadMedia();
+    	}
+
+		function loadMedia(){
+    		$.getJSON(media_database, function(doc) {
+				var tmpl = $("#media-template").html();
+				var media_content = _.template(tmpl, {'media_url': media_database, 'doc':doc});  // where formats is a global variable    		
+				$("#media_thumbnails").html(media_content);
+    		});
+    	}
+    	
+		window.onload = function() {
+		    var app = function() {
+		        var fileInput = document.forms['upload'].elements['file'];
+		        document.forms['upload'].onsubmit = function() {
+		            uploadFile(media_document, fileInput.files[0]);
+		            return false;
+		        };
+		
+		        var uploadFile = function(document, file) {
+		            var name = encodeURIComponent(file.name),
+		            type = file.type,
+		            fileReader = new FileReader(),
+		            getRequest = new XMLHttpRequest(),
+		            putRequest = new XMLHttpRequest();
+		            getRequest.open('GET', media_database,
+		                true);
+		            getRequest.send();
+		            getRequest.onreadystatechange = function(response) {
+		                if (getRequest.readyState == 4 && getRequest.status == 200) {
+		                    var doc = JSON.parse(getRequest.responseText);
+		                    putRequest.open('PUT', baseUrl +
+		                        encodeURIComponent(document) + '/' +
+		                        name + '?rev=' + doc._rev, true);
+		                    putRequest.setRequestHeader('Content-Type', type);
+		                    fileReader.readAsArrayBuffer(file);
+		                    fileReader.onload = function (readerEvent) {
+		                        putRequest.send(readerEvent.target.result);
+		                    };
+		                    putRequest.onreadystatechange = function(response) {
+		                        if (putRequest.readyState == 4) {
+		                            console.log(putRequest);
+		                            updateDocumentView();
+		                        }
+		                    };
+		                }
+		            };
+		        };
+		    };
+		    app();
+		    setTimeout("loadMedia()", 1000);
+		};    	
+    	
+    </script>
+    
+  </body>
+</html>
