@@ -1,0 +1,105 @@
+html {
+	margin:0;
+	height: 100%;
+}
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    margin:0px;
+    height: 100%;
+}
+#main {
+  border-left:1px solid;
+  border-right:1px solid;
+  height: 100%;
+}
+#wrapper {
+    display: block; 
+    background-color:#E8E8E8;
+    width:960px; 
+    margin:0px auto;
+}
+
+#header {
+    background-image:url(/ghostburster/_design/media/header.png);
+    height:140px;
+    position: relative;
+    border-left:1px solid;
+    border-right:1px solid;
+}
+
+.image_map {
+    width:445px;
+    top:-40px;
+    position:relative;
+}
+
+.main_header_menu {
+    text-align: left;
+    position: absolute;
+    bottom: 4px;
+    left: 0px;
+
+    color: white;
+}
+
+.main_header_menu_button {
+    margin-left: 20px;
+}
+
+.main_header_menu_button_link {
+    text-decoration: none;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 13px;
+    color: white;
+}
+
+#content {
+    background-color: white;
+    padding:14px;
+    display: inline-block;
+    width:480px;
+    vertical-align: top;
+    height:100%;
+    min-height:300px;
+}
+
+#sidebar {
+    width: 300px;
+    display: inline-block;
+}
+
+#delimiter {
+    clear: both;
+}
+
+.footer_line {
+    clear: both;
+    background-color: #262261;
+    bottom: 8px;
+    position: relative;
+    display: block;
+    padding: 6px;
+}
+
+.footer_line_text {
+    text-decoration: none;
+    font-size: 11px;
+    color: white;
+}
+
+.footer_bottom_text {
+    text-decoration: none;
+    font-size: 10px;
+    color: black;
+    margin: 6px;
+}
+
+#footer {
+    
+}
+
+.title {
+    font-size: 11pt;
+    font-family: verdana;
+    font-weight: bold;
+}
