@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Media library</title>
@@ -21,11 +22,11 @@
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="/favicon.png">
   
   	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
   
@@ -57,11 +58,11 @@
           <a class="brand" href="#">Ævintyr á gönguför</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="/ghostburster/_design/html/_rewrite/Files/editmap.html">Gönguleiðir</a></li>
-              <li><a href="mobilemap.html" target="mobile">Appið</a></li>
-              <li><a href="/ghostburster/_design/html/_rewrite/"  target="website">Vefsiðan</a></li>
+              <li><a href="/edit/">Gönguleiðir</a></li>
+              <li><a href="/mobile/" target="mobile">Appið</a></li>
+              <li><a href="/"  target="website">Vefsiðan</a></li>
               <li class="active"><a href="#">Myndir</a></li>
-              <li><a href="/ghostburster/_design/html/_rewrite/admin/">Innskráning/Útskráning</a></li>
+              <li><a href="/admin/">Innskráning/Útskráning</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -75,7 +76,7 @@
 		
 		<div class="span9">
 			<form action="/" method="post" name="upload">
-			  <input type="file" name="file" />
+			  <input type="file" name="file" multiple="multiple"/>
 			  <button type="submit" name="submit">Upload</button>
 			</form>        
 		</div>
@@ -91,7 +92,7 @@
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		var baseUrl = '/ghostburster/';
+		var baseUrl = '/__db/';
 		var media_document = '_design/media';
 		var media_database = baseUrl + media_document;
 		
@@ -127,11 +128,12 @@
 		    var app = function() {
 		        var fileInput = document.forms['upload'].elements['file'];
 		        document.forms['upload'].onsubmit = function() {
-		            uploadFile(media_document, fileInput.files[0]);
+		            uploadFile(media_document, fileInput.files, 0);
 		            return false;
 		        };
 		
-		        var uploadFile = function(document, file) {
+		        var uploadFile = function(document, files, file_index) {
+		        	var file = files[file_index];
 		            var name = encodeURIComponent(file.name),
 		            type = file.type,
 		            fileReader = new FileReader(),
@@ -155,6 +157,9 @@
 		                        if (putRequest.readyState == 4) {
 		                            console.log(putRequest);
 		                            updateDocumentView();
+		                            if ((file_index+1) < files.length) {
+		                            	uploadFile(document, files, file_index+1);
+		                            }
 		                        }
 		                    };
 		                }
