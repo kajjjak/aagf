@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="http://cdn.agamecompany.com/vendor/tinyeditor/20100108/tinyeditor.css">
+<link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/cerulean/bootstrap.min.css" rel="stylesheet">
+<link href="http://cdn.agamecompany.com/vendor/toastr/1.0.2/toastr.css" rel="stylesheet"/>
+
+<title>Ævintyr á gönguför - leiðir</title>
+<style>  
+  body {   
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+  }
+</style>
+
+<script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyDhvhJy_vDpRr2uC-6ZNjgOYvSZT0ooNWM&sensor=false"></script>
+<script type="text/javascript" src="/js/maplib.js"></script>
+<script type="text/javascript" src="/js/guimap.js"></script> 
+<script type="text/javascript">
+  wrap_location = false; 
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+  var origin = null;
+  var destination = null;
+  var directionsVisible = false;
+  var path_waypoints = [];
+  var index_waypoints = 0;
+  var preset_paths = undefined;
+  var marker_appending_enabled = true;
+  map_settings = {'markers': {'draggable':false}};
+            
+  function localStorageSetItem (){  }
+  function localStorageGetItem (){ return []; }
+  
+  function ParseDMS(input) {
+    var parts = input.split(/[^\d\w]+/);
+    var lat = ConvertDMSToDD(parts[0], parts[1], parts[2], parts[3]);
+    var lng = ConvertDMSToDD(parts[4], parts[5], parts[6], parts[7]);
+    return [lat, lng];
+  }
+
+  function ConvertDMSToDD(days, minutes, seconds, direction) {
+    var dd = parseFloat(days) + parseFloat(minutes)/60.0 + parseFloat(seconds)/(60.0*60.0);
+    if (direction == "S" || direction == "W") {
+        dd = dd * -1.0;
+    } // Don't do anything for N or E
+    return dd;
+  }
+
+  function convertLatLngDMS(){
+    var latlngdms = ParseDMS($("#latlngdms").val());
+    $("#lat").val(latlngdms[0]);
+    $("#lng").val(latlngdms[1]);
+    $("#latlngdec").val(latlngdms[0]+ ", " + latlngdms[1]);
+  }
+  
+  function convertLatLngDec(){
+    var latlngdec = $("#latlngdec").val().split(",");
+    $("#lat").val(latlngdec[0]);
+    $("#lng").val(latlngdec[1]);
+  }
+  
+  function createNewMarker(){
+    var lat = parseFloat($("#lat").val());
+    var lng = parseFloat($("#lng").val());
+    var name = $("#markerName").val();
+    var descr = $("#markerDescr").val();
+    var m = addMarker(lat, lng, name, descr);
+  }
+
+  function initialize() {
+    directionsDisplay = new google.maps.DirectionsRenderer({'draggable': true});
+    var cntr = new google.maps.LatLng(64.135026, -21.895580);
+    var myOptions = {
+      zoom:13,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: cntr
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+    
+    google.maps.event.addListener(map, 'click', function(event) {
+      var latlng = event.latLng;
+      if (marker_appending_enabled){
+      	addMarker(latlng.lat(), latlng.lng());
+      } else {
+	  	  if (getToggleEditablePathAddState() && window.path_section_editable_steps){
+	  	  	addStep(latlng.lat(), latlng.lng());
+  		  }      	
+      }
+    });
+    
+    setTimeout("updateMap()", 5000);
+  }
+
+  function addStep(lat, lng) {
+  	if (window.path_section_editable_steps == undefined){alert("Fobar. Can not add step.")}
+    var latlng = new google.maps.LatLng(lat, lng);
+    var area = $("#area").val();
+    var path = getRoutepathName();
+    var values = {};
+    values["schema"] = "8";
+    values["timestamp"] = path_section_editable_steps.length+1000;
+    values["lat"] = lat;
+    values["lon"] = lng;
+    values["path"] = path;
+    values["area"] = area
+    values["attraction"] = false;
+    var i = itemsList.create(values, {
+    	success: function(model, response) {
+			notifyDeveloper("Höfum vistað þessari nýja staðsettning á þjón", "Bætta við staðsettning", "success");
+		},
+		error: function(model, response) {
+			notifyDeveloper("Gátum ekki vistað þessari nýja staðsettning á þjón vegna villu. Profaðu aftur eða endurhlaðið siðuna.", "Bætta við staðsettning", "error");
+		}});
+    //i.save();
+    return i;
+  }
+
+  function addMarker(lat, lng, name, descr) {
+    var latlng = new google.maps.LatLng(lat, lng);
+    var area = $("#area").val();
+    var path = getRoutepathName();
+    var mrkr = getAttributesModelDescr();
+    var values = {};
+    var default_values = getAttributesModelDescr();
+    for (i in default_values){ 
+          values[default_values[i].field] = default_values[i].default_value;
+    }
+    if (name === undefined){ name = ""; }
+    if (descr === undefined){ descr = ""; }
+    values["schema"] = "8";
+    values["timestamp"] = new Date().getTime();
+    values["lat"] = lat;
+    values["lon"] = lng;
+    values["path"] = path;
+    values["area"] = area
+    values["attraction"] = true;
+    values["name"] = name;
+    values["descr"] = descr;
+    var i = itemsList.create(values, {
+    	success: function(model, response) {
+			notifyDeveloper("Höfum vistað þessari nýja staðsettning á þjón", "Bætta við staðsettning", "success");
+		},
+		error: function(model, response) {
+			notifyDeveloper("Gátum ekki vistað þessari nýja staðsettning á þjón vegna villu. Profaðu aftur eða endurhlaðið siðuna.", "Bætta við staðsettning", "error");
+		}});
+    //i.save();
+    return i;
+  }
+  path_section = 0;
+
+  function calcRoute(path_section){
+    var wpnts = [];   
+    path_sections = waypoints.length/8;
+    if(path_section === undefined){
+      path_section = 0;
+      origin = waypoints[0].location;
+    } else {
+      var psection = getPathSection();
+      path_waypoints = path_waypoints.concat(psection);
+      origin = destination; //take last destination
+    }
+    
+    if (path_section < Math.ceil(path_sections)){
+      for (i = path_section * 8; i < (path_section * 8) + 8; i++){
+        if(waypoints.length > i ){
+			wpnts.push(waypoints[i]);
+			destination = waypoints[i].location;
+        }
+      }
+      calcRouteSection(wpnts);    
+      setTimeout("calcRoute(" + (path_section + 1) + ")", 2000);
+    } else { //reset for future
+      path_section = undefined;
+    }
+    //alert("Section " + path_section);
+  }
+
+  function addEditablePathMarkerIcon(p){
+	  var m = new google.maps.Marker({
+	      position: new google.maps.LatLng(p.lat, p.lon),
+	      map: map,
+	      draggable: true,
+	      title:"Index: " + i
+	  });
+	    m.schema_id = p._id;
+	    showEdtitablePathSelection(m, m.schema_id);
+        window.path_section_editable_steps.push(m);	
+  }
+
+  function showEditablePath(){
+  	  window.path_section_editable_steps = [];
+  	  var path_section_editable = itemsListView.getPathByPathAndArea($("#path").val(), $("#area").val());
+	  for (i=0; i < path_section_editable.length; i ++){
+	  	addEditablePathMarkerIcon(path_section_editable[i].attributes);
+	  }
+  }
+  
+  function showEdtitablePathSelection(marker){
+  	    var m = marker;
+        google.maps.event.addListener(m, 'click', function(event){
+        	console.info("Clicked id " + m.schema_id)
+            setSelectedMarker(m);
+        });
+        google.maps.event.addListener(m, 'dragend', function(event){
+            var mdl = itemsList.get(m.schema_id);
+            mdl.set({"lat": event.latLng.lat(), "lon": event.latLng.lng()});
+            setSelectedMarker(m);
+        });
+  	
+  }
+
+  function calcRouteSection(waypoints) {
+    if (origin == null) {
+      alert("Click on the map to add a start point");
+      return;
+    }
+    
+    if (destination == null) {
+      alert("Click on the map to add an end point");
+      return;
+    }
+    
+    var mode;
+    switch (document.getElementById("mode").value) {
+      case "driving":
+        mode = google.maps.DirectionsTravelMode.DRIVING;
+        break;
+      case "walking":
+        mode = google.maps.DirectionsTravelMode.WALKING;
+        break;
+    }
+    
+    var request = {
+        origin: origin,
+        destination: destination,
+        waypoints: waypoints,
+        travelMode: mode,
+        optimizeWaypoints: document.getElementById('optimize').checked,
+        avoidHighways: document.getElementById('highways').checked,
+        avoidTolls: true,
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
+    
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      } else {
+      	notifyDeveloper("Gátum ekki spurt styðstu leið til Google. Fengum svar "+ status + " villu. Vertu viss um að allar staðsettningar eru á almannaleið (skoðaðu öll löndinn til að vera viss um að enginn staðsettning er of lángt frá). Profaðu einnig eða endurhlaðið siðuna.", "Vista leið", "error");
+      }
+    });
+    directionsVisible = true;
+  }
+  
+  function updateMode() {
+    if (directionsVisible) {
+      calcRoute();
+    }
+  }
+  
+  function reset() {
+    clearMarkers();
+    clearWaypoints();
+    clearWaypointsEditable();
+    directionsDisplay.setMap(null);
+    directionsDisplay.setPanel(null);
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById("directionsPanel"));    
+  }
+  
+  function getRoutepathName(){
+    return getSelectedPathName();
+  }
+  
+  function removeRoute(){
+    var area = $("#area").val();
+    var path = getRoutepathName();
+    
+	itemsListView.clearByPathAndArea(path, area);
+	notifyDeveloper("Höfum eytt út leið", "Eyða út leið", "success");
+  }
+  
+  function saveRoute(){
+    var area = $("#area").val();
+    var path = getRoutepathName();
+    itemsListView.clearByPathAndArea(path, area);
+    var route = getPath();
+    for (i in route){
+      route[i]["attraction"] = false;
+      route[i]["path"] = path;
+      route[i]["area"] = area;
+      console.info("Saving route " + JSON.stringify(route[i]));
+      saveLocationToServer(route[i]);
+    }
+    path_waypoints = [];
+    index_waypoints = 0;
+
+    /*
+    for (i in markers){
+    attraction = {};      
+      attraction["attraction"] = true;
+      attraction["path"] = path;
+      attraction["area"] = area;
+      attraction["lat"] = markers[i].position.ib;
+      attraction["lon"] = markers[i].position.jb;   
+      console.info("Saving attraction " + JSON.stringify(attraction));
+      saveLocationToServer(attraction);
+    }
+    */
+  }
+  
+  function saveLocationToServer(l){
+    l["schema"] = "8";
+    itemsList.create(l, {
+    	success: function(model, response) {
+			notifyDeveloper("Höfum vistað þessari staðsettning á þjón", "Vistað", "success");
+		},
+		error: function(model, response) {
+			notifyDeveloper("Gátum ekki vistað þessari staðsettning á þjón vegna villu. Profaðu aftur eða endurhlaðið siðuna.", "Eytt", "error");
+		}});
+  }
+
+/*  function getPath(){
+    var google_path = directionsDisplay.directions.routes[0].overview_path;
+    var path = [];
+    for (var i in google_path){
+      var latlng = google_path[i];
+      var descr = "";
+      path.push({"lat" : latlng.hb , "lon": latlng.ib, "descr": descr});
+    }
+    console.info(JSON.stringify(path));
+  }
+
+*/
+  function _fixInstruction(txt){
+    txt = txt.replace("Turn", "Snuið");
+    txt = txt.replace("onto", "að");
+    txt = txt.replace("Destination will be on the left", " Áfangastaður mun vera á hægri hönd")
+    txt = txt.replace("Destination will be on the right", " Áfangastaður mun vera á vinstri hönd")
+    txt = txt.replace("left", "vinstri");
+    txt = txt.replace("right", "hægri");
+    txt = txt.replace("south", "suður");
+    txt = txt.replace("north", "norður");
+    txt = txt.replace("west", "vestur");
+    txt = txt.replace("east", "austur");
+    txt = txt.replace('<div style="font-size:0.9em">', '')
+    txt = txt.replace('</div>', '')
+    txt = txt.replace("straight", "beint");
+    txt = txt.replace("Continue", "Haldið áfram");
+    txt = txt.replace("Head", "Stefnið");
+    txt = txt.replace("toward", "á moti");
+    txt = txt.replace("on", "á");
+    txt = txt.replace("roundabout", "hringtorg");
+    
+    txt = txt.replace("to stay", "til að vera á");
+    txt = txt.replace("Sharp", "Skörp");
+    txt = txt.replace("Make a", "Gerið");
+    txt = txt.replace("at", "við");
+    txt = txt.replace("U-turn", "U-beygja");
+    txt = txt.replace("Slight", "Létt");
+    txt = txt.replace("At the", "Við");
+    txt = txt.replace("take the", "takið");
+    txt = txt.replace("2nd", "önnur");
+    txt = txt.replace("1st", "fyrsta");
+    txt = txt.replace("3rd", "þriðja");
+    txt = txt.replace("exit", "beygjið frá");
+    return txt;
+  }
+
+  function getPathFromLegs(){
+  	if (directionsDisplay.directions === undefined) {
+  		notifyDeveloper("Google API directions er NULL. Profaðu aftur eða endurhlaðið siðuna.", "Vista leið", "error");
+  	} else {
+	    var google_legs = directionsDisplay.directions.routes[0].legs;
+	    var path = [];
+	    var p = undefined;
+	    for (var i in google_legs){
+	      var google_path = google_legs[i].steps;
+	      for (var j in google_path){        
+	        var step = google_path[j];
+	        var instructions = _fixInstruction(step.instructions);
+	        var latlng = step.lat_lngs[0];
+	        index_waypoints = index_waypoints + 1;
+	        p = {"step_index": index_waypoints, "timestamp": index_waypoints, "waypoint": false, "lat" : latlng.lat(), "lon": latlng.lng(), "distance-text": step.distance.text, "distance-value": step.distance.value, "duration-text": step.duration.text, "duration-value": step.duration.value, "descr": instructions, "mode":step.travel_mode};
+	        path.push(p);
+	      }
+	      // path.pop()
+	      // p.waypoint = true;
+	      // path.push(p);
+	    }
+	    //console.info(JSON.stringify(path));
+	    return path;
+  	}
+  }
+  
+  function getPath(){
+    return path_waypoints;
+  }
+  
+  function getPathSection(){
+  	if (directionsDisplay.directions === undefined){
+  		notifyDeveloper("Google API directions er NULL.", "Vista leið", "error");  		
+  	} else {
+	    var google_overview_path = directionsDisplay.directions.routes[0].overview_path;
+	    var path = [];
+	    var p = undefined;
+	    for (var i in google_overview_path){
+	      var latlng = google_overview_path[i];
+	      index_waypoints = index_waypoints + 1;
+	      p = {"attraction":false, "step_index": index_waypoints, "timestamp": index_waypoints, "waypoint": false, "lat" : latlng.lat(), "lon": latlng.lng()};
+	      path.push(p);
+	    }
+	    //console.info(JSON.stringify(path));
+	    return path;
+  	}
+  }
+  
+  function getSelectedPathName(){
+    var v = $("#path").val();
+    if (v == ""){ return "yellow"; }
+    else { return v };
+  }
+  
+  function updateMap(){
+    var area = $("#area").val();
+    var path = getSelectedPathName();
+    reset();
+    itemsListView.showIconByPathAndArea(path, area);
+  }
+
+
+  function showByAreaAndPath(){
+      var area = $("#area").val();
+      var path = getSelectedPathName();
+      reset();
+      itemsListView.showTrailByPathAndArea(path, area)
+  }
+
+  function deleteMarkerSelected(){
+    selected_marker.setMap();
+    var schema_id = $("#markerId").val();
+    var mdl = itemsList.get(schema_id);
+    mdl.destroy({
+    	success: function(model, response) {
+			notifyDeveloper("Höfum eytt þessari staðsettning á þjón", "Eytt", "success");
+		},
+		error: function(model, response) {
+			notifyDeveloper("Gátum ekki eytt þessari staðsettning á þjón vegna villu. Profaðu aftur eða endurhlaðið siðuna.", "Eytt", "error");
+		}});
+  	}
+
+  function saveMarkerSelected(){
+    var schema_id = $("#markerId").val();
+    var mdl = itemsList.get(schema_id);
+    var timestamp = parseInt($("#markerOrder").val());
+    if (timestamp != mdl.get("timestamp")){
+      setTimeout("updateMap()", 100);
+    }
+    mdl.set({"icon": parseInt($("#markerIcon").val())});
+    mdl.set({"descr": $("#markerDescr").val()});
+    mdl.set({"name": $("#markerName").val()});
+    mdl.set({"content": editorRead()});
+    mdl.set({"timestamp": timestamp});
+    pos = $("#markerPosition").val().split(",");
+    mdl.set({"lat": pos[0].trim(), "lon": pos[1].trim()});
+    mdl.save({}, {
+    	success: function(model, response) {
+			notifyDeveloper("Höfum vistað þessar breytingar á þjón", "Vistað", "success");
+		},
+		error: function(model, response) {
+			notifyDeveloper("Gátum ekki vistað upplýsingar á þjón vegna villu. Profaðu aftur eða endurhlaðið siðuna.", "Vistað", "error");
+		}});	
+    updateMap();
+    if(getToggleEditablePathState()){
+    	setTimeout(function(){ showEditablePath(); }, 400);
+    }
+  }
+  
+  function showCalcRouteOptions(){
+    $('#mdlPathSetting').modal('show');
+  }
+  
+  function canAddMarkers(b){
+    window.marker_appending_enabled=b;
+    map_settings["markers"]["draggable"] = !b;
+    for(i=0; i < markers.length; i++){
+    	if(markers[i]){
+    		markers[i].setDraggable(!b);
+    	}
+    }
+  }
+
+</script>
+
+  <style>
+  #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+  #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+  #sortable li span { position: absolute; margin-left: -1.3em; }
+  </style>
+
+</head>
+<body onload="initialize()">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Ævintyr á gönguför</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/editmap.html">Gönguleiðir</a></li>
+              <li><a href="/mobile/" target="mobile">Appið</a></li>
+              <li><a href="/"  target="website">Vefsiðan</a></li>
+              <li><a href="/media/">Myndir</a></li>
+              <li><a href="/admin/">Innskráning/Útskráning</a></li>
+              <li><a href="#about" onclick="$('#mdlAbout').modal('show')">Um verkefnið</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+  <!-- Modal -->
+  <div id="mdlTextEditor" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mdlTextEditorLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="mdlTextEditorLabel">Ritil</h3>
+    </div>
+    <div class="modal-body">
+  		<textarea name="markerContent" id="markerContent" style="width: 400px; height: 200px"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="saveMarkerSelected()">Vista</button><button class="btn" data-dismiss="modal" aria-hidden="true">Loka</button>
+    </div>
+  </div>       
+  <!-- Modal -->
+  <div id="mdlAbout" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mdlAboutLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="mdlAboutLabel">Um verkefnið</h3>
+    </div>
+    <div class="modal-body">
+      <p>Verkefnastjóri er Helena Óladóttir</p>
+      <p>Forritað af aGameCompany ehf</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Loka</button>
+    </div>
+  </div>       
+  <!-- Modal -->
+  <div id="mdlPathSetting" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="mdlPathSettingLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="mdlPathSettingLabel">Reikna út stystu leið</h3>
+    </div>
+    <div class="modal-body">
+      <p>Valmöguleikar til að reikna út gönguleið</p>
+      <p>
+        <select id="mode" onchange="updateMode()">
+          <option value="walking">Göngutur</option>
+          <option value="driving">Bill</option>
+        </select>
+        </p>
+      <label class="checkbox">
+        <input type="checkbox" id="highways" checked />Forðast götur
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" id="optimize" />Styðsta leið
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Loka</button>
+      <button class="btn btn-primary" data-dismiss="modal" onclick="calcRoute()">Reikna út</button>
+    </div>
+  </div>   
+    <div class="container">
+    <div class="row">
+      <div class="span12">
+        <div class="span3">
+        <select id="area" onchange="updateMap();">
+          <option value="1" selected>Vesturbær</option>
+          <option value="2">Miðborgin</option>
+          <option value="3">Hlíðar</option>
+          <option value="4">Laugardalur og Langholtshverfi</option>
+          <option value="5">Háaleiti og Bústaðir</option>
+          <option value="6">Breiðholt</option>
+          <option value="7">Árbær</option>
+          <option value="8">Grafavogur</option>
+          <option value="9">Grafarholt og Úlfársdalur</option>
+          <option value="10">Kjalarnes</option>
+        </select> 
+        </div>
+          <div class="span3">
+            <select id="path" onchange="updateMap();">
+              <option value="yellow" selected>Gula leiðin</option>
+              <option value="red">Rauða leiðin</option>
+              <option value="green">Græna leiðin</option>
+              <option value="blue">Bláa leiðin</option>
+              <option value="purple">Fjólubláa leiðin</option>
+              <option value="orange">Appelsinu gula leiðin</option>
+            </select>
+          </div>
+          <div class="span3">
+        <div class="btn-group">
+          <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+            Aðgerð
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a tabindex="-1" href="#" onclick="showCalcRouteOptions()">Reikna út gönguleið</a></li>
+            <li><a tabindex="-1" href="#" onclick="reset()">Endurstilla</a></li>
+            <li class="divider"></li>
+            <li><a tabindex="-1" href="#" onclick="removeRoute()">Eyða gögnuleið</a></li>
+            <li class="divider"></li>
+            <li><a tabindex="-1" href="#" onclick="saveRoute()">Vista gönguleið</a></li>
+          </ul>
+        </div>          
+          </div>
+          <div class="span3">
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <div class="tabbable"> <!-- Only required for left/right tabs -->
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab" onclick="canAddMarkers(true);">Bæta við</a></li>
+            <li><a href="#tab2" data-toggle="tab" onclick="canAddMarkers(false);">Breyta</a></li>
+          </ul>
+          <div class="tab-content">  
+            <div class="tab-pane active" id="tab1">
+              <p>Bætið við staðsetting á kortið eða fyllið út eitt af reitum fyrir neðan.</p>
+            <form class="form-horizontal">
+              <div class="control-group">
+                <label class="control-label" for="latlngdms">DMS</label>
+                <div class="controls">
+                  <input type="text" name="latlngdms" id="latlngdms" onchange="convertLatLngDMS()" placeholder="Ex: 40 26′ 47″ N 079 58′ 36″ W">
+                </div>
+                <label class="control-label" for="latlngdec">Latitude and longditude</label>
+                <div class="controls">
+                  <input type="text" name="latlngdec" id="latlngdec" onchange="convertLatLngDec()" placeholder="Ex: 64.0323, -21.2313">
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <input type="hidden" name="lat" id="lat">
+                  <input type="hidden" name="lng" id="lng">
+                  <button class="btn" type="button" onclick="createNewMarker()">Bæta við staðsettning</button>
+                </div>
+              </div>
+            </form>   
+            </div>
+            <div class="tab-pane" id="tab2">
+              <p>Breyta valin staðsettning fyrir valin staðetting <span name="markerId" id="markerId"></span></p>
+              <div class="span6">
+                <form class="form-horizontal">
+                  <div class="control-group">
+	                  <label class="control-label" for="markerName">Auðkenni</label>
+	                  <div class="controls">
+	                    <input type="text" name="markerName" id="markerName"></input>
+	                  </div>
+	                  <label class="control-label" for="markerPosition">Staðsettning</label>
+	                  <div class="controls">
+	                    <input type="text" name="markerPosition" id="markerPosition"></input>
+	                  </div>
+	                  <label class="control-label" for="markerOrder">Rað númer</label>
+	                  <div class="controls">
+	                    <input type="text" name="markerOrder" id="markerOrder"></input>
+	                  </div>
+	                  <label class="control-label" for="markerOrder">Mynd</label>
+	                  <div class="controls">
+						<select name="markerIcon" id="markerIcon">
+						  <option value="0" selected>stjarna</option>
+						  <option value="1">Stytta</option>
+						  <option value="2">Tré</option>
+						  <option value="3">Hús</option>
+						  <option value="4">Vatn</option>
+						</select>
+		  		     </div>
+                  </div>
+                <div class="control-group">
+                  <div class="controls">                
+                    <button class="btn btn-primary" type="button" onclick="saveMarkerSelected()">Vista</button>
+                    <button class="btn btn-warning" type="button" onclick="deleteMarkerSelected()">Eyða</button>
+                  </div>
+                </div>
+              </form>
+              </div>
+              <div class="span3">
+                <textarea name="markerDescr" id="markerDescr"></textarea>
+                <span class="help-inline">Lýsing <a href="#" onclick="$('#mdlTextEditor').modal('show')">(meira)</a></span>
+
+				<label class="checkbox">
+				      <input type="checkbox" id="toggle_editable_path" onchange="toogleEditablePath()"> Gönguleið
+				</label>
+    
+				<label class="checkbox">
+				      <input type="checkbox" id="toggle_editable_path_add"> Bæta við skref
+				</label>
+
+				</div>
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+    <div style="position:relative; border: 1px; width: 100%; height: 400px;">
+      <div id="map_canvas" style="border: 1px solid black; position:absolute; left: 20%; width:80%; height:398px"></div>
+      <div id="directionsPanel" style="background-color:gray; position:absolute; left: 0px; width:20%; height:400px; overflow: auto"></div>
+    </div>
+  </div> <!-- /container -->
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+  <script type="text/javascript" src="/_utils/script/sha1.js"></script>
+  <script type="text/javascript" src="/_utils/script/json2.js"></script>
+  <script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
+  <script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>  
+  <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>  
+  <script type="text/javascript" src="/js/path2.js"></script>
+  <script src="http://cdn.agamecompany.com/vendor/toastr/1.0.2/toastr.js"></script>
+
+<script src="http://cdn.agamecompany.com/vendor/tinyeditor/20100108/tiny.editor.packed.js"></script>
+<script>
+var editor = new TINY.editor.edit('editor', {
+	id: 'markerContent',
+	width: 504,
+	height: 175,
+	cssclass: 'tinyeditor',
+	controlclass: 'tinyeditor-control',
+	rowclass: 'tinyeditor-header',
+	dividerclass: 'tinyeditor-divider',
+	controls: ['bold', 'italic', 'underline', 'strikethrough', '|',
+		'orderedlist', 'unorderedlist', '|', 'outdent', 'indent', '|', 'leftalign',
+		'centeralign', 'rightalign', 'blockjustify', '|', 'unformat', '|', 'undo', 'redo', 'n',
+		'|', 'image', 'hr', 'link', 'unlink'],
+	footer: true,
+	fonts: ['Verdana','Arial','Georgia','Trebuchet MS'],
+	xhtml: true,
+	bodyid: 'editor',
+	footerclass: 'tinyeditor-footer',
+	toggle: {text: 'source', activetext: 'wysiwyg', cssclass: 'toggle'},
+	resize: {cssclass: 'resize'}
+});
+
+function editorWrite(text){
+	editor.i.contentDocument.body.innerHTML = text;
+}
+function editorRead(){
+	editor.post();
+	var c = document.getElementById("markerContent");
+	return c.value;
+}
+</script>
+
+</body>
+</html> 
