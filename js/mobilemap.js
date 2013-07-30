@@ -69,6 +69,6 @@
 			var info = itm.attributes.content;
 			$("#txtAttractionInfo").html(info);
 			$.mobile.changePage("#dlgAttractionInfo", { transition: "flip"});
-			setTimeout('$.mobile.defaultPageTransition = "pop";', 1000);
+			//setTimeout('$.mobile.defaultPageTransition = "pop";', 1000);
 		}
 	}
