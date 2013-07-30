@@ -1,0 +1,56 @@
+<table width="100%" cellspacing="0px" cellspan="0px"><tr>
+<td>Gönguleiðir:</td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'yellow\')">Gula</a></td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'red\')">Rauða</a></td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'green\')">Græna</a></td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'blue\')">Bláa</a></td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'purple\')">Fjólubláa</a></td>
+<td><a class="link_show_path" href="#" onclick="showPath(\'orange\')">Appelsínugula</a></td>
+</tr></table>
+<div id="map_canvas" style="height:400px;width:100%;"></div>
+    <script>
+      var walkingPath = undefined;
+      function initialize() {
+        var myLatLng = new google.maps.LatLng(64.135026, -21.895580);
+        mapOptions = {
+          zoom: 12,
+          center: myLatLng,
+          mapTypeId: google.maps.MapTypeId.TERRAIN
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        if (window.itemsList){
+            itemsList.fetch({reset: true, success:function ( data ) { showArea(window.area_identifier); } });
+        } else {
+            setTimeout("itemsList.fetch({reset: true, success:function ( data ) { showArea(window.area_identifier); } });", 1000);
+        }
+      }
+      function showPath(color){
+          mapPath(pathInfo[color]);
+      }
+      function mapPath(pathinfo){
+        var walkingPlanCoordinates = [];
+        var walkingLatLngBounds = new google.maps.LatLngBounds();
+        $("#pathLocationDescr").html("");
+        if (walkingPath != undefined) { walkingPath.setMap(undefined); }
+        for (var i = 0; i < pathinfo["path"].length; i++){
+            var p = pathinfo["path"][i];
+            var l = new google.maps.LatLng(p["lat"], p["lon"]);
+            walkingPlanCoordinates.push(l);
+            walkingLatLngBounds.extend(l);
+            if (p["descr"]){
+                $("#pathLocationDescr").append("<li>"+p["descr"]+"</li>");
+            }
+        }
+        walkingPath = new google.maps.Polyline({
+          path: walkingPlanCoordinates,
+          strokeColor: pathinfo["color"],
+          strokeOpacity: 0.7,
+          strokeWeight: 5
+        });
+        walkingPath.setMap(map);
+        map.fitBounds(walkingLatLngBounds);
+      }
+    </script>
+
+<ul id="pathLocationDescr">
+</ul>
