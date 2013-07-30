@@ -1,7 +1,12 @@
-var database_name = "ghostburster";
+var database_name = "__db";
 var collection_schema = "8";
 var database_ddoc = "data";
 var database_view = "by_schema_view";
+wrap_location = false;
+
+function hasNetworkConnection(){
+    return navigator.onLine;
+}
 
 function getAttributesModelDescr(){
   return [
@@ -11,6 +16,7 @@ function getAttributesModelDescr(){
     {name: "Area", field: "area", width: 120, id: "area", default_value:  undefined },
     {name: "path", field: "path", width: 120, id: "path", default_value:  undefined },
     {name: "Step index", field: "step_index", width: 120, id: "step_index", default_value:  undefined },
+    {name: "Time stamp", field: "timestamp", width: 120, id: "timestamp", default_value:  undefined },
     {name: "Revision", field: "_rev", width: 30, id: "_rev", default_value:  undefined },
     {name: "Distance-value", field: "distance-value", width: 20, id: "distance-value", default_value:  "0" },
     {name: "Lon", field: "lon", width: 20, id: "lon", default_value:  "0" },
@@ -82,40 +88,39 @@ $(function(){
     addItem : function(schema){
         var attr = schema.attributes;  
         if (attr.attraction){
-            var latlng = new google.maps.LatLng(attr["lat"], attr["lon"]);
-            var icon = "http://maps.google.com/mapfiles/marker" + String.fromCharCode(markers.length + 65).toUpperCase() + ".png";
+            var latlng = new google.maps.LatLng(attr["lat"], attr["lon"], wrap_location);
+            var icon = "/__db/_design/media/number_" + markers.length + ".png";
             var shadow = new google.maps.MarkerImage(
-                'http://maps.gstatic.com/mapfiles/shadow50.png', null, null,
-                new google.maps.Point(10, 34)
+                '/__db/_design/media/shadow.png', null, null,
+                new google.maps.Point(22, 36)
             );
             this._forRouteCalculation(latlng);
-                var m = new google.maps.Marker({
-                    position: latlng, 
-                    map: map,
-                    draggable: map_settings["markers"]["draggable"],
-                    icon: icon,
-                    shadow: shadow
-                });
-                var marker = m;
-                google.maps.event.addListener(m, 'click', function(event){
-                    var mdl = itemsList.get(marker.schema_id);
-                    $("#markerDescr").val(mdl.get("descr"));
-                    $("#markerOrder").val(mdl.get("timestamp"));
-                    $("#markerName").val(mdl.get("name"));
-                    $("#markerContent").val(mdl.get("content"));
-                    $("#markerId").val(marker.schema_id);
-                    window.selected_marker = marker;
-                });
-                google.maps.event.addListener(m, 'dragend', function(event){
-                    var mdl = itemsList.get(marker.schema_id);
-                    mdl.set({"lat": event.latLng.lat(), "lon": event.latLng.lng()});
-                    mdl.save();
-                    console.info("Saving new position");
-                });
-                
-                m.schema_id = schema.id;
-                markers.push(m);
-                if (this.addItemCallbackSuccess) {this.addItemCallbackSuccess();}
+            var m = new google.maps.Marker({
+                position: latlng, 
+                map: map,
+                draggable: map_settings["markers"]["draggable"],
+                icon: icon,
+                shadow: shadow
+            });
+            var marker = m;
+            google.maps.event.addListener(m, 'click', function(event){
+                setSelectedMarker(marker);
+            });
+            google.maps.event.addListener(m, 'dragend', function(event){
+                var mdl = itemsList.get(marker.schema_id);
+                mdl.set({"lat": event.latLng.lat(), "lon": event.latLng.lng()});
+                setSelectedMarker(marker);
+                //mdl.save();
+                //console.info("Saving new position");
+            });
+            
+            m.schema_id = schema.id;
+            markers.push(m);
+            if (this.addItemCallbackSuccess) {this.addItemCallbackSuccess();}
+        } else {
+        	if (window.path_section_editable_steps && getToggleEditablePathAddState()){
+        		addEditablePathMarkerIcon(attr);
+        	}
         }
     },
     
@@ -156,12 +161,19 @@ $(function(){
             }
         },
         
+        getPathByPathAndArea : function(clr, area){
+            var unsorted_pth = itemsList.filter(function(itm) {
+                return ((itm.get("path") == clr) && (itm.get("area") == area) && (itm.get("attraction") === false));
+            });
+            return _.sortBy(unsorted_pth, function(obj){ return obj.get("timestamp"); })
+        }, 
+        
         getByPathAndArea : function(clr, area){
             var unsorted_pth = itemsList.filter(function(itm) {
                 return ((itm.get("path") == clr) && (itm.get("area") == area) && (itm.get("attraction") === true));
             });
             return _.sortBy(unsorted_pth, function(obj){ return obj.get("timestamp"); })
-        },      
+        }, 
         
         showIconByPathAndArea : function(clr, area){
             //var unsorted_pth = itemsList.filter(function(itm) {
@@ -184,12 +196,13 @@ $(function(){
             var pth = itemsList.filter(function(itm) {
                 return ((itm.get("path") == clr)  && (itm.get("area") == area) && (itm.get("attraction") === false));
             });
+            console.info("Removing " + pth.length + " items.");
             for (i in pth){
                 console.info("Removing item")
                 pth[i].destroy();
             }
         },
-
+/*
         clearByPath : function(clr){
             var pth = itemsList.filter(function(itm) {
                 return ((itm.get("path") == clr));
@@ -209,14 +222,14 @@ $(function(){
                 pth[i].destroy();
             }
         },
-        
+*/        
         getPathInfo : function (area){
-            //pathInfo["yellow"] = {"label":"Gulur", "path":"yellow", "path":[{"waypoint":false,"lat":64.1366,"lon":-21.913520000000002,"distance-text":"0.2 km","distance-value":207,"duration-text":"3 mins","duration-value":156,"descr":"Stefnið <b>norður</b> á moti <b>Flókagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13836,"lon":-21.91224,"distance-text":"0.4 km","distance-value":416,"duration-text":"6 mins","duration-value":380,"descr":"Snuið <b>hægri</b> að <b>Flókagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13713,"lon":-21.90415,"distance-text":"23 m","distance-value":23,"duration-text":"1 min","duration-value":15,"descr":"Snuið <b>hægri</b> að <b>Stakkahlíð</b> Áfangastaður mun vera á hægri hönd","mode":"WALKING"},{"waypoint":false,"lat":64.13693,"lon":-21.904300000000003,"distance-text":"0.1 km","distance-value":129,"duration-text":"2 mins","duration-value":100,"descr":"Stefnið <b>norður</b> á <b>Stakkahlíð</b> á moti <b>Flókagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13803,"lon":-21.903460000000003,"distance-text":"0.2 km","distance-value":208,"duration-text":"2 mins","duration-value":131,"descr":"Snuið <b>vinstri</b> að <b>Háteígsvegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13853,"lon":-21.907590000000003,"distance-text":"0.4 km","distance-value":440,"duration-text":"5 mins","duration-value":288,"descr":"Snuið <b>hægri</b> að <b>Nóatún</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14217000000001,"lon":-21.90405,"distance-text":"12 m","distance-value":12,"duration-text":"1 min","duration-value":7,"descr":"Stefnið <b>norðuraustur</b> á <b>Nóatún</b> á moti <b>Laugavegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14227000000001,"lon":-21.903950000000002,"distance-text":"0.2 km","distance-value":223,"duration-text":"3 mins","duration-value":176,"descr":"Snuið <b>vinstri</b> að <b>Laugavegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14301,"lon":-21.908240000000003,"distance-text":"0.1 km","distance-value":109,"duration-text":"2 mins","duration-value":110,"descr":"Snuið <b>vinstri</b> að <b>Ásholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14204000000001,"lon":-21.908450000000002,"distance-text":"88 m","distance-value":88,"duration-text":"1 min","duration-value":64,"descr":"Snuið <b>vinstri</b> að <b>Brautarholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14199,"lon":-21.906650000000003,"distance-text":"80 m","distance-value":80,"duration-text":"1 min","duration-value":69,"descr":"Snuið <b>hægri</b> að <b>Traðarholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14128000000001,"lon":-21.906920000000003,"distance-text":"0.2 km","distance-value":201,"duration-text":"2 mins","duration-value":132,"descr":"Snuið <b>hægri</b> að <b>Skipholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14123000000001,"lon":-21.91103,"distance-text":"14 m","distance-value":14,"duration-text":"1 min","duration-value":11,"descr":"Snuið <b>vinstri</b> að <b>Stórholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14110000000001,"lon":-21.910980000000002,"distance-text":"25 m","distance-value":25,"duration-text":"1 min","duration-value":17,"descr":"Snuið <b>hægri</b> að <b>Einholt</b> Áfangastaður mun vera á vinstri hönd","mode":"WALKING"},{"waypoint":false,"lat":64.14099,"lon":-21.911420000000003,"distance-text":"25 m","distance-value":25,"duration-text":"1 min","duration-value":19,"descr":"Stefnið <b>norðuraustur</b> á <b>Einholt</b> á moti <b>Stórholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14110000000001,"lon":-21.910980000000002,"distance-text":"0.1 km","distance-value":140,"duration-text":"1 min","duration-value":83,"descr":"Snuið <b>vinstri</b> að <b>Stórholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14212,"lon":-21.9126,"distance-text":"0.3 km","distance-value":297,"duration-text":"4 mins","duration-value":228,"descr":"Snuið <b>vinstri</b> að <b>Þverholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13953000000001,"lon":-21.914040000000004,"distance-text":"78 m","distance-value":78,"duration-text":"1 min","duration-value":47,"descr":"Snuið <b>hægri</b> að <b>Háteigsvegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13976000000001,"lon":-21.915570000000002,"distance-text":"33 m","distance-value":33,"duration-text":"1 min","duration-value":23,"descr":"Snuið <b>vinstri</b> að <b>Rauðarárstígur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13948,"lon":-21.91582,"distance-text":"0.2 km","distance-value":198,"duration-text":"2 mins","duration-value":146,"descr":"Snuið <b>hægri</b> að <b>Skeggjagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14020000000001,"lon":-21.91956,"distance-text":"0.2 km","distance-value":166,"duration-text":"2 mins","duration-value":115,"descr":"Snuið <b>hægri</b> að <b>Snorrabraut</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14154,"lon":-21.91806,"distance-text":"0.1 km","distance-value":143,"duration-text":"2 mins","duration-value":147,"descr":"Snuið <b>vinstri</b> að <b>Bergþórugata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14211,"lon":-21.920720000000003,"distance-text":"64 m","distance-value":64,"duration-text":"1 min","duration-value":55,"descr":"Snuið <b>vinstri</b> að <b>Barónsstígur</b> Áfangastaður mun vera á vinstri hönd","mode":"WALKING"},{"waypoint":false,"lat":64.14163,"lon":-21.92141,"distance-text":"0.3 km","distance-value":287,"duration-text":"4 mins","duration-value":239,"descr":"Stefnið <b>suðurvestur</b> á <b>Barónsstígur</b> á moti <b>Egilsgata</b> Áfangastaður mun vera á hægri hönd","mode":"WALKING"},{"waypoint":false,"lat":64.14023,"lon":-21.926370000000002,"distance-text":"9 m","distance-value":9,"duration-text":"1 min","duration-value":6,"descr":"Stefnið <b>norðuraustur</b> á <b>Barónsstígur</b> á moti <b>Eiríksgata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14028,"lon":-21.92621,"distance-text":"0.1 km","distance-value":106,"duration-text":"1 min","duration-value":69,"descr":"Snuið <b>hægri</b> að <b>Eiríksgata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13946,"lon":-21.92511,"distance-text":"0.1 km","distance-value":99,"duration-text":"1 min","duration-value":71,"descr":"Snuið <b>hægri</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13865,"lon":-21.924580000000002,"distance-text":"93 m","distance-value":93,"duration-text":"1 min","duration-value":63,"descr":"Snuið <b>hægri</b>","mode":"WALKING"}]};
+            //pathInfo["yellow"] = {"label":"Gulur", "path":"yellow", "path":[{"waypoint":false,"lat":64.1366,"lon":-21.913520000000002,"distance-text":"0.2 km","distance-value":207,"duration-text":"3 mins","duration-value":156,"descr":"StefniÃ° <b>norÃ°ur</b> Ã¡ moti <b>FlÃ³kagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13836,"lon":-21.91224,"distance-text":"0.4 km","distance-value":416,"duration-text":"6 mins","duration-value":380,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>FlÃ³kagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13713,"lon":-21.90415,"distance-text":"23 m","distance-value":23,"duration-text":"1 min","duration-value":15,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>StakkahlÃ­Ã°</b> ÃfangastaÃ°ur mun vera Ã¡ hÃ¦gri hÃ¶nd","mode":"WALKING"},{"waypoint":false,"lat":64.13693,"lon":-21.904300000000003,"distance-text":"0.1 km","distance-value":129,"duration-text":"2 mins","duration-value":100,"descr":"StefniÃ° <b>norÃ°ur</b> Ã¡ <b>StakkahlÃ­Ã°</b> Ã¡ moti <b>FlÃ³kagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13803,"lon":-21.903460000000003,"distance-text":"0.2 km","distance-value":208,"duration-text":"2 mins","duration-value":131,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>HÃ¡teÃ­gsvegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13853,"lon":-21.907590000000003,"distance-text":"0.4 km","distance-value":440,"duration-text":"5 mins","duration-value":288,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>NÃ³atÃºn</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14217000000001,"lon":-21.90405,"distance-text":"12 m","distance-value":12,"duration-text":"1 min","duration-value":7,"descr":"StefniÃ° <b>norÃ°uraustur</b> Ã¡ <b>NÃ³atÃºn</b> Ã¡ moti <b>Laugavegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14227000000001,"lon":-21.903950000000002,"distance-text":"0.2 km","distance-value":223,"duration-text":"3 mins","duration-value":176,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>Laugavegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14301,"lon":-21.908240000000003,"distance-text":"0.1 km","distance-value":109,"duration-text":"2 mins","duration-value":110,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>Ãsholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14204000000001,"lon":-21.908450000000002,"distance-text":"88 m","distance-value":88,"duration-text":"1 min","duration-value":64,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>Brautarholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14199,"lon":-21.906650000000003,"distance-text":"80 m","distance-value":80,"duration-text":"1 min","duration-value":69,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>TraÃ°arholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14128000000001,"lon":-21.906920000000003,"distance-text":"0.2 km","distance-value":201,"duration-text":"2 mins","duration-value":132,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>Skipholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14123000000001,"lon":-21.91103,"distance-text":"14 m","distance-value":14,"duration-text":"1 min","duration-value":11,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>StÃ³rholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14110000000001,"lon":-21.910980000000002,"distance-text":"25 m","distance-value":25,"duration-text":"1 min","duration-value":17,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>Einholt</b> ÃfangastaÃ°ur mun vera Ã¡ vinstri hÃ¶nd","mode":"WALKING"},{"waypoint":false,"lat":64.14099,"lon":-21.911420000000003,"distance-text":"25 m","distance-value":25,"duration-text":"1 min","duration-value":19,"descr":"StefniÃ° <b>norÃ°uraustur</b> Ã¡ <b>Einholt</b> Ã¡ moti <b>StÃ³rholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14110000000001,"lon":-21.910980000000002,"distance-text":"0.1 km","distance-value":140,"duration-text":"1 min","duration-value":83,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>StÃ³rholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14212,"lon":-21.9126,"distance-text":"0.3 km","distance-value":297,"duration-text":"4 mins","duration-value":228,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>Ãžverholt</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13953000000001,"lon":-21.914040000000004,"distance-text":"78 m","distance-value":78,"duration-text":"1 min","duration-value":47,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>HÃ¡teigsvegur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13976000000001,"lon":-21.915570000000002,"distance-text":"33 m","distance-value":33,"duration-text":"1 min","duration-value":23,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>RauÃ°arÃ¡rstÃ­gur</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13948,"lon":-21.91582,"distance-text":"0.2 km","distance-value":198,"duration-text":"2 mins","duration-value":146,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>Skeggjagata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14020000000001,"lon":-21.91956,"distance-text":"0.2 km","distance-value":166,"duration-text":"2 mins","duration-value":115,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>Snorrabraut</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14154,"lon":-21.91806,"distance-text":"0.1 km","distance-value":143,"duration-text":"2 mins","duration-value":147,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>BergÃ¾Ã³rugata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14211,"lon":-21.920720000000003,"distance-text":"64 m","distance-value":64,"duration-text":"1 min","duration-value":55,"descr":"SnuiÃ° <b>vinstri</b> aÃ° <b>BarÃ³nsstÃ­gur</b> ÃfangastaÃ°ur mun vera Ã¡ vinstri hÃ¶nd","mode":"WALKING"},{"waypoint":false,"lat":64.14163,"lon":-21.92141,"distance-text":"0.3 km","distance-value":287,"duration-text":"4 mins","duration-value":239,"descr":"StefniÃ° <b>suÃ°urvestur</b> Ã¡ <b>BarÃ³nsstÃ­gur</b> Ã¡ moti <b>Egilsgata</b> ÃfangastaÃ°ur mun vera Ã¡ hÃ¦gri hÃ¶nd","mode":"WALKING"},{"waypoint":false,"lat":64.14023,"lon":-21.926370000000002,"distance-text":"9 m","distance-value":9,"duration-text":"1 min","duration-value":6,"descr":"StefniÃ° <b>norÃ°uraustur</b> Ã¡ <b>BarÃ³nsstÃ­gur</b> Ã¡ moti <b>EirÃ­ksgata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.14028,"lon":-21.92621,"distance-text":"0.1 km","distance-value":106,"duration-text":"1 min","duration-value":69,"descr":"SnuiÃ° <b>hÃ¦gri</b> aÃ° <b>EirÃ­ksgata</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13946,"lon":-21.92511,"distance-text":"0.1 km","distance-value":99,"duration-text":"1 min","duration-value":71,"descr":"SnuiÃ° <b>hÃ¦gri</b>","mode":"WALKING"},{"waypoint":false,"lat":64.13865,"lon":-21.924580000000002,"distance-text":"93 m","distance-value":93,"duration-text":"1 min","duration-value":63,"descr":"SnuiÃ° <b>hÃ¦gri</b>","mode":"WALKING"}]};
             var labels = {"yellow": "Gulur", "red": "Rauður", "green": "Græn", "blue": "Blár", "purple": "Fjólublár", "orange": "Appelsinugulur"};
             var itms_unsorted = itemsList.filter(function(itm) {
                 return (itm.get("area") == area);
             });
-            var itms = _.sortBy(itms_unsorted, function(obj){ return obj.get("step_index"); })
+            var itms = _.sortBy(itms_unsorted, function(obj){ return obj.get("timestamp"); })
             pathInfo = {};
             for (i in itms){
                 var itm = itms[i].attributes;
@@ -243,12 +256,26 @@ $(function(){
         if (preset_paths){
             itemsList.reset(preset_paths);
         } else {
-            itemsList.fetch({
-                reset: true,
-                error: function(e,a) {
-                     console.log('Failed to fetch!');
-                }
-    }); 
+        	if (hasNetworkConnection()){
+	            itemsList.fetch({
+	                reset: true,
+	                success: function() {
+	                	localStorageSetItem("map_routes", JSON.stringify(itemsList.toJSON()));
+	                },
+	                error: function(e,a) {
+	                     console.log('Failed to fetch!');
+	                }
+	       		}); 
+	      	} else {
+	      		//TODO: save the itemList json file into data storage on save
+	      		// then load the routes here
+	      		console.info("Loading map location from cache map_routes");
+	      		var map_routes_json = localStorageGetItem("map_routes");
+	      		if (map_routes_json){
+	      			map_routes = JSON.parse(map_routes_json);
+	      			itemsList.reset(map_routes);
+	      		}
+	      	}
         }
     }
   });
