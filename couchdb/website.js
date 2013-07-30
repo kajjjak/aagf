@@ -1,7 +1,7 @@
 function(doc, req){
 
-	var Mustache = require('vendor/codifyr/lib/mustache.js');
-	if (!doc || doc.type != "article") {return "404";} //{return {"code": 302, "body": "See other", "headers": {"Location": "/"}};}
+	var Mustache = require('vendor/codewip/lib/mustache.js');
+	if (!doc || doc.type != "article") {return "404 " + JSON.stringify(doc);} //{return {"code": 302, "body": "See other", "headers": {"Location": "/"}};}
 	var map_content = "";
 	if (doc.map){
 	    doc["map_content"] = Mustache.to_html(this.templates.website_map, doc);
