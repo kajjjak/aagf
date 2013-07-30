@@ -1,6 +1,7 @@
+
 <!DOCTYPE html>
-<html manifest="/cache.manifest">
-   <head>
+<html manifest="/cache.manifest_NOTUSED" lang="en">
+   <head> 
         <title>Útikennslu</title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -8,25 +9,25 @@
         <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-touch-icon" href="/ghostburster/_design/html/_rewrite/apple-touch-icon-57x57-precomposed.png" type="" />
-        <meta name="apple-touch-startup-image" href="/ghostburster/_design/html/_rewrite/apple-touch-splash.png" />        
+        <meta name="apple-touch-icon" href="/apple-touch-icon-57x57-precomposed.png" type="" />
+        <meta name="apple-touch-startup-image" href="/apple-touch-splash.png" />        
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
-        <link type="text/css" rel="stylesheet" href="/ghostburster/_design/html/_rewrite/css/mobilemap.css" />
+        <link type="text/css" rel="stylesheet" href="css/mobilemap.css" />
 
         <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
         <!-- script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script -->
 
-		<link rel="stylesheet" href="/ghostburster/_design/html/_rewrite/libs/leaflet/leaflet.css" />
-	    <script src="/ghostburster/_design/html/_rewrite/libs/leaflet/leaflet.js"></script>
-	    <script src="/ghostburster/_design/html/_rewrite/libs/leaflet.functionaltilelayer.js"></script>
-	    <script src="/ghostburster/_design/html/_rewrite/js/mobile/file.js"></script>
-	    <script src="/ghostburster/_design/html/_rewrite/js/mobile/tile.js"></script>
-	    <script src="/ghostburster/_design/html/_rewrite/js/mobile/map.js"></script>
-	    <script src="/ghostburster/_design/html/_rewrite/js/mobile/main.js"></script>
+		<link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+	    <script src="libs/leaflet/leaflet.js"></script>
+	    <script src="libs/leaflet.functionaltilelayer.js"></script>
+	    <script src="js/mobile/file.js"></script>
+	    <script src="js/mobile/tile.js"></script>
+	    <script src="js/mobile/map.js"></script>
+	    <script src="js/mobile/main.js"></script>
 
         <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
-        <script type="text/javascript" src="/ghostburster/_design/html/_rewrite/js/mobilemap.js"></script>
+        <script type="text/javascript" src="js/mobilemap.js"></script>
         <!--script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.services.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.extensions.js"></script>
@@ -50,7 +51,7 @@
         	
         	function playSoundNotification(){
 				soundHandle = document.getElementById('notification_sound');
-  				soundHandle.src = '/ghostburster/_design/media/alert.mp3';
+  				soundHandle.src = '/__db/_design/media/alert.mp3';
   				soundHandle.play();
         	}
         	
@@ -123,7 +124,7 @@
                     </div>
                 </div>
                 <!--center>
-                    <img src="/ghostburster/_design/html/_rewrite/apple-touch-splash.png" style="width:50%" alt="image"/>
+                    <img src="/apple-touch-splash.png" style="width:50%" alt="image"/>
                 </center -->
             </div>          
         </div>
@@ -426,8 +427,8 @@ function createIcons (){
 	// http://mapicons.nicolasmollet.com/category/markers/tourism/?custom_color=2f7a49&style=
 	window.AttractionIcon = L.Icon.extend({
 	    options: {
-	    	iconUrl: '/ghostburster/_design/media/star-3.png',
-	        shadowUrl: '/ghostburster/_design/media/shadow.png',
+	    	iconUrl: '/__db/_design/media/star-3.png',
+	        shadowUrl: '/__db/_design/media/shadow.png',
 	        iconSize:     [32, 37],
 	        shadowSize:   [51, 37],
 	        iconAnchor:   [16, 36],
@@ -436,27 +437,27 @@ function createIcons (){
 	    }
 	});	
 	window.generalIcon = new AttractionIcon();
-	window.attraction1Icon = new AttractionIcon({iconUrl: '/ghostburster/_design/media/statue-2.png'});
-	window.attraction2Icon = new AttractionIcon({iconUrl: '/ghostburster/_design/media/forest2.png'});
-	window.attraction3Icon = new AttractionIcon({iconUrl: '/ghostburster/_design/media/moderntower.png'});
-	window.attraction4Icon = new AttractionIcon({iconUrl: '/ghostburster/_design/media/river-2.png'});
+	window.attraction1Icon = new AttractionIcon({iconUrl: '/__db/_design/media/statue-2.png'});
+	window.attraction2Icon = new AttractionIcon({iconUrl: '/__db/_design/media/forest2.png'});
+	window.attraction3Icon = new AttractionIcon({iconUrl: '/__db/_design/media/moderntower.png'});
+	window.attraction4Icon = new AttractionIcon({iconUrl: '/__db/_design/media/river-2.png'});
 }
 
         </script>
-        <script src="/ghostburster/_design/html/_rewrite/js/path2.js"></script>
-        <!-- script src="/ghostburster/_design/html/_rewrite/js/guimap.js"></script -->
+        <script src="js/path2.js"></script>
+        <!-- script src="js/guimap.js"></script -->
         <script>
 			preload([
-				'/ghostburster/_design/media/star-3.png',
-				'/ghostburster/_design/media/statue-2.png',
-				'/ghostburster/_design/media/forest2.png',
-				'/ghostburster/_design/media/moderntower.png',
-				'/ghostburster/_design/media/river-2.png',
-				'/ghostburster/_design/media/shadow.png',
-			    '/ghostburster/_design/media/fjolubla_5.jpg',
-			    '/ghostburster/_design/media/gulaleid_13.jpeg',
-			    '/ghostburster/_design/media/fjolubla_9.jpg',
-			    '/ghostburster/_design/media/alert.mp3'
+				'/__db/_design/media/star-3.png',
+				'/__db/_design/media/statue-2.png',
+				'/__db/_design/media/forest2.png',
+				'/__db/_design/media/moderntower.png',
+				'/__db/_design/media/river-2.png',
+				'/__db/_design/media/shadow.png',
+			    '/__db/_design/media/fjolubla_5.jpg',
+			    '/__db/_design/media/gulaleid_13.jpeg',
+			    '/__db/_design/media/fjolubla_9.jpg',
+			    '/__db/_design/media/alert.mp3'
 			]);       
 			createIcons();
         </script>
