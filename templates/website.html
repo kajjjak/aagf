@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ævintýri á gönguför</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="/ghostburster/_design/html/_rewrite/css/website.css">
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+    <script type="text/javascript">
+    function initialize() {}
+    window.preset_paths = [];
+    window.area_identifier = '{{{map}}}'; 
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    {{{admin_tools}}}
+    
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+        <div class="main_header_menu">
+            <span class="main_header_menu_button"><a class="main_header_menu_button_link" href="/ghostburster/_design/html/_rewrite/">Forsíða</a></span>
+            <span class="main_header_menu_button"><a class="main_header_menu_button_link" href="/ghostburster/_design/html/_rewrite/undirbuningur/">Undirbúningur</a></span>
+            <span class="main_header_menu_button"><a class="main_header_menu_button_link" href="/ghostburster/_design/html/_rewrite/verkefnid/">Um verkefnið</a></span>
+            <span class="main_header_menu_button"><a class="main_header_menu_button_link" href="/ghostburster/_design/html/_rewrite/tenglar/">Tenglar</a></span>
+            <span class="main_header_menu_button"><a class="main_header_menu_button_link" href="/ghostburster/_design/html/_rewrite/samband/">Hafa samband</a></span>
+        </div>
+        </div>
+        <div id="main">
+            <span id="content">
+            <h1 class="editable" id="title">{{{title}}}</h1>
+            {{{map_content}}}
+            <div class="editable" id="content" style="padding:0px;">{{{content}}}</div>
+            </span>
+            <span id="sidebar">
+                <a href="/ghostburster/_design/html/_rewrite/laugardals-og-langholtshverfi/">
+                    <img class="image_map" src="/ghostburster/_design/html/_rewrite/ghostburster/_design/media/Map-only.png">
+                </a>
+            </span>
+        </div>
+        <div id="footer">
+            <center>
+                <div class="footer_line">
+                    <a class="footer_line_text" href="#"> Ævintýri i gönguför - </a>
+                    <a class="footer_line_text" href="#"> Borgartúni 12-14 - </a> 
+                    <a class="footer_line_text" href="#"> 105 Reykjavík - </a> 
+                    <a class="footer_line_text" href="#"> sfs@reykjavik.is - </a>
+                    <a class="footer_line_text" href="#"> www.skolaogfristund.is </a>
+                </div>
+                <span><a class="footer_bottom_text" href="/ghostburster/_design/html/_rewrite/samband/">Hafa samband</a></span>
+                <span><a class="footer_bottom_text" href="/ghostburster/_design/html/_rewrite/tenglar/">Tenglar</a></span>
+                <span><a class="footer_bottom_text" href="/ghostburster/_design/html/_rewrite/verkefnid/">Um verkefnið</a></span>
+                <span><a class="footer_bottom_text" href="/ghostburster/_design/html/_rewrite/undirbuningur/">Undirbúningur</a></span>    
+            </center>
+            <br><br><br><br><br><br>
+        </div>
+    </div>
+    <script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
+    <script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>  
+    <script type="text/javascript" src="/ghostburster/_design/html/_rewrite/js/guimap.js"></script>
+    <script type="text/javascript" src="/ghostburster/_design/html/_rewrite/js/path2.js"></script>
+    <script type="text/javascript">
+        initialize();
+    </script>
+</body>
+</html>
