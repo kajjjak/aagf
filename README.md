@@ -1,3 +1,0 @@
-Image tests
-===========
-Testss
