@@ -126,7 +126,7 @@
         <div id="area" data-role="page">
             <div data-role="header">
                 <h1>Hverfi</h1>
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
             </div>
             <div data-role="content">                   
                 <h2>Veljið hverfi</h2>
@@ -147,7 +147,7 @@
 
         <div id="path_wip" data-role="page">
             <div data-role="header">
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
                 <h1>I vinnslu</h1>
             </div>
             <div data-role="content">   
@@ -158,7 +158,7 @@
         <div id="path" data-role="page">
             <div data-role="header">
                 <h1>Leiðir</h1>
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
             </div>
             <div data-role="content">                   
                 <h2>Veljið leið</h2>
@@ -218,7 +218,7 @@
         <div id="about_map" data-role="page">
             <div data-role="header">
                 <h1>Hverfi</h1>
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
             </div>
             <div data-role="content">                   
                 <h2>Veljið hverfi</h2>
@@ -230,7 +230,7 @@
 
         <div id="user_map" data-role="page">
             <div data-role="header">
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
                 <h1>Kortið</h1>
                 <a id="btnSaveMap" href="#" data-icon="check" data-theme="b" onclick="downloadMapTilesCurrentArea()">Vista</a>
             </div>
@@ -284,6 +284,11 @@
 					}
 
 					function showAreaPathAttraction(use_gps){
+						if (use_gps){
+							MAP.locate({setView: true, watch: true, enableHighAccuracy: true});
+						} else {
+							MAP.locate({setView: false, watch: false, enableHighAccuracy: false});
+						}
 						window.use_gps = use_gps;
 						setTimeout(function(){resizeMap();}, 1000);
 						removeArea();
