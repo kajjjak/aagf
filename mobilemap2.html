@@ -228,7 +228,6 @@
             </div>          
         </div>
 
-
         <div id="user_map" data-role="page">
             <div data-role="header">
                 <a data-rel="back">Back</a>
@@ -284,10 +283,9 @@
 						$("#about_map_description").html("sf")
 					}
 
-					function showAreaPathAttraction(){
+					function showAreaPathAttraction(use_gps){
+						window.use_gps = use_gps;
 						setTimeout(function(){resizeMap();}, 1000);
-						//area_id = getSelectedArea(); //$.cookie("map_area");
-						//path_id = getSelectedPath(); //$.cookie("map_path");
 						removeArea();
 						//if (window.map){
 						//	loadAreaPathAttraction(area_id, path_id);
