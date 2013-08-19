@@ -277,17 +277,23 @@
 					}
 
 					function showAreaPathDescription(){
-						//TODO
-						//area_id = getSelectedArea(); //$.cookie("map_area");
-						//path_id = getSelectedPath(); //$.cookie("map_path");
-						$("#about_map_description").html("sf")
+						var path_name = getSelectedPath(); 
+						var descr = "";
+						pathInfo = window.itemsListView.getPathInfo(getSelectedArea(), path_name);
+						if(pathInfo[path_name]){
+							if(pathInfo[path_name].attraction){
+								var startInfo = pathInfo[path_name].attraction[0];
+								if (startInfo){ descr = startInfo.descr;}
+							}
+						}
+						$("#about_map_description").html(descr);
 					}
 
 					function showAreaPathAttraction(use_gps){
 						if (use_gps){
-							MAP.locate({setView: true, watch: true, enableHighAccuracy: true});
+							window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
 						} else {
-							MAP.locate({setView: false, watch: false, enableHighAccuracy: false});
+							window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
 						}
 						window.use_gps = use_gps;
 						setTimeout(function(){resizeMap();}, 1000);
