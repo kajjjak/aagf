@@ -31,6 +31,7 @@ function notifyDeveloper(message, title, state){
 	toastr.info(message, title);
 }
 
+
 function setSelectedMarker(marker){
 	var mdl = itemsList.get(marker.schema_id);
     window.selected_marker = marker;	
@@ -84,6 +85,7 @@ function updateScanRadius(map, latlng, rad){
 	var dt = new Date();
 	//$("#label_location_name").html("Staðsettning uppfært " + ("0" + dt.getHours()).slice(-2) + ":" + ("0" + dt.getMinutes()).slice(-2) + ":" + ("0" + dt.getSeconds()).slice(-2) + "");
 }
+
 
 function clearMarkers() {
 	for (var i = 0; i < markers.length; i++) {
