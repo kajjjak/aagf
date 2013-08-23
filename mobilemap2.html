@@ -2,99 +2,99 @@
 <!DOCTYPE html>
 <html manifest="/cache.manifest_NOTUSED" lang="en">
    <head> 
-      <title>Útikennslu</title>
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-      <meta http-equiv="content-language" content="en" />
-      <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
-      <meta name="apple-mobile-web-app-capable" content="yes">
-      <meta name="apple-mobile-web-app-status-bar-style" content="black">
-      <meta name="apple-touch-icon" href="/apple-touch-icon-57x57-precomposed.png" type="" />
-      <meta name="apple-touch-startup-image" href="/apple-touch-splash.png" />        
-      <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
-      <link type="text/css" rel="stylesheet" href="css/mobilemap.css" />
+    <title>Útikennslu</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-touch-icon" href="/apple-touch-icon-57x57-precomposed.png" type="" />
+    <meta name="apple-touch-startup-image" href="/apple-touch-splash.png" />        
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/mobilemap.css" />
 
-      <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-      <!-- script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
-      <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script -->
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <!-- script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script -->
 
-			<link rel="stylesheet" href="libs/leaflet/leaflet.css" />
-	    <script src="libs/leaflet/leaflet.js"></script>
-	    <script src="libs/leaflet.functionaltilelayer.js"></script>
-	    <script src="js/mobile/file.js"></script>
-	    <script src="js/mobile/tile.js"></script>
-	    <script src="js/mobile/map.js"></script>
-	    <script src="js/mobile/main.js"></script>
+		<link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+    <script src="libs/leaflet/leaflet.js"></script>
+    <script src="libs/leaflet.functionaltilelayer.js"></script>
+    <script src="js/mobile/file.js"></script>
+    <script src="js/mobile/tile.js"></script>
+    <script src="js/mobile/map.js"></script>
+    <script src="js/mobile/main.js"></script>
 
-      <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
-      <script type="text/javascript" src="js/mobilemap.js"></script>
-      <!-- ///////////////////////////////////////// -->
-			<script type="text/javascript" src="/_utils/script/sha1.js"></script>
-			<script type="text/javascript" src="/_utils/script/json2.js"></script>
-			<script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
-			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-			<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone/0.5.1/backbone.js"></script>
-			<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>
-	
-			<!-- ///////////////////////////////////////// 
-			http://stackoverflow.com/questions/8152030/google-maps-v3-map-tile-caching-on-client
-			http://blogs.missouristate.edu/web/2010/05/12/google-maps-api-v3-developing-for-mobile-devices/
-			-->
+    <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+    <script type="text/javascript" src="js/mobilemap.js"></script>
+    <!-- ///////////////////////////////////////// -->
+		<script type="text/javascript" src="/_utils/script/sha1.js"></script>
+		<script type="text/javascript" src="/_utils/script/json2.js"></script>
+		<script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone/0.5.1/backbone.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>
 
-        <script type="text/javascript">
-        	
-	      function playSoundNotification(){
-					soundHandle = document.getElementById('notification_sound');
-	  				soundHandle.src = '/__db/_design/media/alert.mp3';
-	  				soundHandle.play();
-	        	}
-	        	
-				function preload(arrayOfImages) {
-				    $(arrayOfImages).each(function(){
-				        $('<img/>')[0].src = this;
-				        // Alternatively you could use:
-				        // (new Image()).src = this;
-				    });
-				}
+		<!-- ///////////////////////////////////////// 
+		http://stackoverflow.com/questions/8152030/google-maps-v3-map-tile-caching-on-client
+		http://blogs.missouristate.edu/web/2010/05/12/google-maps-api-v3-developing-for-mobile-devices/
+		-->
+
+      <script type="text/javascript">
+      	
+        	function playSoundNotification(){
+						soundHandle = document.getElementById('notification_sound');
+  					soundHandle.src = '/__db/_design/media/alert.mp3';
+  					soundHandle.play();
+        	}
+		        	
+					function preload(arrayOfImages) {
+					    $(arrayOfImages).each(function(){
+					        $('<img/>')[0].src = this;
+					        // Alternatively you could use:
+					        // (new Image()).src = this;
+					    });
+					}
+					
+          var preset_paths = undefined;
+          $(document).bind( "mobileinit", function(event) {
+              $.extend($.mobile.zoom, {locked:true,enabled:false});
+          });
+
+          var mobileDemo = { 'center': '64.14835000000001,-21.9307', 'zoom': 15 };
+          
+          ////////////////////////////////////////////////////////////
 			
-      var preset_paths = undefined;
-      $(document).bind( "mobileinit", function(event) {
-          $.extend($.mobile.zoom, {locked:true,enabled:false});
-      });
+					var samplePoints = [
+						[64.14835000000001,-21.9307]
+					];
+					
+					var map, minimal, midnightCommander, motorways;
+					var waypoints = [];
+					var direction_pos = 0;
+					setTimeout(function(){$(document).trigger("deviceready");}, 1000);
 
-      var mobileDemo = { 'center': '64.14835000000001,-21.9307', 'zoom': 15 };
-      
-      ////////////////////////////////////////////////////////////
-
-			var samplePoints = [
-				[64.14835000000001,-21.9307]
-			];
-			
-			var map, minimal, midnightCommander, motorways;
-			var waypoints = [];
-			var direction_pos = 0;
-			setTimeout(function(){$(document).trigger("deviceready");}, 1000);
-
-      $('#user_map').live('pageshow', function() {
-          //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
-      });
-      
-      $('#user_map').live("pagehide", function() {
-          //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
-      });
-      
-      function addItemCallbackPreSend() {
-          $("#location_add_button").button('disable');
-          $("#location_add_button").html("Vistar staðsetting ..");
-          $("#location_add_button").button('refresh')
-      }
-      setTimeout(function(){
-      itemsListView.addItemCallbackSuccess = function(){
-          $("#location_add_button").button('enable');
-          $("#location_add_button").html("Vista staðsetting");
-          $("#location_add_button").button('refresh')
-      }}, 2000);
-            
+          $('#user_map').live('pageshow', function() {
+              //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
+          });
+          
+          $('#user_map').live("pagehide", function() {
+              //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
+          });
+          
+          function addItemCallbackPreSend() {
+              $("#location_add_button").button('disable');
+              $("#location_add_button").html("Vistar staðsetting ..");
+              $("#location_add_button").button('refresh')
+          }
+          setTimeout(function(){
+          itemsListView.addItemCallbackSuccess = function(){
+              $("#location_add_button").button('enable');
+              $("#location_add_button").html("Vista staðsetting");
+              $("#location_add_button").button('refresh')
+          }}, 2000);
+          
       </script>
     </head>
     <body>
@@ -122,97 +122,115 @@
                 </center -->
             </div>          
         </div>
+
         <div id="area" data-role="page">
             <div data-role="header">
                 <h1>Hverfi</h1>
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
             </div>
             <div data-role="content">                   
                 <h2>Veljið hverfi</h2>
                 <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a"> 
-                    <li><a href="#path" onclick="setSelectedArea('1')"> Vesturbær</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('2')"> Miðborgin</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('3')"> Hliðar</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('4')"> Laugardalur og Langholtshverfi</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('5')"> Háaleiti og Bústaðir</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('6')"> Breiðholt</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('7')"> Árbær</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('8')"> Grafarvogur</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('9')"> Grafarvogur og Úlfarsárdalur</a></li>
-                    <li><a href="#path" onclick="setSelectedArea('10')"> Kjalarnes</a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('1')"> Vesturbær<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path" onclick="setSelectedArea('2')"> Miðborgin<p class="ui-li-aside"><strong>6</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('3')"> Hliðar<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('4')"> Laugardalur og Langholtshverfi<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('5')"> Háaleiti og Bústaðir<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('6')"> Breiðholt<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('7')"> Árbær<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('8')"> Grafarvogur<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('9')"> Grafarvogur og Úlfarsárdalur<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
+                    <li><a href="#path_wip" onclick="setSelectedArea('10')"> Kjalarnes<p class="ui-li-aside"><strong>0</strong> leiðir</p></a></li>
                 </ul>
             </div>          
+        </div>
+
+        <div id="path_wip" data-role="page">
+            <div data-role="header">
+                <a data-rel="back">Til baka</a>
+                <h1>I vinnslu</h1>
+            </div>
+            <div data-role="content">   
+            	<p>Hönnun leið i vinnslu</p>
+            </div>
         </div>
 
         <div id="path" data-role="page">
             <div data-role="header">
                 <h1>Leiðir</h1>
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
             </div>
             <div data-role="content">                   
                 <h2>Veljið leið</h2>
                 <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a"> 
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('yellow');showAreaPathAttraction();">
+                    	<a href="#about_map" onclick="setSelectedPath('yellow');showAreaPathDescription();">
                     		<h3>Gula gönguleiðin</h3>
                     		<p><strong>Gróður, tré og sumarblóm.</strong></p>
                     		<p>Frá Hofsvallagötu að BSÍ við Hringbraut</p>
                     		<p class="ui-li-aside"><strong>2.2</strong>km</p>
                     	</a>
-                    		
                     </li>
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('red');showAreaPathAttraction();">
+                    	<a href="#about_map" onclick="setSelectedPath('red');showAreaPathDescription();">
                     		<h3>Rauða gönguleiðin</h3>
                     		<p><strong>Sjóndeildarhringur og útsýni.</strong></p>
                     		<p>Hringur um Þingholtin og Hljómskálagarðinn.</p>
                     		<p class="ui-li-aside"><strong>2.0</strong>km</p>
                     	</a>
-                    	
-                    	</li>
+                  	</li>
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('green');showAreaPathAttraction();">
+                    	<a href="#about_map" onclick="setSelectedPath('green');showAreaPathDescription();">
                     		<h3>Græna gönguleiðin</h3> 
                     		<p><strong>Landslag og sérkenni í umhverifnu.</strong></p>
                     		<p>Frá Snorrabraut um Skólavörðuholt að Tjörninni.</p>
                     		<p class="ui-li-aside"><strong>1.5</strong>km</p>
-                    	</a>
-                    	
+                    	</a>                    	
                     </li>
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('blue');showAreaPathAttraction();">
+                    	<a href="#about_map" onclick="setSelectedPath('blue');showAreaPathDescription();">
                     		<h3>Bláa gönguleiðin</h3>
                     		<p><strong>Litir og form húsa.</strong></p>
                     		<p>Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</p>
                     		<p class="ui-li-aside"><strong>1.3</strong>km</p>
                     	</a>
-                    	
                     </li>
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('purple');showAreaPathAttraction();">
+                    	<a href="#about_map" onclick="setSelectedPath('purple');showAreaPathDescription();">
                     		<h3>Fjólubláa gönguleiðin</h3>
                     		<p><strong>Kennileiti og styttur.</strong></p>
                     		<p>Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</p>
                     		<p class="ui-li-aside"><strong>1.5</strong>km</p>
                     	</a>
-                    	
                     </li>
                     <li>
-                    	<a href="#user_map" onclick="setSelectedPath('orange');showAreaPathAttraction();"> 
+                    	<a href="#about_map" onclick="setSelectedPath('orange');showAreaPathDescription();"> 
                     		<h3>Appelsínugula gönguleiðin</h3>
                     		<p><strong>Fugla- og dýralíf.</strong></p>
                     		<p>Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</p>
                     		<p class="ui-li-aside"><strong>1.5</strong>km</p>
                     	</a>	
-                    	
                     </li>
                 </ul>
             </div>          
         </div>
 
+        <div id="about_map" data-role="page">
+            <div data-role="header">
+                <h1>Hverfi</h1>
+                <a data-rel="back">Til baka</a>
+            </div>
+            <div data-role="content">                   
+                <h2>Veljið hverfi</h2>
+                <p id="about_map_description"></p>
+                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(1);" data-role="button">Skoða leið</a>
+                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(0);" data-role="button">Hefja gögnu</a>
+            </div>          
+        </div>
+
         <div id="user_map" data-role="page">
             <div data-role="header">
-                <a data-rel="back">Back</a>
+                <a data-rel="back">Til baka</a>
                 <h1>Kortið</h1>
                 <a id="btnSaveMap" href="#" data-icon="check" data-theme="b" onclick="downloadMapTilesCurrentArea()">Vista</a>
             </div>
@@ -227,218 +245,235 @@
         
         <div class=" message">Gönguför</div>
         
-		<!-- $.mobile.changePage("#lgAttractionInfo", { transition: "flip"}); -->        
-		<div id="dlgAttractionInfo" data-theme="c" data-transition="flip" data-role="dialog">
-			<div data-role="content">
-		    	<div id="txtAttractionInfo"></div>
-		    	<input id="btnCloseDlg" type="button" value="Tilbaka" data-theme="c" onclick="$('.ui-dialog').dialog('close')" />
-		    </div>
-		</div>
-		<audio id="notification_sound" style="display: none;"></audio>
+				<!-- $.mobile.changePage("#lgAttractionInfo", { transition: "flip"}); -->        
+				<div id="dlgAttractionInfo" data-theme="c" data-transition="flip" data-role="dialog">
+					<div data-role="content">
+				    	<div id="txtAttractionInfo"></div>
+				    	<input id="btnCloseDlg" type="button" value="Tilbaka" data-theme="c" onclick="$('.ui-dialog').dialog('close')" />
+				    </div>
+				</div>
+				<audio id="notification_sound" style="display: none;"></audio>
         <script type="text/javascript">
+					
+					walking_path_polyline = [];
+					walking_path_attraction = [];
+					pointLayers = {};
+					function setSelectedArea(area_name){	
+						window.selected_map_area = area_name;
+						sessionStorage.setItem('selected_map_area', area_name); //$.cookie('map_area', area_name);
+					}
+					
+					function setSelectedPath(path_name){	
+						window.selected_map_path = path_name;
+						sessionStorage.setItem('selected_map_path', path_name); // $.cookie('map_path', path_name);
+					} 
+					
+					function getSelectedArea(){
+						return sessionStorage.getItem('selected_map_area');
+					}
+					
+					function getSelectedPath(){
+						return sessionStorage.getItem('selected_map_path');
+					}
 
-walking_path_polyline = [];
-walking_path_attraction = [];
-pointLayers = {};
-function setSelectedArea(area_name){	
-	window.selected_map_area = area_name;
-	sessionStorage.setItem('selected_map_area', area_name); //$.cookie('map_area', area_name);
-}
+					function showAreaPathDescription(){
+						var path_name = getSelectedPath(); 
+						var descr = "";
+						pathInfo = window.itemsListView.getPathInfo(getSelectedArea(), path_name);
+						if(pathInfo[path_name]){
+							if(pathInfo[path_name].attraction){
+								var startInfo = pathInfo[path_name].attraction[0];
+								if (startInfo){ descr = startInfo.descr;}
+							}
+						}
+						$("#about_map_description").html(descr);
+					}
 
-function setSelectedPath(path_name){	
-	window.selected_map_path = path_name;
-	sessionStorage.setItem('selected_map_path', path_name); // $.cookie('map_path', path_name);
-} 
-
-function getSelectedArea(){
-	return sessionStorage.getItem('selected_map_area');
-}
-
-function getSelectedPath(){
-	return sessionStorage.getItem('selected_map_path');
-}
-
-function showAreaPathAttraction(){
-	setTimeout(function(){resizeMap();}, 1000);
-	//area_id = getSelectedArea(); //$.cookie("map_area");
-	//path_id = getSelectedPath(); //$.cookie("map_path");
-	removeArea();
-	//if (window.map){
-	//	loadAreaPathAttraction(area_id, path_id);
-	//} else {
-	//  setTimeout(function(){loadAreaPathAttraction(area_id, path_id);}, 1000);
-	//}
-	reloadMapPathAndAttractions();
-	hideLoadingAnimation();
-}
-
-function loadAreaPathAttraction (area_id, path_id){
-	pathInfo = itemsListView.getPathInfo(area_id, path_id);
-    for (n in pathInfo){
-    	if (path_id == n){
-    		addWalkPath(n, map);	
-    	}
-    }
-}
-
-function removeArea(){
-	/*
-	for(i in walking_path_polyline){
-		map.removeLayer(walking_path_polyline[i]);
-	}
-	for(i in walking_path_attraction){
-		map.removeLayer(walking_path_attraction[i]);
-	}*/
-	for (i in window.pointLayers){
-		map.removeLayer(pointLayers[i]);
-	}
-}
-window.running_mobile = true;
-function showDescription(marker) {
-	var infowindow_content = marker.attraction_descr;
-	if (infowindow_content){
-		if(marker.attraction_viewed == undefined){
-			if (window.running_mobile && marker.attraction_content){
-				infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'>meira</a>";
-				marker.attraction_viewed = true;
-			}
-			marker.bindPopup(infowindow_content);
-		}
-	}
-}
-function reloadMapPathAndAttractionsFromCache(){
-	//TODO: save the itemList json file into data storage on save then load the routes here
-	var map_routes_json = localStorageGetItem("map_routes");
-	if (map_routes_json){
-		map_routes = JSON.parse(map_routes_json);
-  		setTimeout(function(){
-  			itemsList.reset(map_routes);
-  			loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
-  			hideLoadingAnimation(); 
-  			setTimeout(function(){map.invalidateSize(false);}, 400);
-  		}, 400);
-	}
-}
-
-function reloadMapPathAndAttractions(){
-	if (walking_path_attraction && walking_path_attraction.length){
-		loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
-	} else {
-		setTimeout(function(){showLoadingAnimation("Sækir gönguleið", 120000);}, 300);
-		if (hasNetworkConnection()){
-			itemsList.fetch({
-				success:function(){ 
-					hideLoadingAnimation(); 
-					loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
-					setTimeout(function(){map.invalidateSize(false);}, 400);
-					localStorageSetItem("map_routes", JSON.stringify(itemsList.toJSON()));
-				},
-				error: function(){reloadMapPathAndAttractionsFromCache();}
-			});
-		} else { reloadMapPathAndAttractionsFromCache(); }
-	}
-}
-
-function getDistanceBetween(latlng1, latlng2){
-	var lat1 = latlng1.lat;
-	var lon1 = latlng1.lng;
-	var lat2 = latlng2.lat;
-	var lon2 = latlng2.lng;
-	var R = 6371; // km
-	var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
-	                  Math.cos(lat1)*Math.cos(lat2) *
-	                  Math.cos(lon2-lon1)) * R;
-	return d; 
-}
-
-function locateNearbyMarkers(latlng){
-	if (window.map){
-		for (indx in walking_path_attraction){
-			var mrkr = walking_path_attraction[indx];
-			var dist = getDistanceBetween(latlng, mrkr.getLatLng());
-			console.info("Distance ("+dist+") between me and " + mrkr.attraction_descr);
-			if (dist < 1){
-				openAttractionInfo(walking_path_attraction[indx])
-			}
-		}
-	}
-}
-
-function openAttractionInfo(mrkr){
-	if (mrkr.attraction_auto_displayed == 0){
-		playSoundNotification();
-		mrkr.openPopup();
-		mrkr.attraction_auto_displayed = mrkr.attraction_auto_displayed + 1;
-    }else{
-    	if (mrkr.attraction_auto_displayed === undefined) { mrkr.attraction_auto_displayed = 0}
-    }
-}
-
-function addWalkPath(name){
-	var samplePoints = pathInfo[name]["path"];
-	var attractionPoints = pathInfo[name]["attraction"];
-	var label = pathInfo[name]["label"];
-	var latlngs = [];
-	if (pointLayers[name] == undefined){
-		pointLayers[name] = new L.LayerGroup();
-		for (var i = 0; i < samplePoints.length; i++) {
-			var latlng = new L.LatLng(samplePoints[i]["lat"], samplePoints[i]["lon"]);
-			latlngs.push(latlng);
-		}
-		for (var i = 0; i < attractionPoints.length; i++){
-			var latlng = [attractionPoints[i]["lat"], attractionPoints[i]["lon"]];
-			if (attractionPoints[i]["descr"].trim() != ""){
-				var iconClass = generalIcon;
-				if (attractionPoints[i]["icon"] != undefined){
-					ic = attractionPoints[i]["icon"];
-					if (ic == 1){iconClass = window.attraction1Icon;}
-					if (ic == 2){iconClass = window.attraction2Icon;}
-					if (ic == 3){iconClass = window.attraction3Icon;}
-					if (ic == 4){iconClass = window.attraction4Icon;}
-				}
-				var attr = new L.Marker(new L.LatLng(latlng[0], latlng[1]), {icon: iconClass});
-				pointLayers[name].addLayer(attr)	
-				attr.attraction_descr = attractionPoints[i]["descr"];
-				attr.attraction_content = attractionPoints[i]["content"];
-				attr.schema_id = attractionPoints[i]["_id"];
-				showDescription(attr);
-				walking_path_attraction.push(attr);
-			}
-		}
-		var pl = L.polyline(latlngs, {color: name, opacity: 0.8, weight: 8, smoothFactor: 0.5})
-		walking_path_polyline.push(pl);
-		pl.addTo(pointLayers[name]);
-		window.map_bounds = pl.getBounds();
-		pointLayers[name].map_bounds = window.map_bounds;
-	}
-	pointLayers[name].addTo(map);
-	map.fitBounds(pointLayers[name].map_bounds);
-}
-
-function createIcons (){
-	// 2f7a49
-	// http://mapicons.nicolasmollet.com/category/markers/tourism/?custom_color=2f7a49&style=
-	window.AttractionIcon = L.Icon.extend({
-	    options: {
-	    	iconUrl: '/__db/_design/media/star-3.png',
-	        shadowUrl: '/__db/_design/media/shadow.png',
-	        iconSize:     [32, 37],
-	        shadowSize:   [51, 37],
-	        iconAnchor:   [16, 36],
-	        shadowAnchor: [25, 36],
-	        popupAnchor:  [0, -25]
-	    }
-	});	
-	window.generalIcon = new AttractionIcon();
-	window.attraction1Icon = new AttractionIcon({iconUrl: '/__db/_design/media/statue-2.png'});
-	window.attraction2Icon = new AttractionIcon({iconUrl: '/__db/_design/media/forest2.png'});
-	window.attraction3Icon = new AttractionIcon({iconUrl: '/__db/_design/media/moderntower.png'});
-	window.attraction4Icon = new AttractionIcon({iconUrl: '/__db/_design/media/river-2.png'});
-}
-	      </script>
-	      <script src="js/path2.js"></script>
-	      <!-- script src="js/guimap.js"></script -->
-	      <script>
+					function showAreaPathAttraction(use_gps){
+						if (use_gps){
+							window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
+						} else {
+							window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
+						}
+						window.use_gps = use_gps;
+						setTimeout(function(){resizeMap();}, 1000);
+						removeArea();
+						//if (window.map){
+						//	loadAreaPathAttraction(area_id, path_id);
+						//} else {
+						//  setTimeout(function(){loadAreaPathAttraction(area_id, path_id);}, 1000);
+						//}
+						reloadMapPathAndAttractions();
+						hideLoadingAnimation();
+					}
+					
+					function loadAreaPathAttraction (area_id, path_id){
+						pathInfo = itemsListView.getPathInfo(area_id, path_id);
+					    for (n in pathInfo){
+					    	if (path_id == n){
+					    		addWalkPath(n, map);	
+					    	}
+					    }
+					}
+					
+					function removeArea(){
+						/*
+						for(i in walking_path_polyline){
+							map.removeLayer(walking_path_polyline[i]);
+						}
+						for(i in walking_path_attraction){
+							map.removeLayer(walking_path_attraction[i]);
+						}*/
+						for (i in window.pointLayers){
+							map.removeLayer(pointLayers[i]);
+						}
+					}
+					window.running_mobile = true;
+					function showDescription(marker) {
+						var infowindow_content = marker.attraction_descr;
+						if (infowindow_content){
+							if(marker.attraction_viewed == undefined){
+								if (window.running_mobile && marker.attraction_content){
+									infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'>meira</a>";
+									marker.attraction_viewed = true;
+								}
+								marker.bindPopup(infowindow_content);
+							}
+						}
+					}
+					function reloadMapPathAndAttractionsFromCache(){
+						//TODO: save the itemList json file into data storage on save then load the routes here
+						var map_routes_json = localStorageGetItem("map_routes");
+						if (map_routes_json){
+							map_routes = JSON.parse(map_routes_json);
+					  		setTimeout(function(){
+					  			itemsList.reset(map_routes);
+					  			loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
+					  			hideLoadingAnimation(); 
+					  			setTimeout(function(){map.invalidateSize(false);}, 400);
+					  		}, 400);
+						}
+					}
+					
+					function reloadMapPathAndAttractions(){
+						if (walking_path_attraction && walking_path_attraction.length){
+							loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
+						} else {
+							setTimeout(function(){showLoadingAnimation("Sækir gönguleið", 120000);}, 300);
+							if (hasNetworkConnection()){
+								itemsList.fetch({
+									success:function(){ 
+										hideLoadingAnimation(); 
+										loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
+										setTimeout(function(){map.invalidateSize(false);}, 400);
+										localStorageSetItem("map_routes", JSON.stringify(itemsList.toJSON()));
+									},
+									error: function(){reloadMapPathAndAttractionsFromCache();}
+								});
+							} else { reloadMapPathAndAttractionsFromCache(); }
+						}
+					}
+					
+					function getDistanceBetween(latlng1, latlng2){
+						var lat1 = latlng1.lat;
+						var lon1 = latlng1.lng;
+						var lat2 = latlng2.lat;
+						var lon2 = latlng2.lng;
+						var R = 6371; // km
+						var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+						                  Math.cos(lat1)*Math.cos(lat2) *
+						                  Math.cos(lon2-lon1)) * R;
+						return d; 
+					}
+					
+					function locateNearbyMarkers(latlng){
+						if (window.map){
+							for (indx in walking_path_attraction){
+								var mrkr = walking_path_attraction[indx];
+								var dist = getDistanceBetween(latlng, mrkr.getLatLng());
+								console.info("Distance ("+dist+") between me and " + mrkr.attraction_descr);
+								if (dist < 1){
+									openAttractionInfo(walking_path_attraction[indx])
+								}
+							}
+						}
+					}
+					
+					function openAttractionInfo(mrkr){
+						if (mrkr.attraction_auto_displayed == 0){
+							playSoundNotification();
+							mrkr.openPopup();
+							mrkr.attraction_auto_displayed = mrkr.attraction_auto_displayed + 1;
+					    }else{
+					    	if (mrkr.attraction_auto_displayed === undefined) { mrkr.attraction_auto_displayed = 0}
+					    }
+					}
+					
+					function addWalkPath(name){
+						var samplePoints = pathInfo[name]["path"];
+						var attractionPoints = pathInfo[name]["attraction"];
+						var label = pathInfo[name]["label"];
+						var latlngs = [];
+						if (pointLayers[name] == undefined){
+							pointLayers[name] = new L.LayerGroup();
+							for (var i = 0; i < samplePoints.length; i++) {
+								var latlng = new L.LatLng(samplePoints[i]["lat"], samplePoints[i]["lon"]);
+								latlngs.push(latlng);
+							}
+							for (var i = 0; i < attractionPoints.length; i++){
+								var latlng = [attractionPoints[i]["lat"], attractionPoints[i]["lon"]];
+								if (attractionPoints[i]["descr"].trim() != ""){
+									var iconClass = generalIcon;
+									if (attractionPoints[i]["icon"] != undefined){
+										ic = attractionPoints[i]["icon"];
+										if (ic == 1){iconClass = window.attraction1Icon;}
+										if (ic == 2){iconClass = window.attraction2Icon;}
+										if (ic == 3){iconClass = window.attraction3Icon;}
+										if (ic == 4){iconClass = window.attraction4Icon;}
+									}
+									var attr = new L.Marker(new L.LatLng(latlng[0], latlng[1]), {icon: iconClass});
+									pointLayers[name].addLayer(attr)	
+									attr.attraction_descr = attractionPoints[i]["descr"];
+									attr.attraction_content = attractionPoints[i]["content"];
+									attr.schema_id = attractionPoints[i]["_id"];
+									showDescription(attr);
+									walking_path_attraction.push(attr);
+								}
+							}
+							var pl = L.polyline(latlngs, {color: name, opacity: 0.8, weight: 8, smoothFactor: 0.5})
+							walking_path_polyline.push(pl);
+							pl.addTo(pointLayers[name]);
+							window.map_bounds = pl.getBounds();
+							pointLayers[name].map_bounds = window.map_bounds;
+						}
+						pointLayers[name].addTo(map);
+						map.fitBounds(pointLayers[name].map_bounds);
+					}
+					
+					function createIcons (){
+						// 2f7a49
+						// http://mapicons.nicolasmollet.com/category/markers/tourism/?custom_color=2f7a49&style=
+						window.AttractionIcon = L.Icon.extend({
+						    options: {
+						    	iconUrl: '/__db/_design/media/star-3.png',
+						        shadowUrl: '/__db/_design/media/shadow.png',
+						        iconSize:     [32, 37],
+						        shadowSize:   [51, 37],
+						        iconAnchor:   [16, 36],
+						        shadowAnchor: [25, 36],
+						        popupAnchor:  [0, -25]
+						    }
+						});	
+						window.generalIcon = new AttractionIcon();
+						window.attraction1Icon = new AttractionIcon({iconUrl: '/__db/_design/media/statue-2.png'});
+						window.attraction2Icon = new AttractionIcon({iconUrl: '/__db/_design/media/forest2.png'});
+						window.attraction3Icon = new AttractionIcon({iconUrl: '/__db/_design/media/moderntower.png'});
+						window.attraction4Icon = new AttractionIcon({iconUrl: '/__db/_design/media/river-2.png'});
+					}
+        </script>
+        <script src="js/path2.js"></script>
+        <!-- script src="js/guimap.js"></script -->
+        <script>
 					preload([
 						'/__db/_design/media/star-3.png',
 						'/__db/_design/media/statue-2.png',
@@ -452,6 +487,6 @@ function createIcons (){
 				    '/__db/_design/media/alert.mp3'
 					]);       
 					createIcons();
-	      </script>
+        </script>
     </body>
 </html>
