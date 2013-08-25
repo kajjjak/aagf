@@ -32,8 +32,6 @@
 	};
 	demo.init();
 	*/
-	
-	window.running_mobile = 1;
 
 	function addLocation(){
 		addItemCallbackPreSend();
