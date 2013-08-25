@@ -254,7 +254,8 @@
 				</div>
 				<audio id="notification_sound" style="display: none;"></audio>
         <script type="text/javascript">
-					
+					window.running_mobile = true;
+
 					walking_path_polyline = [];
 					walking_path_attraction = [];
 					pointLayers = {};
@@ -328,7 +329,6 @@
 							map.removeLayer(pointLayers[i]);
 						}
 					}
-					window.running_mobile = true;
 					function showDescription(marker) {
 						var infowindow_content = marker.attraction_descr;
 						if (infowindow_content){
