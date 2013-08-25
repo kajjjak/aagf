@@ -114,7 +114,7 @@
 					function reloadMapPathAndAttractions(area, path){
 						area = area || getSelectedArea();
 						path = path || getSelectedPath();
-						if (walking_path_attraction && walking_path_attraction.length){
+						if ((walking_path_attraction && walking_path_attraction.length) || itemsList.length){  // FIXME: itemsList will not work for many different books
 							loadAreaPathAttraction(area, path);
 						} else {
 							setTimeout(function(){showLoadingAnimation("Sækir gönguleið", 120000);}, 300);
