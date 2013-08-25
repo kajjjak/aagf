@@ -19,6 +19,19 @@ function createMapOptions(clear) {
     };
 }
 
+function loadMap(){
+  window.requestFileSystem(
+      LocalFileSystem.PERSISTENT, 0,
+      function(fs) { //success
+          FILESYSTEM = fs;
+          mapUtils.reloadMap(createMapOptions(false));
+      },
+      function() { alert("Failure accessing filesystem!"); } //filesystem failure
+  );
+  
+  setTimeout(function(){prepLocalDatabase();}, 1000);	
+}
+
 $(document).ready(function() {
     //Some bookkeeping code for mapbox id
     /*
@@ -27,45 +40,32 @@ $(document).ready(function() {
     .off("change")
     .on("change", function() { localStorage_MAPBOX_IDS_ = $(this).val(); });
     */
-    if (window.localStorage_MAPBOX_IDS_ == undefined){ window.localStorage_MAPBOX_IDS_ = "kajjjak.map-wgrdoudp"; }
 
     //Real page setup on phonegap initialization
     $(document).off("deviceready").on("deviceready", function() {
-	    //resizeMap();
+			loadMap();
 
-        window.requestFileSystem(
-            LocalFileSystem.PERSISTENT, 0,
-            function(fs) { //success
-                FILESYSTEM = fs;
-                mapUtils.reloadMap(createMapOptions(false));
-            },
-            function() { alert("Failure accessing filesystem!"); } //filesystem failure
-        );
-        
-        setTimeout(function(){prepLocalDatabase();}, 1000);
-
+				/*
         $("#clear").off("click").on("click", function() {
             localStorageClear();
         });
 
         $("#download").off("click").on("click", function() {
-        	//downloadMapTiles(64.1404809, -21.9113811);
-        	
-		    var pos = [64.1404809, -21.9113811];
-		    var mapboxIDs = getMapIDs();
-		    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
-		    fileUtils.bulkDownload(
-		       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
-		       'tiles',
-		       undefined, //$("#progress_modal"),
-		       function() {
-		           //alert("Download successful!");
-		           $.mobile.loading( 'hide');
-		           mapUtils.reloadMap(createMapOptions(false));
-		       }
-		    );
-        	
+			    var pos = [64.1404809, -21.9113811];
+			    var mapboxIDs = getMapIDs();
+			    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
+			    fileUtils.bulkDownload(
+			       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
+			       'tiles',
+			       undefined, //$("#progress_modal"),
+			       function() {
+			           //alert("Download successful!");
+			           $.mobile.loading( 'hide');
+			           mapUtils.reloadMap(createMapOptions(false));
+			       }
+			    );
         });
+        */
     });
 });
 
