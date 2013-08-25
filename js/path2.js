@@ -247,7 +247,7 @@ $(function(){
   });
 
   // The App controller initializes the app by calling `itemsList.fetch()`
-  var App = Backbone.Router.extend({
+  window.App = Backbone.Router.extend({
     initialize : function(){
         if (preset_paths){
             itemsList.reset(preset_paths);
@@ -277,6 +277,12 @@ $(function(){
   });
   
   window.itemsListView = new ItemsListView();
-  new App();
-
+  if($.couch){
+  	window.app = new App();	
+  }else{
+		$.getScript( '/_utils/script/jquery.couch.js', function(){
+			window.app = new App();
+  	});
+  }
 });
+
