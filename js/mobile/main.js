@@ -15,7 +15,8 @@ function createMapOptions(clear) {
     return {
         'clear': clear,
         'fileSystem': FILESYSTEM,
-        'mapIDs': getMapIDs()
+        'mapIDs': getMapIDs(),
+        'zoom': true
     };
 }
 
