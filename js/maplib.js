@@ -93,7 +93,7 @@
 									infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'>meira</a>";
 									marker.attraction_viewed = true;
 								}
-								marker.bindPopup(infowindow_content);
+								marker.bindPopup("<p class='infowindow_content'>"+infowindow_content+"</p>");
 							}
 						}
 					}
