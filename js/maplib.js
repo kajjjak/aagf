@@ -46,7 +46,7 @@
 						$("#about_map_description").html(descr);
 					}
 
-					function showAreaPathAttraction(use_gps){
+					function showAreaPathAttraction(use_gps, area, path){
 						if (use_gps){
 							window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
 						} else {
@@ -60,7 +60,7 @@
 						//} else {
 						//  setTimeout(function(){loadAreaPathAttraction(area_id, path_id);}, 1000);
 						//}
-						reloadMapPathAndAttractions();
+						reloadMapPathAndAttractions(area, path);
 						hideLoadingAnimation();
 					}
 					
@@ -111,16 +111,18 @@
 						}
 					}
 					
-					function reloadMapPathAndAttractions(){
+					function reloadMapPathAndAttractions(area, path){
+						area = area || getSelectedArea();
+						path = path || getSelectedPath();
 						if (walking_path_attraction && walking_path_attraction.length){
-							loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
+							loadAreaPathAttraction(area, path);
 						} else {
 							setTimeout(function(){showLoadingAnimation("Sækir gönguleið", 120000);}, 300);
 							if (hasNetworkConnection()){
 								itemsList.fetch({
 									success:function(){ 
 										hideLoadingAnimation(); 
-										loadAreaPathAttraction(getSelectedArea(), getSelectedPath());
+										loadAreaPathAttraction(area, path);
 										setTimeout(function(){map.invalidateSize(false);}, 400);
 										localStorageSetItem("map_routes", JSON.stringify(itemsList.toJSON()));
 									},
