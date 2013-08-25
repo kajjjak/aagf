@@ -70,17 +70,21 @@ $(document).ready(function() {
 });
 
 function showLoadingAnimation(txt, max_timeout){
-	$.mobile.loading( 'show', {
-		text: txt,
-		textVisible: true,
-		theme: 'a',
-		html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
-	});	
-	setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	if (window.running_mobile){
+		$.mobile.loading( 'show', {
+			text: txt,
+			textVisible: true,
+			theme: 'a',
+			html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
+		});	
+		setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	}
 }
 
 function hideLoadingAnimation(){
-	$.mobile.loading( 'hide');
+	if (window.running_mobile){
+		$.mobile.loading( 'hide');
+	}
 }
 
 function prepLocalDatabase(){
@@ -122,7 +126,7 @@ function downloadMapTiles(pos){
 
 /////////////
 function resizeMap() {
-	if(window.running_mobile == false){
+	if(window.running_mobile == true){
 		var mapheight = $(window).height()-100;
 		var mapwidth = $(window).width()-36;
 		$("#map").height(mapheight);
