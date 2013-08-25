@@ -139,6 +139,7 @@
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
 		<script type="text/javascript">
+				window.running_mobile = false;
 				var SiteRouter = Backbone.Router.extend({
 				
 				  routes: {
@@ -165,13 +166,14 @@
 						var template = $("#map_book_item").html();
 				    $("#target").html(_.template(template));
 				    loadMap();
-				  }				
+				  }
 				});
 				
 				var site_router = new SiteRouter();
 				Backbone.history.start(); 
 
 		</script>
+		<script src="js/path2.js"></script>
 
   </body>
 </html>
