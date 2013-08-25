@@ -31,14 +31,19 @@ function reloadMap(options) {
     if (!fileSystem) { alert('Must specify fileSystem'); return; }
 
     if (!MAP) { //initialize map if first time
-        MAP = L.map('map', {
-        	'zoomControl':false,
-            'minZoom': MAP_MIN_ZOOM,
-            'maxZoom': MAP_MAX_ZOOM,
-            'layers': [funcLayer]
-        }).setView([64.1404809, -21.9113811], MAP_DEFAULT_ZOOM);
-        
-        MAP.locate({setView: true}); //, maxZoom: MAP_MAX_ZOOM
+    		if (window.running_mobile){
+	        MAP = L.map('map', {
+	        	'zoomControl':false,
+	            'minZoom': MAP_MIN_ZOOM,
+	            'maxZoom': MAP_MAX_ZOOM,
+	            'layers': [funcLayer]
+	        }).setView([64.1404809, -21.9113811], MAP_DEFAULT_ZOOM);
+  	      MAP.locate({setView: true}); //, maxZoom: MAP_MAX_ZOOM
+    		} else {
+	        MAP = L.map('map', {
+	        	'layers': [funcLayer]
+	        }).setView([64.1404809, -21.9113811]);    			
+    		}
 		function onLocationFound(e) {
 			var radius = e.accuracy / 2;
 			//L.marker(e.latlng).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
