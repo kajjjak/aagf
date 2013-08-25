@@ -83,10 +83,10 @@
 	    	</div>
 		</script>
 
-		<script type="text/html" id='map_book_aag'>
+		<script type="text/html" id='map_book_item'>
 	      <div class="row">      
 	        <div class="span8">
-	          <div id="map" style="height:400px"></div>
+	          The list of items in map
 	        </div>
 	    	</div>
 		</script>
@@ -114,7 +114,13 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container"> 
+      <div class="row">      
+        <div class="span8">
+          <div id="map" style="height:400px"></div>
+        </div>
+    	</div>
+    
 			<div id="target">
 			</div>
       <hr>
@@ -143,18 +149,22 @@
 				  },
 				
 				  home: function() {
+				  	$("#map").hide();
 				    var template = $("#content_home").html();
 				    $("#target").html(_.template(template));
 				  },
 				
 				  about: function() {
+				  	$("#map").hide();
 						var template = $("#content_about").html();
 				    $("#target").html(_.template(template));
 				  },
 				
 				  map_book_aag: function() {
-						var template = $("#map_book_aag").html();
+						$("#map").show();
+						var template = $("#map_book_item").html();
 				    $("#target").html(_.template(template));
+				    loadMap();
 				  }				
 				});
 				
