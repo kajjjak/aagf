@@ -4,10 +4,6 @@ var database_ddoc = "data";
 var database_view = "by_schema_view";
 wrap_location = false;
 
-function hasNetworkConnection(){
-    return navigator.onLine;
-}
-
 function getAttributesModelDescr(){
   return [
     {name: "Schema", field: "schema", width: 60, id: "schema", default_value:  "8" },
