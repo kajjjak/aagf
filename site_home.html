@@ -155,19 +155,19 @@
 	        </div>
 	    	</div>
 		</script>
-
+		
 		<script type="text/html" id='map_book_item'>
-	      <div class="row">    
+	      <div class="row">
 	        <div class="span8">
 	        	<h3>Miðborgin</h3>
 	        	<p>Hér er lýsing á kortið i miðbænum. Einig má hlaða niður PDF skjalið sem er hannað af.</p>
 	        	<ul style="list-style-type: none;">
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'yellow');"><span class="badge" style="background-color:yellow">&nbsp</span> Gróður, tré og sumarblóm. Frá Hofsvallagötu að BSÍ við Hringbraut</a>
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'red');"><span class="badge" style="background-color:red">&nbsp</span> Sjóndeildarhringur og útsýni. Hringur um Þingholtin og Hljómskálagarðinn.</a>
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'green');"><span class="badge" style="background-color:green">&nbsp</span> Landslag og sérkenni í umhverifnu. Frá Snorrabraut um Skólavörðuholt að Tjörninni.</a>
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'blue');"><span class="badge" style="background-color:blue">&nbsp</span> Litir og form húsa. Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</a>
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'purple');"><span class="badge" style="background-color:purple">&nbsp</span> Kennileiti og styttur. Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</a>
-							<li><a href="#" onclick="showAreaPathAttraction(0, 2, 'orange');"><span class="badge" style="background-color:orange">&nbsp</span> Fugla- og dýralíf. Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'yellow');"><span class="badge" style="background-color:yellow">&nbsp</span> Gróður, tré og sumarblóm. Frá Hofsvallagötu að BSÍ við Hringbraut</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'red');"><span class="badge" style="background-color:red">&nbsp</span> Sjóndeildarhringur og útsýni. Hringur um Þingholtin og Hljómskálagarðinn.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'green');"><span class="badge" style="background-color:green">&nbsp</span> Landslag og sérkenni í umhverifnu. Frá Snorrabraut um Skólavörðuholt að Tjörninni.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'blue');"><span class="badge" style="background-color:blue">&nbsp</span> Litir og form húsa. Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'purple');"><span class="badge" style="background-color:purple">&nbsp</span> Kennileiti og styttur. Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'orange');"><span class="badge" style="background-color:orange">&nbsp</span> Fugla- og dýralíf. Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</a>
 		        	
 	          </ul>
 	        </div>
@@ -177,9 +177,8 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
+      <div class="navbar-inner">  
         <div class="container">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
@@ -189,8 +188,8 @@
           <a class="brand" href="#">Útikennslu app</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#heim">Heimsiða</a></li>
-              <li><a href="#verkefnid">Um verkefnið</a></li>
+              <li id="main_menu_home" class="main_menu active"><a href="#heim">Heimsiða</a></li>
+              <li id="main_menu_about" class="main_menu"><a href="#verkefnid">Um verkefnið</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -226,7 +225,7 @@
 				var SiteRouter = Backbone.Router.extend({
 				
 				  routes: {
-				  	"": "map_book_aag",
+				  	"": "home",
 				    "heim": "home",
 				    "verkefnid": "about",
 				    "kort_aag": "map_book_aag"
@@ -236,12 +235,16 @@
 				  	$("#map").hide();
 				    var template = $("#content_home").html();
 				    $("#target").html(_.template(template));
+				    $(".main_menu").removeClass("active");
+				    $("#main_menu_home").addClass("active");
 				  },
 				
 				  about: function() {
 				  	$("#map").hide();
 						var template = $("#content_about").html();
 				    $("#target").html(_.template(template));
+				    $(".main_menu").removeClass("active");
+				    $("#main_menu_about").addClass("active");
 				  },
 				
 				  map_book_aag: function() {
