@@ -122,12 +122,13 @@ function downloadMapTiles(pos){
 
 /////////////
 function resizeMap() {
-
-	var mapheight = $(window).height()-100;
-	var mapwidth = $(window).width()-36;
-	$("#map").height(mapheight);
-	$("#map").width(mapwidth);
-	setTimeout(function(){map.invalidateSize(false);}, 500);
+	if(window.running_mobile == false){
+		var mapheight = $(window).height()-100;
+		var mapwidth = $(window).width()-36;
+		$("#map").height(mapheight);
+		$("#map").width(mapwidth);
+		setTimeout(function(){map.invalidateSize(false);}, 500);
+	}
 }
 
 MAP_MIN_ZOOM = 17; //16
