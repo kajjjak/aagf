@@ -3,10 +3,10 @@
           //var mobileDemo = { 'center': '64.14835000000001,-21.9307', 'zoom': 15 };
           
           ////////////////////////////////////////////////////////////
-					var preset_paths = undefined;
 					var samplePoints = [
 						[64.14835000000001,-21.9307]
 					];
+					preset_paths = [];
 					
 					var map, minimal, midnightCommander, motorways;
 					var waypoints = [];
