@@ -2,7 +2,7 @@ var database_name = "agongufor_dev";
 var collection_schema = "8";
 var database_ddoc = "data";
 var database_view = "by_schema_view";
-wrap_location = false;
+wrap_location = false; 
 
 function getAttributesModelDescr(){
   return [
@@ -249,6 +249,7 @@ $(function(){
   // The App controller initializes the app by calling `itemsList.fetch()`
   window.App = Backbone.Router.extend({
     initialize : function(){
+    	/*
         if (preset_paths){
             itemsList.reset(preset_paths);
         } else {
@@ -261,7 +262,7 @@ $(function(){
 	                error: function(e,a) {
 	                     console.log('Failed to fetch!');
 	                }
-	       		}); 
+	       		}); 	       		
 	      	} else {
 	      		//TODO: save the itemList json file into data storage on save
 	      		// then load the routes here
@@ -273,6 +274,16 @@ $(function(){
 	      		}
 	      	}
         }
+        */
+			var id = "attractions2";
+			$.ajax({
+		    url: '/'+database_name+"/" + id,
+		    type: 'GET',
+		    success: function(result) {
+		    	var preset_paths = JSON.parse(result);
+		    	itemsList.reset(preset_paths["path"]); 
+		    }
+			});	
     }
   });
   
@@ -283,6 +294,40 @@ $(function(){
 		$.getScript( '/_utils/script/jquery.couch.js', function(){
 			window.app = new App();
   	});
-  }
+  }  
 });
 
+function loadBackboneData(){
+		var id = "attractions2"; 
+		$.ajax({
+	    url: '/'+database_name+"/" + id,
+	    type: 'GET',
+	    success: function(result) {
+	        // Do something with the result
+	        alert("saved");
+	    }
+	});	
+}
+
+function saveBackboneData(){
+	$.couch.login({
+	    name: "akil",
+	    password: "akil123",
+	    success: function(data) {
+	        console.log(data);
+	    },
+	    error: function(status) {
+	        console.log(status);
+	    }
+	});
+
+	var doc = {"_id":"attractions2", "path": itemsList.models};
+	$.couch.db(database_name).saveDoc(doc, {
+	    success: function(data) {
+	        console.log(data);
+	    },
+	    error: function(status) {
+	        console.log(status);
+	    }
+	});
+}
