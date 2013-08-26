@@ -288,13 +288,14 @@ $(function(){
   });
   
   window.itemsListView = new ItemsListView();
-  if($.couch){
+  window.app = new App();	
+  /*if($.couch){
   	window.app = new App();	
   }else{
 		$.getScript( '/_utils/script/jquery.couch.js', function(){
 			window.app = new App();
   	});
-  }  
+  } */ 
 });
 
 function loadBackboneData(){
