@@ -2,7 +2,7 @@ var database_name = "agongufor_dev";
 var collection_schema = "8";
 var database_ddoc = "data";
 var database_view = "by_schema_view";
-wrap_location = false; 
+wrap_location = false;  
 
 function getAttributesModelDescr(){
   return [
@@ -130,6 +130,12 @@ $(function(){
       this.refreshed();
     },
         
+        getByArea : function(area){
+            var unsorted_pth = itemsList.filter(function(itm) {
+                return (itm.get("area") == area);
+            });
+            return _.sortBy(unsorted_pth, function(obj){ return obj.get("timestamp"); })
+        }, 
         getPathBypath : function(clr){
             var unsorted_pth = itemsList.filter(function(itm) {
                 return itm.get("path") == clr;
@@ -249,41 +255,36 @@ $(function(){
   // The App controller initializes the app by calling `itemsList.fetch()`
   window.App = Backbone.Router.extend({
     initialize : function(){
-    	/*
-        if (preset_paths){
-            itemsList.reset(preset_paths);
-        } else {
-        	if (hasNetworkConnection()){
-	            itemsList.fetch({
-	                reset: true,
-	                success: function() {
-	                	localStorageSetItem("map_routes", JSON.stringify(itemsList.toJSON()));
-	                },
-	                error: function(e,a) {
-	                     console.log('Failed to fetch!');
-	                }
-	       		}); 	       		
-	      	} else {
-	      		//TODO: save the itemList json file into data storage on save
-	      		// then load the routes here
-	      		console.info("Loading map location from cache map_routes");
-	      		var map_routes_json = localStorageGetItem("map_routes");
-	      		if (map_routes_json){
-	      			map_routes = JSON.parse(map_routes_json);
-	      			itemsList.reset(map_routes);
-	      		}
-	      	}
-        }
-        */
-			var id = "attractions2";
-			$.ajax({
-		    url: '/'+database_name+"/" + id,
-		    type: 'GET',
-		    success: function(result) {
-		    	var preset_paths = JSON.parse(result);
-		    	itemsList.reset(preset_paths["path"]); 
-		    }
-			});	
+    	if(window.editing_map){
+        itemsList.fetch({
+            reset: true,
+            success: function() {
+            	console.log('Loaded all paths from server')
+            },
+            error: function(e,a) {
+                 console.log('Failed to fetch!');
+            }
+     		}); 	       		
+    	} else {
+				var id = "attractions2";
+				if (hasNetworkConnection()){
+					$.ajax({
+				    url: '/'+database_name+"/" + id,
+				    type: 'GET',
+				    success: function(result) {
+				    	var preset_paths = JSON.parse(result);
+				    	itemsList.reset(preset_paths["path"]); 
+				    	localStorageSetItem("map_routes_"+id, JSON.stringify(itemsList.toJSON()));
+				    }
+					});	
+				} else {
+      		var map_routes_json = localStorageGetItem("map_routes_"+id);
+      		if (map_routes_json){
+      			map_routes = JSON.parse(map_routes_json);
+      			itemsList.reset(map_routes);
+      		}					
+				}
+    	}
     }
   });
   
@@ -308,27 +309,4 @@ function loadBackboneData(){
 	        alert("saved");
 	    }
 	});	
-}
-
-function saveBackboneData(){
-	$.couch.login({
-	    name: "akil",
-	    password: "akil123",
-	    success: function(data) {
-	        console.log(data);
-	    },
-	    error: function(status) {
-	        console.log(status);
-	    }
-	});
-
-	var doc = {"_id":"attractions2", "path": itemsList.models};
-	$.couch.db(database_name).saveDoc(doc, {
-	    success: function(data) {
-	        console.log(data);
-	    },
-	    error: function(status) {
-	        console.log(status);
-	    }
-	});
 }
