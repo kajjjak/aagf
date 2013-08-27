@@ -1,7 +1,7 @@
 ///should this be empty?
 
           //var mobileDemo = { 'center': '64.14835000000001,-21.9307', 'zoom': 15 };
-          
+            
           ////////////////////////////////////////////////////////////
 					var samplePoints = [
 						[64.14835000000001,-21.9307]
@@ -13,12 +13,12 @@
 					var direction_pos = 0;
 
 					walking_path_polyline = [];
-					walking_path_attraction = [];
+					walking_path_attraction = []; 
 					pointLayers = {};
-					function setSelectedArea(area_name){	
+					function setSelectedArea(area_name){	 
 						window.selected_map_area = area_name;
 						sessionStorage.setItem('selected_map_area', area_name); //$.cookie('map_area', area_name);
-					}
+					} 
 					 
 					function setSelectedPath(path_name){	
 						window.selected_map_path = path_name;
