@@ -5,7 +5,7 @@ var database_view = "by_schema_view";
 wrap_location = false;  
 
 function getAttributesModelDescr(){
-  return [
+  return [ 
     {name: "Schema", field: "schema", width: 60, id: "schema", default_value:  "8" },
     {name: "Name", field: "name", width: 300, id: "name", default_value:  undefined },
     {name: "Descr", field: "descr", width: 300, id: "descr", default_value:  undefined },
