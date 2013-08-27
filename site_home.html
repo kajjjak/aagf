@@ -198,7 +198,7 @@
     <div class="container"> 
       <div class="row">      
         <div class="span12">
-          <div id="map" style="height:400px;"></div>
+          <div id="map" style="height:400px;width:100%;"></div>
         </div>
     	</div>
 
@@ -250,6 +250,10 @@
 						$("#map").show();
 						var template = $("#map_book_item").html();
 				    $("#target").html(_.template(template));
+				    if (map){
+				    	map.invalidateSize();
+				    	map.setView([64.1366,-21.913520000000002], 12);
+				    }
 				  }
 				});
 				
