@@ -47,10 +47,12 @@
 					}
 
 					function showAreaPathAttraction(use_gps, area, path){
-						if (use_gps){
-							window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
-						} else {
-							window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
+						if (window.running_mobile){
+							if (use_gps){
+								window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
+							} else {
+								window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
+							}
 						}
 						window.use_gps = use_gps;
 						setTimeout(function(){resizeMap();}, 1000);
