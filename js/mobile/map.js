@@ -52,7 +52,7 @@ function reloadMap(options) {
 				window.user_marker.addTo(map);
 				window.user_circle = L.circle(e.latlng, radius);
 				window.user_circle.addTo(map);
-			} else {
+			} else { 
 				window.user_marker.setLatLng(e.latlng);
 				window.user_circle.setLatLng(e.latlng);
 				window.user_circle.setRadius(radius);
@@ -66,9 +66,9 @@ function reloadMap(options) {
 
 		MAP.on('locationfound', onLocationFound);
 		MAP.on('locationerror', onLocationError);
+		
+		if(window.running_mobile){MAP.locate({setView: true, watch: true, enableHighAccuracy: true});}
 
-		MAP.locate({setView: true, watch: true, enableHighAccuracy: true});
-        
     }
     window.map = MAP;
     
