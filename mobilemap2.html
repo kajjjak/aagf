@@ -2,7 +2,7 @@
 <!DOCTYPE html> 
 <html manifest="/cache.manifest_NOTUSED" lang="en">
    <head> 
-    <title>Útikennslu</title>
+    <title>Útikennslu</title> 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta http-equiv="content-language" content="en" />
@@ -43,48 +43,48 @@
 		-->
 
       <script type="text/javascript">
-      	
-        	function playSoundNotification(){
-						soundHandle = document.getElementById('notification_sound');
-  					soundHandle.src = '/__db/_design/media/alert.mp3';
-  					soundHandle.play();
-        	}
+    	
+      	function playSoundNotification(){
+					soundHandle = document.getElementById('notification_sound');
+					soundHandle.src = '/__db/_design/media/alert.mp3';
+					soundHandle.play();
+      	}
 
-					function preload(arrayOfImages) {
-					    $(arrayOfImages).each(function(){
-					        $('<img/>')[0].src = this;
-					        // Alternatively you could use:
-					        // (new Image()).src = this;
-					    });
-					}
-					 
-          
-          $(document).bind( "mobileinit", function(event) {
-              $.extend($.mobile.zoom, {locked:true,enabled:false});
-          });
+				function preload(arrayOfImages) {
+				    $(arrayOfImages).each(function(){
+				        $('<img/>')[0].src = this;
+				        // Alternatively you could use:
+				        // (new Image()).src = this;
+				    });
+				}
+				 
+        
+        $(document).bind( "mobileinit", function(event) {
+            $.extend($.mobile.zoom, {locked:true,enabled:false});
+        });
 
-					setTimeout(function(){$(document).trigger("deviceready");}, 1000);
+				setTimeout(function(){$(document).trigger("deviceready");}, 1000);
 
-          $('#user_map').live('pageshow', function() {
-              //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
-          });
-          
-          $('#user_map').live("pagehide", function() {
-              //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
-          });
-          
-          function addItemCallbackPreSend() {
-              $("#location_add_button").button('disable');
-              $("#location_add_button").html("Vistar staðsetting ..");
-              $("#location_add_button").button('refresh')
-          }
-          setTimeout(function(){
-          itemsListView.addItemCallbackSuccess = function(){
-              $("#location_add_button").button('enable');
-              $("#location_add_button").html("Vista staðsetting");
-              $("#location_add_button").button('refresh')
-          }}, 2000);
-          
+        $('#user_map').live('pageshow', function() {
+            //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
+        });
+        
+        $('#user_map').live("pagehide", function() {
+            //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
+        });
+        
+        function addItemCallbackPreSend() {
+          $("#location_add_button").button('disable');
+          $("#location_add_button").html("Vistar staðsetting ..");
+          $("#location_add_button").button('refresh');
+        }
+        setTimeout(function(){
+        itemsListView.addItemCallbackSuccess = function(){
+          $("#location_add_button").button('enable');
+          $("#location_add_button").html("Vista staðsetting");
+          $("#location_add_button").button('refresh');
+        }}, 2000);
+        
       </script>
     </head>
     <body> 
