@@ -15,8 +15,22 @@ function createMapOptions(clear) {
     return {
         'clear': clear,
         'fileSystem': FILESYSTEM,
-        'mapIDs': getMapIDs()
+        'mapIDs': getMapIDs(),
+        'zoom': true
     };
+}
+
+function loadMap(){
+  window.requestFileSystem(
+      LocalFileSystem.PERSISTENT, 0,
+      function(fs) { //success
+          FILESYSTEM = fs;
+          mapUtils.reloadMap(createMapOptions(false));
+      },
+      function() { alert("Failure accessing filesystem!"); } //filesystem failure
+  );
+  
+  setTimeout(function(){prepLocalDatabase();}, 1000);	
 }
 
 $(document).ready(function() {
@@ -27,60 +41,51 @@ $(document).ready(function() {
     .off("change")
     .on("change", function() { localStorage_MAPBOX_IDS_ = $(this).val(); });
     */
-    if (window.localStorage_MAPBOX_IDS_ == undefined){ window.localStorage_MAPBOX_IDS_ = "kajjjak.map-wgrdoudp"; }
 
     //Real page setup on phonegap initialization
     $(document).off("deviceready").on("deviceready", function() {
-	    //resizeMap();
+			loadMap();
 
-        window.requestFileSystem(
-            LocalFileSystem.PERSISTENT, 0,
-            function(fs) { //success
-                FILESYSTEM = fs;
-                mapUtils.reloadMap(createMapOptions(false));
-            },
-            function() { alert("Failure accessing filesystem!"); } //filesystem failure
-        );
-        
-        setTimeout(function(){prepLocalDatabase();}, 1000);
-
+				/*
         $("#clear").off("click").on("click", function() {
             localStorageClear();
         });
 
         $("#download").off("click").on("click", function() {
-        	//downloadMapTiles(64.1404809, -21.9113811);
-        	
-		    var pos = [64.1404809, -21.9113811];
-		    var mapboxIDs = getMapIDs();
-		    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
-		    fileUtils.bulkDownload(
-		       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
-		       'tiles',
-		       undefined, //$("#progress_modal"),
-		       function() {
-		           //alert("Download successful!");
-		           $.mobile.loading( 'hide');
-		           mapUtils.reloadMap(createMapOptions(false));
-		       }
-		    );
-        	
+			    var pos = [64.1404809, -21.9113811];
+			    var mapboxIDs = getMapIDs();
+			    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
+			    fileUtils.bulkDownload(
+			       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
+			       'tiles',
+			       undefined, //$("#progress_modal"),
+			       function() {
+			           //alert("Download successful!");
+			           $.mobile.loading( 'hide');
+			           mapUtils.reloadMap(createMapOptions(false));
+			       }
+			    );
         });
+        */
     });
 });
 
 function showLoadingAnimation(txt, max_timeout){
-	$.mobile.loading( 'show', {
-		text: txt,
-		textVisible: true,
-		theme: 'a',
-		html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
-	});	
-	setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	if (window.running_mobile){
+		$.mobile.loading( 'show', {
+			text: txt,
+			textVisible: true,
+			theme: 'a',
+			html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
+		});	
+		setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	}
 }
 
 function hideLoadingAnimation(){
-	$.mobile.loading( 'hide');
+	if (window.running_mobile){
+		$.mobile.loading( 'hide');
+	}
 }
 
 function prepLocalDatabase(){
@@ -122,12 +127,13 @@ function downloadMapTiles(pos){
 
 /////////////
 function resizeMap() {
-
-	var mapheight = $(window).height()-100;
-	var mapwidth = $(window).width()-36;
-	$("#map").height(mapheight);
-	$("#map").width(mapwidth);
-	setTimeout(function(){map.invalidateSize(false);}, 500);
+	if(window.running_mobile == true){
+		var mapheight = $(window).height()-100;
+		var mapwidth = $(window).width()-36;
+		$("#map").height(mapheight);
+		$("#map").width(mapwidth);
+		setTimeout(function(){map.invalidateSize(false);}, 500);
+	}
 }
 
 MAP_MIN_ZOOM = 17; //16
