@@ -1,8 +1,8 @@
-var database_name = "agongufor_dev";
+var database_name = "__db";
 var collection_schema = "8";
 var database_ddoc = "data";
 var database_view = "by_schema_view";
-wrap_location = false;  
+wrap_location = false;   
 
 function getAttributesModelDescr(){
   return [ 
