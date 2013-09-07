@@ -2,7 +2,7 @@ CACHE MANIFEST
 # http://en.wikipedia.org/wiki/Cache_manifest_in_HTML5
 # version 1.0.53
 
-NETWORK:
+NETWORK: 
 *
 
 FALLBACK:
@@ -30,19 +30,19 @@ http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js
 http://code.jquery.com/mobile/1.3.0/images/ajax-loader.gif
 http://code.jquery.com/mobile/1.3.0/images/icons-18-white.png
 
-/ghostburster/_design/data/_view/by_schema_view
+/utikennsluapp/_design/data/_view/by_schema_view
 
-/ghostburster/_design/media/star-3.png
-/ghostburster/_design/media/statue-2.png
-/ghostburster/_design/media/forest2.png
-/ghostburster/_design/media/moderntower.png
-/ghostburster/_design/media/river-2.png
-/ghostburster/_design/media/shadow.png
-/ghostburster/_design/media/fjolubla_5.jpg
-/ghostburster/_design/media/gulaleid_13.jpeg
-/ghostburster/_design/media/fjolubla_9.jpg
-/ghostburster/_design/media/TurdusIliacus1.mp3
-/ghostburster/_design/media/alert.mp3
+/utikennsluapp/_design/media/star-3.png
+/utikennsluapp/_design/media/statue-2.png
+/utikennsluapp/_design/media/forest2.png
+/utikennsluapp/_design/media/moderntower.png
+/utikennsluapp/_design/media/river-2.png
+/utikennsluapp/_design/media/shadow.png
+/utikennsluapp/_design/media/fjolubla_5.jpg
+/utikennsluapp/_design/media/gulaleid_13.jpeg
+/utikennsluapp/_design/media/fjolubla_9.jpg
+/utikennsluapp/_design/media/TurdusIliacus1.mp3
+/utikennsluapp/_design/media/alert.mp3
 
 /_utils/script/sha1.js
 /_utils/script/json2.js
