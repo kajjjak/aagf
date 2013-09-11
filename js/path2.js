@@ -2,7 +2,7 @@ var database_name = "__db";
 var collection_schema = "8";
 var database_ddoc = "data";
 var database_view = "by_schema_view";
-wrap_location = false;   
+wrap_location = false;  
 
 function getAttributesModelDescr(){
   return [ 
@@ -300,7 +300,7 @@ $(function(){
 });
 
 function loadBackboneData(){
-		var id = "attractions2"; 
+		var id = "/attractions2"; 
 		$.ajax({
 	    url: '/'+database_name+"/" + id,
 	    type: 'GET',
