@@ -2,7 +2,7 @@ CACHE MANIFEST
 # http://en.wikipedia.org/wiki/Cache_manifest_in_HTML5
 # version 1.0.53
 
-NETWORK: 
+NETWORK:
 *
 
 FALLBACK:
