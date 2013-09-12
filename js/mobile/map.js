@@ -58,10 +58,14 @@ function reloadMap(options) {
 				window.user_circle.setRadius(radius);
 			}
 			locateNearbyMarkers(e.latlng);
+			$("#map-gps-notification").html("");
 		}
 
 		function onLocationError(e) {
-			showLoadingAnimation("GPS staðsettning: " + e.message, 4000);
+			if (window.running_mobile){
+				//showLoadingAnimation("GPS staðsettning: " + e.message, 4000);
+				$("#map-gps-notification").html("tækið fann ekki staðsettning");
+			}
 		}
 
 		MAP.on('locationfound', onLocationFound);
