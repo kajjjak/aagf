@@ -10,11 +10,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-touch-icon" href="/apple-touch-icon-57x57.png" type="" />
-    <meta name="apple-touch-startup-image" href="/apple-touch-splash.png" />        
+    <meta name="apple-touch-startup-image" href="/apple-touch-startup-image.png" />        
 		<link rel="apple-touch-icon" href="/apple-touch-icon-57x57.png" />
 		<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
 		<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-		<link rel="apple-touch-startup-image" href="/apple-touch-splash.png">
+		<link rel="apple-touch-startup-image" href="/apple-touch-startup-image.png">
 
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
     <link type="text/css" rel="stylesheet" href="/css/mobilemap.css" /> 
@@ -226,7 +226,7 @@
         <div id="user_map" data-role="page">
             <div data-role="header">
                 <a data-rel="back">Til baka</a>
-                <h1>Kortið</h1>
+                <h1 id="map-title">Kortið</h1>
                 <a id="btnSaveMap" href="#" data-icon="check" data-theme="b" onclick="downloadMapTilesCurrentArea()">Vista</a>
             </div>
             <div data-role="content">   
@@ -234,6 +234,7 @@
                     <div id="map" style="height:400px"></div>
                     <!-- <div id="map_canvas_2" style="position:absolute;top:40px;bottom:20px;left:0;right:0;"></div> -->
                 </div>
+                <div id="map-gps-notification"></div>
                 <!-- label for="location_name" id="label_location_name"></label -->
             </div>
         </div>
