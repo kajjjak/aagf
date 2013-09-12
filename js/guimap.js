@@ -187,12 +187,12 @@ function removeArea(){
 	}
 	//map.removeControl(layersControl);
 }
-
+/* NOT USED AND OVERRIDEN BY guimap.js */
 function showDescription(marker) {
     google.maps.event.addListener(marker, 'click', function() {
     	var infowindow_content = marker.attraction_descr;
-    	if (window.running_mobile && marker.attraction_content){
-    		infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\")'>meira</a>";
+    	if (window.running_mobile && marker.attraction_content){ 
+    		infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\")'>meira zzz</a>";
     	}
         infowindow.setContent(infowindow_content);
         infowindow.open(map, marker); //then opens the infowindow at the marker
