@@ -3,19 +3,105 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Útikennslu app</title>
+    <title>ÚtikennsluApp</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
     <!-- Le styles -->
-    <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.2/amelia/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.2/cerulean/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    
     <style type="text/css">
       body {
-        padding-top: 60px;
+        padding-top: 74px;
         padding-bottom: 40px; 
+        background-color: rgb(23,175,145);
+        color:rgb(213,213,213);
       } 
       .infowindow_content { 
       	color:  black;
       }
+			      
+			.navbar-inverse .navbar-inner {
+			background-color: rgb(51,51,53);
+			background-image: -moz-linear-gradient(top,rgb(51,51,53),rgb(51,51,53));
+			background-image: -webkit-gradient(linear,0 0,0 100%,rgb(51,51,53),rgb(51,51,53));
+			background-image: -webkit-linear-gradient(top, rgb(51,51,53),rgb(51,51,53));
+			background-image: -o-linear-gradient(top, rgb(51,51,53),rgb(51,51,53));
+			background-image: linear-gradient(to bottom, rgb(51,51,53), rgb(51,51,53));
+			background-repeat: repeat-x;
+			border-color: rgb(167, 167, 167);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff04498c',endColorstr='#ff033c73',GradientType=0);
+			}      
+			
+			.hero-unit {
+				padding: 30px;
+				margin-bottom: 30px;
+				font-size: 18px;
+				font-weight: 200;
+				line-height: 30px;
+				color: inherit;
+				background-color: rgb(249,249,249);
+				-webkit-border-radius: 6px;
+				-moz-border-radius: 6px;
+				border-radius: 2px;
+				-webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				-moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+			}
+			
+			.navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav 
+			.active>a:focus {
+				color: #fff;
+				background-color: rgba(100, 100, 100, 0.5);
+			}
+			.navbar-inverse .nav>li>a:focus, .navbar-inverse .nav>li>a:hover {
+				color: #fff;
+				background-color: rgba(100, 100, 100, 0.3);
+			}
+			
+			.btn {
+				color: rgb(232,232,232);
+				border: 0px;
+				text-shadow: 0 0 0 rgba(0,0,0,0);
+				background-color: rgb(60, 56, 55);
+				background-image: linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-repeat: no-repeat;
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(60, 56, 55)',endColorstr='rgb(60, 56, 55)',GradientType=0);
+				-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+				-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+				box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);	
+			}
+			h1, h2, h3, h4, h5, h6 {
+				margin: 10px 0;
+				font-family: 'Telex',sans-serif;
+				font-weight: bold;
+				line-height: 20px;
+				color: rgb(213, 213, 213);
+				text-rendering: optimizelegibility;
+			}
+			h1 {
+				color: rgb(118, 118, 118);
+			}
+			a:link {text-decoration:none;color:rgb(213,213,213);}
+			a:visited {text-decoration:none;color:rgb(213,213,213);}
+			a:hover {text-decoration:underline;color:rgb(213,213,213);}
+			a:active {text-decoration:underline;color:rgb(213,213,213);}
+
+			/* Gradient transparent - color - transparent */
+			hr {
+		    border: 0;
+		    height: 1px;
+		    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+			}
+			
+			#map {
+				-webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				-moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);				
+			}
     </style> 
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -52,7 +138,7 @@
 				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 				 return true;
 				}
-				retunr false;
+				return false;
     	}
     	
     	function playSoundNotification(){
@@ -101,17 +187,21 @@
 		<script type="text/html" id='content_home'>
 	      <!-- Main hero unit for a primary marketing message or call to action -->
 	      <div class="hero-unit">
-	        <h1>Útikennslu app</h1>
-	        <p></p>
-	        <p><a href="#verkefnid" class="btn btn-primary btn-large">Meira &raquo;</a></p>
+	      	<img src="/__db/_design/media/qrcode.png" style="height:100px;">
+	      	<img src="/__db/_design/media/reykjavik_logo.png" style="height:54px;float:right;">
+	      	<center>
+	      	<img src="/__db/_design/media/apple-touch-icon-114x114.png" style="height:200px">
+	      	<p style="color:rgb(83, 83, 83);">Forritið birtir kennsluverkefni á snjallsíma eða spjaldtölvu á þeim stað sem notandinn er.</p>
+	      	</center>
+	        <br>
+	        <p><a href="/mobile/" style="float: right;" class="btn btn-primary">Skoða app &nbsp&nbsp<i class="icon-circle-arrow-right icon-white "></i></a></p>
 	      </div>
-	
-	      <!-- Example row of columns -->
+				<hr>
 	      <div class="row">      
-	        <div class="span6">
+	        <div class="span12">
 	          <h2>Ævintýri á gönguför</h2>
 	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni <i>Ævintýri á gönguför</i> sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur. </p>
-	          <p><a class="btn" href="#kort_aag">Kort &raquo;</a></p>
+	          <p><a class="btn btn-primary btn-large" href="#kort_aag">Skoða kort og gönguleiðir &nbsp&nbsp<i class="icon-circle-arrow-right icon-white"></i></a></p>
 	        </div>
 	    	</div>
 		</script>
@@ -120,6 +210,7 @@
 	      <div class="row">      
 	        <div class="span8">
 	          <h2>Verkefnið</h2>
+	          <br>
 	          <h3>Um gönguleiðirnar</h3>
 	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni Ævintýri á gönguför sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur.</p>
 	          <h3>Útikennsluapp</h3>
@@ -130,8 +221,9 @@
 		</script>
 		
 		<script type="text/html" id='map_book_item'>
+				<hr>
 	      <div class="row">
-	        <div class="span8">
+	        <div class="span12">
 	        	<h3>Miðborgin</h3>
 	        	<p>Hér er lýsing á kortið i miðbænum. Einig má hlaða niður PDF skjalið sem er hannað af.</p>
 	        	<ul style="list-style-type: none;">
@@ -141,7 +233,6 @@
 							<li><a href="javascript:showAreaPathAttraction(0, 2, 'blue');"><span class="badge" style="background-color:blue">&nbsp</span> Litir og form húsa. Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</a>
 							<li><a href="javascript:showAreaPathAttraction(0, 2, 'purple');"><span class="badge" style="background-color:purple">&nbsp</span> Kennileiti og styttur. Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</a>
 							<li><a href="javascript:showAreaPathAttraction(0, 2, 'orange');"><span class="badge" style="background-color:orange">&nbsp</span> Fugla- og dýralíf. Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</a>
-		        	
 	          </ul>
 	        </div>
 	    	</div>
@@ -158,9 +249,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Útikennslu app</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
+	            <li id="main_menu_logo" class="main_menu"><a href="#" style="padding:9px;font-size:25px;"><img src="/__db/_design/media/apple-touch-icon-57x57.png" style="height:32px"><b>Útikennslu</b>App</a></li>
               <li id="main_menu_home" class="main_menu active"><a href="#heim">Heimsiða</a></li>
               <li id="main_menu_about" class="main_menu"><a href="#verkefnid">Um verkefnið</a></li>
             </ul>
@@ -175,11 +266,9 @@
           <div id="map" style="height:400px;width:100%;"></div>
         </div>
     	</div>
-
 			<div id="target">
 			</div>
-      <hr>
-
+			<br><br>
 			<footer>
         <p>&copy; Náttúruskóli Reykjavíkur</p>
       </footer>
