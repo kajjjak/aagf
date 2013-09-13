@@ -60,7 +60,7 @@ $(function(){
   // Now let's define a new Collection of itemsList
   var ItemList = Backbone.Collection.extend({
     model : ItemModel,
-    url : "/" + collection_schema,
+    url : "/" + collection_schema
   });
   
   window.itemsList = new ItemList();
