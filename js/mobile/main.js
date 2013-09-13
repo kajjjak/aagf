@@ -89,11 +89,13 @@ function hideLoadingAnimation(){
 }
 
 function prepLocalDatabase(){
-	window.localStorageDB = openDatabase('mapdata', '1.0', 'Offline map data', 150 * 1024 * 1024);
-	localStorageDB.transaction(function (tx) {
-	  tx.executeSql('CREATE TABLE IF NOT EXISTS tiles (id unique, text)', function(){ copyStorageFromSQL2Session(); });
-	});
-	setTimeout(function(){ if (!window.cache_copied){ copyStorageFromSQL2Session(); }}, 2000);
+	if(window.openDatabase){
+		window.localStorageDB = window.openDatabase('mapdata', '1.0', 'Offline map data', 150 * 1024 * 1024);
+		window.localStorageDB.transaction(function (tx) {
+		  tx.executeSql('CREATE TABLE IF NOT EXISTS tiles (id unique, text)', function(){ copyStorageFromSQL2Session(); });
+		});
+		setTimeout(function(){ if (!window.cache_copied){ copyStorageFromSQL2Session(); }}, 2000);
+	}
 }
 
 function downloadMapTilesCurrentArea(){
