@@ -89,8 +89,9 @@ function hideLoadingAnimation(){
 }
 
 function prepLocalDatabase(){
+	if(!window.running_mobile){ return; }
 	if(window.openDatabase){
-		window.localStorageDB = window.openDatabase('mapdata', '1.0', 'Offline map data', 150 * 1024 * 1024);
+		window.localStorageDB = window.openDatabase('mapdata', '1.0', 'Offline map data', 30 * 1024 * 1024);
 		window.localStorageDB.transaction(function (tx) {
 		  tx.executeSql('CREATE TABLE IF NOT EXISTS tiles (id unique, text)', function(){ copyStorageFromSQL2Session(); });
 		});
