@@ -8,7 +8,7 @@ function selectPath(path_name){
 		showAreaPath();
 	}else{
 		setTimeout("showAreaPath()", 1000);
-	}
+	} 
 }
 
 function selectPathAttraction(path_name){
