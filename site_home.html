@@ -5,15 +5,15 @@
     <meta charset="utf-8">
     <title>Útikennslu App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
+ 		<script src="/libs/modernizr.js"></script>
     <!-- Le styles -->
     <!-- link href="//netdna.bootstrapcdn.com/bootswatch/2.3.2/cerulean/bootstrap.min.css" rel="stylesheet" -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     
     <style type="text/css">
-      body {
-        padding-top: 74px;
+      body { 
+        padding-top: 74px; 
         padding-bottom: 40px; 
         background-color: rgb(23,175,145);
         color:rgb(248,248,248);
@@ -31,7 +31,7 @@
 				background-image: linear-gradient(to bottom, rgb(51,51,53), rgb(51,51,53));
 				background-repeat: repeat-x;
 				border-color: rgb(167, 167, 167);
-				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff04498c',endColorstr='#ff033c73',GradientType=0);
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333335',endColorstr='#333335',GradientType=0);
 			}      
 			
 			.hero-unit {
@@ -71,7 +71,7 @@
 				background-image: -ms-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
 				background-image: -o-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
 				background-repeat: no-repeat;
-				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(60, 56, 55)',endColorstr='rgb(60, 56, 55)',GradientType=0);
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333335',endColorstr='#333335',GradientType=0);
 				-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
 				-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
 				box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);	
@@ -105,18 +105,13 @@
 		    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 		    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
 			}
-			
+			 
 			#map {
 				-webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
 				-moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
 				box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);				
 			}
     </style> 
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
 
     <link rel="shortcut icon" href="/favicon.png">
 
@@ -127,6 +122,9 @@
 		<script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
 
 		<link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
+		<!--[if lt IE 9]>
+		<link rel="stylesheet" href="/libs/leaflet/leaflet.ie.css" />
+		<![endif]--> 
     <script src="/libs/leaflet/leaflet.js"></script>
     <script src="/libs/leaflet.functionaltilelayer.js"></script>
     <script src="/js/mobile/file.js"></script>
