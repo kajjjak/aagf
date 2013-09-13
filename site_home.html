@@ -140,6 +140,7 @@
 		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>
 
     <script type="text/javascript">
+    	if (!window.console) console = {log: function(){}, info: function(){}, error: function(){}, warning: function(){}};
     	
     	function hasMobile(){
 				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
