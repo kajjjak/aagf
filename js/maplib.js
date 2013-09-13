@@ -89,14 +89,18 @@
 					}
 					function showDescription(marker) {
 						var infowindow_content = marker.attraction_descr;
+						var clk = "";
+						var btn = "";
 						if (infowindow_content){
 							if(marker.attraction_viewed == undefined){
 								if (window.running_mobile && marker.attraction_content){
-									var clk = "onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'";
-									var btn = "<a href='#' " + clk + " data-role='button' data-icon='info' data-iconpos='left' data-mini='true' data-inline='true' data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' class='ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-icon-left ui-btn-up-c'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Meira</span><span class='ui-icon ui-icon-info ui-icon-shadow'>&nbsp;</span></span></a>";
-									infowindow_content = marker.attraction_descr + "<br>"+btn;
+									clk = "onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'";
+									btn = "<a href='#' " + clk + " data-role='button' data-icon='info' data-iconpos='left' data-mini='true' data-inline='true' data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-theme='c' class='ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-icon-left ui-btn-up-c'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Meira</span><span class='ui-icon ui-icon-info ui-icon-shadow'>&nbsp;</span></span></a>";
+									infowindow_content = "<a href='#' " + clk + " class='infowindow_attraction' style='color:black;'>"  + marker.attraction_descr + "</a><br>"+btn;
 									//infowindow_content = marker.attraction_descr + "<br>"+btn+"<a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\"); return false;'>meira</a>";
 									marker.attraction_viewed = true;
+								} else {								
+									infowindow_content = "<p class='infowindow_attraction'>" + marker.attraction_descr + "</p>";
 								}
 								marker.bindPopup("<p class='infowindow_content'><center>"+infowindow_content+"</center></p>");
 							}
