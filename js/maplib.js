@@ -189,7 +189,7 @@
 							}
 							for (var i = 0; i < attractionPoints.length; i++){
 								var latlng = [attractionPoints[i]["lat"], attractionPoints[i]["lon"]];
-								if (attractionPoints[i]["descr"].trim() != ""){
+								if ($.trim(attractionPoints[i]["descr"]) != ""){
 									var iconClass = generalIcon;
 									if (attractionPoints[i]["icon"] != undefined){
 										ic = attractionPoints[i]["icon"];
