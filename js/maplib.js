@@ -25,6 +25,13 @@
 						sessionStorage.setItem('selected_map_path', path_name); // $.cookie('map_path', path_name);
 					} 
 					
+					function getHexColor(name){
+						var m = {"yellow": "#eeb824","red": "#cc3747","green":"#006633","blue":"#077a75","purple":"#5c374b","orange":"#a1511a"};
+						var c = m[name];
+						if (c === undefined){ c = m["yellow"]; }
+						return c;
+					}
+					
 					function getSelectedArea(){
 						return sessionStorage.getItem('selected_map_area');
 					}
@@ -207,7 +214,7 @@
 									walking_path_attraction.push(attr);
 								}
 							}
-							var pl = L.polyline(latlngs, {color: name, opacity: 0.8, weight: 8, smoothFactor: 0.5})
+							var pl = L.polyline(latlngs, {color: getHexColor(name), opacity: 0.8, weight: 8, smoothFactor: 0.5})
 							walking_path_polyline.push(pl);
 							pl.addTo(pointLayers[name]);
 							window.map_bounds = pl.getBounds();
