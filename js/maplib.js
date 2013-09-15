@@ -58,7 +58,8 @@
 							if (use_gps){
 								window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
 							} else {
-								window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
+								//window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
+								window.map.stopLocate();
 							}
 						}
 						window.use_gps = use_gps;
@@ -115,7 +116,7 @@
 					}
 					function reloadMapPathAndAttractionsFromCache(){
 						//TODO: save the itemList json file into data storage on save then load the routes here
-						var map_routes_json = localStorageGetItem("map_routes");
+						var map_routes_json = localStorageGetItem("map_routes_attractions2");
 						if (map_routes_json){
 							map_routes = JSON.parse(map_routes_json);
 					  		setTimeout(function(){
