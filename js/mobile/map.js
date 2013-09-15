@@ -38,7 +38,6 @@ function reloadMap(options) {
 	            'maxZoom': MAP_MAX_ZOOM,
 	            'layers': [funcLayer]
 	        }).setView([64.1404809, -21.9113811], MAP_DEFAULT_ZOOM);
-  	      MAP.locate({setView: true}); //, maxZoom: MAP_MAX_ZOOM
     		} else {
 	        MAP = L.map('map', {
 	        	'layers': [funcLayer]
@@ -71,7 +70,7 @@ function reloadMap(options) {
 		MAP.on('locationfound', onLocationFound);
 		MAP.on('locationerror', onLocationError);
 		
-		if(window.running_mobile){MAP.locate({setView: true, watch: true, enableHighAccuracy: true});}
+		//if(window.running_mobile){MAP.locate({setView: true, watch: true, enableHighAccuracy: true});}
 
     }
     window.map = MAP;
