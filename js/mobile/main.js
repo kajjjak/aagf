@@ -29,8 +29,6 @@ function loadMap(){
       },
       function() { alert("Failure accessing filesystem!"); } //filesystem failure
   );
-   
-  //setTimeout(function(){prepLocalDatabase();}, 1000);	  
 }
 
 $(document).ready(function() {
