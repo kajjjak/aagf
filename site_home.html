@@ -1,0 +1,375 @@
+ 
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Útikennslu App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 		<script src="/libs/modernizr.js"></script>
+    <!-- Le styles -->
+    <!-- link href="//netdna.bootstrapcdn.com/bootswatch/2.3.2/cerulean/bootstrap.min.css" rel="stylesheet" -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+      body { 
+        padding-top: 74px; 
+        padding-bottom: 40px; 
+        background-color: rgb(23,175,145);
+        color:rgb(248,248,248);
+				background-image:url('/__db/_design/media/green_background_tile.png');
+				background-repeat:repeat;        
+      } 
+      .infowindow_content { 
+      	color:  black;
+      }
+     
+			.navbar-inverse .navbar-inner {
+				background-color: rgb(51,51,53);
+				background-image: -moz-linear-gradient(top,rgb(51,51,53),rgb(51,51,53));
+				background-image: -webkit-gradient(linear,0 0,0 100%,rgb(51,51,53),rgb(51,51,53));
+				background-image: -webkit-linear-gradient(top, rgb(51,51,53),rgb(51,51,53));
+				background-image: -o-linear-gradient(top, rgb(51,51,53),rgb(51,51,53));
+				background-image: linear-gradient(to bottom, rgb(51,51,53), rgb(51,51,53));
+				background-repeat: repeat-x;
+				border-color: rgb(167, 167, 167);
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333335',endColorstr='#333335',GradientType=0);
+			}      
+			
+			.hero-unit {
+				padding: 30px;
+				margin-bottom: 30px;
+				font-size: 18px;
+				font-weight: 200;
+				line-height: 30px;
+				color: inherit;
+				background-color: rgb(249,249,249);
+				-webkit-border-radius: 6px;
+				-moz-border-radius: 6px;
+				border-radius: 2px;
+				-webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				-moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+			}
+			
+			.navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav 
+			.active>a:focus {
+				color: #fff;
+				background-color: rgba(100, 100, 100, 0.5);
+			}
+			.navbar-inverse .nav>li>a:focus, .navbar-inverse .nav>li>a:hover {
+				color: #fff;
+				background-color: rgba(100, 100, 100, 0.3);
+			}
+			
+			.btn-custom {
+				color: rgb(232,232,232);
+				border: 0px;
+				text-shadow: 0 0 0 rgba(0,0,0,0);
+				background-color: rgb(60, 56, 55);
+				background-image: linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-image: -webkit-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-image: -moz-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-image: -ms-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-image: -o-linear-gradient(rgb(60, 56, 55), rgb(60, 56, 55), rgb(60, 56, 55));
+				background-repeat: no-repeat;
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333335',endColorstr='#333335',GradientType=0);
+				-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+				-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+				box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);	
+			}
+			.btn:hover, .btn:focus {
+			color: white;
+			text-decoration: none;
+			}			
+			h1, h2, h3, h4, h5, h6 {
+				margin: 10px 0;
+				font-family: 'Signika',sans-serif;
+				font-weight: bold;
+				line-height: 20px;
+				color: rgb(248, 248, 248);
+				text-rendering: optimizelegibility;
+				margin-bottom: 20px;
+				margin-top: 20px;
+			}
+			h1 {
+				color: rgb(118, 118, 118);
+			}
+			a:link {text-decoration:none;color:rgb(248,248,248);}
+			a:visited {text-decoration:none;color:rgb(248,248,248);}
+			a:hover {text-decoration:underline;color:rgb(248,248,248);}
+			a:active {text-decoration:underline;color:rgb(248,248,248);}
+
+			/* Gradient transparent - color - transparent */
+			hr {
+		    border: 0;
+		    height: 1px;
+		    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+		    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+			}
+			 
+			#map {
+				-webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				-moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+				box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);				
+			}
+    </style> 
+    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		
+		<script type="text/javascript" src="/_utils/script/sha1.js"></script>
+		<script type="text/javascript" src="/_utils/script/json2.js"></script>
+		<script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
+
+		<link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
+		<!--[if lt IE 9]>
+		<link rel="stylesheet" href="/libs/leaflet/leaflet.ie.css" />
+		<![endif]--> 
+    <script src="/libs/leaflet/leaflet.js"></script>
+    <script src="/libs/leaflet.functionaltilelayer.js"></script>
+    <script src="/js/mobile/file.js"></script>
+    <script src="/js/mobile/tile.js"></script>
+    <script src="/js/mobile/map.js"></script>
+    <script src="/js/mobile/main.js"></script>
+
+    <script type="text/javascript" src="/js/mobilemap.js"></script>
+    <script type="text/javascript" src="/js/maplib.js"></script>
+    <!-- ///////////////////////////////////////// -->
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone/0.5.1/backbone.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>
+
+    <script type="text/javascript">
+    	if (!window.console) console = {log: function(){}, info: function(){}, error: function(){}, warning: function(){}};
+    	
+    	function hasMobile(){
+				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				 return true;
+				}
+				return false;
+    	}
+    	
+    	function playSoundNotification(){
+				soundHandle = document.getElementById('notification_sound');
+				soundHandle.src = '/__db/_design/media/alert.mp3';
+				soundHandle.play();
+    	}
+        	
+			function preload(arrayOfImages) {
+			    $(arrayOfImages).each(function(){
+			        $('<img/>')[0].src = this;
+			        // Alternatively you could use:
+			        // (new Image()).src = this;
+			    });
+			}
+			
+      $(document).bind( "mobileinit", function(event) {
+          $.extend($.mobile.zoom, {locked:true,enabled:false});
+      });
+
+			setTimeout(function(){$(document).trigger("deviceready");}, 1000);
+
+      $('#user_map').live('pageshow', function() {
+          //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
+      });
+      
+      $('#user_map').live("pagehide", function() {
+          //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
+      });
+      
+      function addItemCallbackPreSend() {
+          $("#location_add_button").button('disable');
+          $("#location_add_button").html("Vistar staðsetting ..");
+          $("#location_add_button").button('refresh')
+      }
+      
+      setTimeout(function(){
+      itemsListView.addItemCallbackSuccess = function(){
+          $("#location_add_button").button('enable');
+          $("#location_add_button").html("Vista staðsetting");
+          $("#location_add_button").button('refresh')
+      }}, 2000);
+        
+    </script>
+
+		<script type="text/html" id='content_home'>
+	      <!-- Main hero unit for a primary marketing message or call to action -->
+	      <div class="hero-unit" onclick="window.location='/mobile/'">
+	      	<img class="hidden-phone" src="/__db/_design/media/qrcode.png" style="height:100px;float:left;">
+	      	<img class="hidden-phone" src="/__db/_design/media/reykjavik_logo.png" style="height:54px;float:right;">
+	      	<center style="padding: 40px;">
+	      	<img src="/__db/_design/media/utikennsluapp_icon_padding.png" style="height:200px;height: 200px;right: 24px;position: relative;bottom: -9px;"><br>
+	      	<img src="/__db/_design/media/home_page_shadow.png">
+	      	<p style="color:rgb(83, 83, 83);font-size:16px;">Forritið birtir kennsluverkefni á snjallsíma eða spjaldtölvu<br>á þeim stað sem notandinn er.</p>
+	      	</center>
+	        <br>
+	        <p><a href="/mobile/" style="float: right;" class="btn btn-custom">Skoða app &nbsp&nbsp<i class="icon-circle-arrow-right icon-white "></i></a></p>
+	      </div>
+				<hr>
+	      <div class="row">      
+	        <div class="span12">
+	          <h2>Ævintýri á gönguför</h2>
+	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni <i>Ævintýri á gönguför</i> sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur. </p>
+	          <p><a class="btn btn-custom btn-large" href="#kort_aag">Skoða kort og gönguleiðir &nbsp&nbsp<i class="icon-circle-arrow-right icon-white"></i></a></p>
+	        </div>
+	    	</div>
+		</script>
+
+		<script type="text/html" id='content_about'>
+	      <div class="row">      
+	        <div class="span8">
+	          <h2>Verkefnið</h2>
+	          <h3>Um gönguleiðirnar</h3>
+	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni Ævintýri á gönguför sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur.</p>
+	          <h3>Útikennsluapp</h3>
+	          <p>Útikennsluapp er verkefni Náttúruskóla Reykjavíkur. Höfundur þess er Helena Óladóttir, verkefnisstjóri Náttúruskólans en forritið er unnið af Kjartan Akil Jónssyni hjá aGameCompany.</p>
+						<p>Útikennsluapp er styrkt af Þróunarsjóði Skóla- og frístundasviðs Reykjavíkur.</p>
+	        </div>
+	    	</div>
+		</script>
+		
+		<script type="text/html" id='content_contact'>
+	      <div class="row">      
+	        <div class="span8">
+	          <h2>Hafið samband</h2>
+	          Endilega hafið samband ef þið erum með spurningar
+	          <ul>
+	          <li>Efnisleg tengilið natturuskoli(hja)reykjavik.is
+	          <li>Tæknileg tengilið kjartan(hja)agamecompany.com
+						</ul>
+	        </div>
+	    	</div>
+		</script>
+		
+		<script type="text/html" id='map_book_item'>
+				<hr>
+	      <div class="row">
+	        <div class="span12">
+	        	<h3>Miðborgin</h3>
+	        	<p>Hér er yfirlit á kortið i miðbænum.</p>
+	        	<ul style="list-style-type: none;">
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'yellow');"><span class="badge" style="background-color:#eeb824">&nbsp</span> Gróður, tré og sumarblóm. Frá Hofsvallagötu að BSÍ við Hringbraut</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'red');"><span class="badge" style="background-color:#cc3747">&nbsp</span> Sjóndeildarhringur og útsýni. Hringur um Þingholtin og Hljómskálagarðinn.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'green');"><span class="badge" style="background-color:#006633">&nbsp</span> Landslag og sérkenni í umhverifnu. Frá Snorrabraut um Skólavörðuholt að Tjörninni.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'blue');"><span class="badge" style="background-color:#077a75">&nbsp</span> Litir og form húsa. Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'purple');"><span class="badge" style="background-color:#5c374b">&nbsp</span> Kennileiti og styttur. Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'orange');"><span class="badge" style="background-color:#a1511a">&nbsp</span> Fugla- og dýralíf. Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</a>
+	          </ul>
+	        </div>
+	    	</div>
+		</script>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-44015356-1', 'utikennsluapp.is');
+		  ga('send', 'pageview');		
+		</script>
+		
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">  
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+	            <li id="main_menu_logo" class="main_menu"><a href="#" style="padding:9px;font-size:25px;"><img src="/__db/_design/media/apple-touch-icon-57x57.png" style="height:32px"><img src="/__db/_design/media/utikennsluapp_logo_57x57.png" style="height:32px"></a></li>
+              <li id="main_menu_home" class="main_menu active"><a href="#heim">Heimsiða</a></li>
+              <li id="main_menu_about" class="main_menu"><a href="#verkefnid">Um verkefnið</a></li>
+              <li id="main_menu_contact" class="main_menu"><a href="#hafa_samband">Hafa samband</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container"> 
+      <div class="row">      
+        <div class="span12">
+          <div id="map" style="height:400px;width:100%;"></div>
+        </div>
+    	</div>
+			<div id="target">
+			</div>
+			<br><br>
+			<footer>
+        <p>&copy; Náttúruskóli Reykjavíkur</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>    
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			window.running_mobile = false;
+			var SiteRouter = Backbone.Router.extend({
+			
+			  routes: {
+			  	"": "home",
+			    "heim": "home",
+			    "verkefnid": "about",
+			    "hafa_samband": "contact",
+			    "kort_aag": "map_book_aag"
+			  },
+			
+			  home: function() {
+			  	$("#map").hide();
+			    var template = $("#content_home").html();
+			    $("#target").html(_.template(template));
+			    $(".main_menu").removeClass("active");
+			    $("#main_menu_home").addClass("active");
+			  },
+			
+			  about: function() {
+			  	$("#map").hide();
+					var template = $("#content_about").html();
+			    $("#target").html(_.template(template));
+			    $(".main_menu").removeClass("active");
+			    $("#main_menu_about").addClass("active");
+			  },
+			
+			  contact: function() {
+			  	$("#map").hide();
+					var template = $("#content_contact").html();
+			    $("#target").html(_.template(template));
+			    $(".main_menu").removeClass("active");
+			    $("#main_menu_contact").addClass("active");
+			  },
+			
+			  map_book_aag: function() {
+					$("#map").show();
+					var template = $("#map_book_item").html();
+			    $("#target").html(_.template(template));
+			    if (map){
+			    	map.invalidateSize();
+			    	map.setView([64.1366,-21.913520000000002], 12);
+			    }
+			  }
+			});
+			
+			var site_router = new SiteRouter();
+			Backbone.history.start();
+			
+			createIcons();
+
+		</script>
+		<script src="/js/path2.js"></script>
+  </body>
+</html>

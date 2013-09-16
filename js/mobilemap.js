@@ -1,4 +1,5 @@
 	String.prototype.format = function() { a = this; for ( k in arguments ) { a = a.replace("{" + k + "}", arguments[k]); } return a; };
+	/*
 	window.demo = { 
 		'version': '3.0-rc1',
 		'ga': 'UA-17614686-5',
@@ -29,9 +30,8 @@
 		'timeEnd': function(key) { this.tests[key].elapsed = new Date().getTime(); },
 		'report': function(id) { var i = 1; for ( var k in this.tests ) { var t = this.tests[k]; $(id).append('<div class="benchmark rounded"><div class="benchmark-result lt">' + (t.elapsed - t.start) + ' ms</div><div class="lt"><p class="benchmark-iteration">Benchmark case ' + i + '</p><p class="benchmark-title">' + t.desc + '</p></div></div>'); i++; }; }
 	};
-	
-	window.running_mobile = 1;
 	demo.init();
+	*/
 
 	function addLocation(){
 		addItemCallbackPreSend();
@@ -39,27 +39,27 @@
 		var descr = "";
 		var area = $.cookie('map_area');
 		var path = $.cookie('map_path');
-	  	var latlng = window.current_position;
-	  	var lat = latlng.lat();
-	  	var lng = latlng.lng();
-	  	var mrkr = getAttributesModelDescr();
-			var values = {};
-			var default_values = getAttributesModelDescr();
-			for (i in default_values){ 
-			      values[default_values[i].field] = default_values[i].default_value;
-			}
-			if (name === undefined){ name = ""; }
-			if (descr === undefined){ descr = ""; }
-			values["schema"] = "8";
-			values["timestamp"] = new Date().getTime();
-			values["lat"] = lat;
-			values["lon"] = lng;
-			values["path"] = path;
-			values["area"] = area
-			values["attraction"] = true;
-			values["name"] = name;
-			values["descr"] = descr;
-		  var i = itemsList.create(values);
+  	var latlng = window.current_position;
+  	var lat = latlng.lat();
+  	var lng = latlng.lng();
+  	var mrkr = getAttributesModelDescr();
+		var values = {};
+		var default_values = getAttributesModelDescr();
+		for (i in default_values){ 
+		      values[default_values[i].field] = default_values[i].default_value;
+		}
+		if (name === undefined){ name = ""; }
+		if (descr === undefined){ descr = ""; }
+		values["schema"] = "8";
+		values["timestamp"] = new Date().getTime();
+		values["lat"] = lat;
+		values["lon"] = lng;
+		values["path"] = path;
+		values["area"] = area
+		values["attraction"] = true;
+		values["name"] = name;
+		values["descr"] = descr;
+	  var i = itemsList.create(values);
 		
 	}
 	

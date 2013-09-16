@@ -1,6 +1,6 @@
 
 <!DOCTYPE html> 
-<html manifest="/cache.manifest" lang="en"> 
+<html manifest="/cache.manifest_NOTUSED" lang="en">
    <head> 
     <title>ÚtikennsluApp</title> 
     <meta charset="utf-8" />
@@ -18,7 +18,6 @@
 
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
     <link type="text/css" rel="stylesheet" href="/css/mobilemap.css" /> 
-		<link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
 		<style>
 			.ui-content {
 				border-width: 0;
@@ -27,24 +26,12 @@
 				padding: 15px;
 				padding-top: 50px;
 			}
-      
-      .infowindow_attraction {
-      	color: black;
-      	text-decoration: none;
-      }
-      infowindow_attraction a{
-      	color: black;
-      	text-decoration: none;
-      }
-			.leaflet-container a {
-				color: black;
-			}      
-			 			
 		</style>
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <!-- script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=places"></script -->
 
+		<link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
     <script src="/libs/leaflet/leaflet.js"></script>
     <script src="/libs/leaflet.functionaltilelayer.js"></script>
     <script src="/js/mobile/file.js"></script>
@@ -112,23 +99,11 @@
 	      }}, 2000);
 	      
 	    </script>
-        
-			<script>
-			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			
-			  ga('create', 'UA-44015356-1', 'utikennsluapp.is');
-			  ga('send', 'pageview');
-			
-			</script>        
-	    
     </head>
     <body> 
         <div id="home" data-role="page">
             <div data-role="header" data-tap-toggle="false">
-                <h1>Útikennslu App</h1>
+                <h1>Útikennslu app</h1>
             </div>
             <div data-role="content"> <!-- style="height:100%;background-size:100%;background-image:url(/apple-touch-splash.png);" --> 
                 <h2>Leiðarvísir</h2>
@@ -141,8 +116,8 @@
                         <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni <i>Ævintýri á gönguför</i> sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur.</p>
                     </div>
                     <div data-role="collapsible" data-collapsed="false">
-                        <h3>Útikennslu App</h3>
-                        <p><i>Útikennslu App</i> er verkefni Náttúruskóla Reykjavíkur. Höfundur þess er Helena Óladóttir, verkefnisstjóri Náttúruskólans en forritið er unnið af Kjartan Akil Jónssyni hjá aGameCompany.<br><br><i>Útikennsluapp</i> er styrkt af Þróunarsjóði Skóla- og frístundasviðs Reykjavíkur.</p>
+                        <h3>Útikennsluapp</h3>
+                        <p><i>Útikennsluapp</i> er verkefni Náttúruskóla Reykjavíkur. Höfundur þess er Helena Óladóttir, verkefnisstjóri Náttúruskólans en forritið er unnið af Kjartan Akil Jónssyni hjá aGameCompany.<br><br><i>Útikennsluapp</i> er styrkt af Þróunarsjóði Skóla- og frístundasviðs Reykjavíkur.</p>
                     </div>
                 </div>
                 <!--center>
@@ -251,8 +226,8 @@
             <div data-role="content">                   
                 <h2>Veljið aðgerð</h2>
                 <p id="about_map_description"></p>
-                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(1);" data-role="button">Hefja göngu</a>
-                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(0);" data-role="button">Skoða leið</a>
+                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(1);" data-role="button">Skoða leið</a>
+                <a data-theme="a" href="#user_map" onclick="showAreaPathAttraction(0);" data-role="button">Hefja göngu</a>
             </div>          
         </div>
 

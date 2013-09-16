@@ -31,14 +31,18 @@ function reloadMap(options) {
     if (!fileSystem) { alert('Must specify fileSystem'); return; }
 
     if (!MAP) { //initialize map if first time
-        MAP = L.map('map', {
-        	'zoomControl':false,
-            'minZoom': MAP_MIN_ZOOM,
-            'maxZoom': MAP_MAX_ZOOM,
-            'layers': [funcLayer]
-        }).setView([64.1404809, -21.9113811], MAP_DEFAULT_ZOOM);
-        
-        MAP.locate({setView: true}); //, maxZoom: MAP_MAX_ZOOM
+    		if (window.running_mobile){
+	        MAP = L.map('map', {
+	        	'zoomControl':false,
+	            'minZoom': MAP_MIN_ZOOM,
+	            'maxZoom': MAP_MAX_ZOOM,
+	            'layers': [funcLayer]
+	        }).setView([64.1404809, -21.9113811], MAP_DEFAULT_ZOOM);
+    		} else {
+	        MAP = L.map('map', {
+	        	'layers': [funcLayer]
+	        }).setView([64.1404809, -21.9113811]);    			
+    		}
 		function onLocationFound(e) {
 			var radius = e.accuracy / 2;
 			//L.marker(e.latlng).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
@@ -47,23 +51,27 @@ function reloadMap(options) {
 				window.user_marker.addTo(map);
 				window.user_circle = L.circle(e.latlng, radius);
 				window.user_circle.addTo(map);
-			} else {
+			} else { 
 				window.user_marker.setLatLng(e.latlng);
 				window.user_circle.setLatLng(e.latlng);
 				window.user_circle.setRadius(radius);
 			}
 			locateNearbyMarkers(e.latlng);
+			$("#map-gps-notification").html("");
 		}
 
 		function onLocationError(e) {
-			showLoadingAnimation("GPS staðsettning: " + e.message, 4000);
+			if (window.running_mobile){
+				//showLoadingAnimation("GPS staðsettning: " + e.message, 4000);
+				$("#map-gps-notification").html("tækið fann ekki staðsettning");
+			}
 		}
 
 		MAP.on('locationfound', onLocationFound);
 		MAP.on('locationerror', onLocationError);
+		
+		//if(window.running_mobile){MAP.locate({setView: true, watch: true, enableHighAccuracy: true});}
 
-		MAP.locate({setView: true, watch: true, enableHighAccuracy: true});
-        
     }
     window.map = MAP;
     
