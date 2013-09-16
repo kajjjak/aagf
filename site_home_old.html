@@ -1,0 +1,243 @@
+ 
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Útikennslu app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <!-- Le styles -->
+    <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.2/amelia/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px; 
+      } 
+      .infowindow_content { 
+      	color:  black;
+      }
+    </style> 
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		
+		<script type="text/javascript" src="/_utils/script/sha1.js"></script>
+		<script type="text/javascript" src="/_utils/script/json2.js"></script>
+		<script type="text/javascript" src="/_utils/script/jquery.couch.js"></script>
+
+		<link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
+    <script src="/libs/leaflet/leaflet.js"></script>
+    <script src="/libs/leaflet.functionaltilelayer.js"></script>
+    <script src="/js/mobile/file.js"></script>
+    <script src="/js/mobile/tile.js"></script>
+    <script src="/js/mobile/map.js"></script>
+    <script src="/js/mobile/main.js"></script>
+
+    <script type="text/javascript" src="/js/mobilemap.js"></script>
+    <script type="text/javascript" src="/js/maplib.js"></script>
+    <!-- ///////////////////////////////////////// -->
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone/0.5.1/backbone.js"></script>
+		<script type="text/javascript" src="http://cdn.agamecompany.com/vendor/backbone-couchdb/1.3/backbone-couchdb.js"></script>
+
+    <script type="text/javascript">
+    	
+    	function hasMobile(){
+				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+				 return true;
+				}
+				retunr false;
+    	}
+    	
+    	function playSoundNotification(){
+				soundHandle = document.getElementById('notification_sound');
+				soundHandle.src = '/__db/_design/media/alert.mp3';
+				soundHandle.play();
+    	}
+        	
+			function preload(arrayOfImages) {
+			    $(arrayOfImages).each(function(){
+			        $('<img/>')[0].src = this;
+			        // Alternatively you could use:
+			        // (new Image()).src = this;
+			    });
+			}
+			
+      $(document).bind( "mobileinit", function(event) {
+          $.extend($.mobile.zoom, {locked:true,enabled:false});
+      });
+
+			setTimeout(function(){$(document).trigger("deviceready");}, 1000);
+
+      $('#user_map').live('pageshow', function() {
+          //demo.add('user_map', function() { $('#map_canvas_2').gmap('refresh'); }).load('user_map');
+      });
+      
+      $('#user_map').live("pagehide", function() {
+          //demo.add('user_map', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('user_map');
+      });
+      
+      function addItemCallbackPreSend() {
+          $("#location_add_button").button('disable');
+          $("#location_add_button").html("Vistar staðsetting ..");
+          $("#location_add_button").button('refresh')
+      }
+      
+      setTimeout(function(){
+      itemsListView.addItemCallbackSuccess = function(){
+          $("#location_add_button").button('enable');
+          $("#location_add_button").html("Vista staðsetting");
+          $("#location_add_button").button('refresh')
+      }}, 2000);
+        
+    </script>
+
+		<script type="text/html" id='content_home'>
+	      <!-- Main hero unit for a primary marketing message or call to action -->
+	      <div class="hero-unit">
+	        <h1>Útikennslu app</h1>
+	        <p></p>
+	        <p><a href="#verkefnid" class="btn btn-primary btn-large">Meira &raquo;</a></p>
+	      </div>
+	
+	      <!-- Example row of columns -->
+	      <div class="row">      
+	        <div class="span6">
+	          <h2>Ævintýri á gönguför</h2>
+	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni <i>Ævintýri á gönguför</i> sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur. </p>
+	          <p><a class="btn" href="#kort_aag">Kort &raquo;</a></p>
+	        </div>
+	    	</div>
+		</script>
+
+		<script type="text/html" id='content_about'>
+	      <div class="row">      
+	        <div class="span8">
+	          <h2>Verkefnið</h2>
+	          <h3>Um gönguleiðirnar</h3>
+	          <p>Gönguleiðirnar sex og verkefnin í útikennsluappinu byggja á handbókinni Ævintýri á gönguför sem Bragi Bergsson vann fyrir Skóla- og frístundasvið árið 2011. Verkefnisstjórar handbókarinnar voru Fríða Bjarney Jónsdóttir og Kolbrún Vigfúsdóttir, báðar á Skóla- og frístundasviði Reykjavíkur.</p>
+	          <h3>Útikennsluapp</h3>
+	          <p>Útikennsluapp er verkefni Náttúruskóla Reykjavíkur. Höfundur þess er Helena Óladóttir, verkefnisstjóri Náttúruskólans en forritið er unnið af Kjartan Akil Jónssyni hjá aGameCompany.</p>
+						<p>Útikennsluapp er styrkt af Þróunarsjóði Skóla- og frístundasviðs Reykjavíkur.</p>
+	        </div>
+	    	</div>
+		</script>
+		
+		<script type="text/html" id='map_book_item'>
+	      <div class="row">
+	        <div class="span8">
+	        	<h3>Miðborgin</h3>
+	        	<p>Hér er lýsing á kortið i miðbænum. Einig má hlaða niður PDF skjalið sem er hannað af.</p>
+	        	<ul style="list-style-type: none;">
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'yellow');"><span class="badge" style="background-color:yellow">&nbsp</span> Gróður, tré og sumarblóm. Frá Hofsvallagötu að BSÍ við Hringbraut</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'red');"><span class="badge" style="background-color:red">&nbsp</span> Sjóndeildarhringur og útsýni. Hringur um Þingholtin og Hljómskálagarðinn.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'green');"><span class="badge" style="background-color:green">&nbsp</span> Landslag og sérkenni í umhverifnu. Frá Snorrabraut um Skólavörðuholt að Tjörninni.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'blue');"><span class="badge" style="background-color:blue">&nbsp</span> Litir og form húsa. Frá Lækjargötu, um Grjótaþorp að Hofsvallagötu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'purple');"><span class="badge" style="background-color:purple">&nbsp</span> Kennileiti og styttur. Hringur um miðborgina, Arnarhól, Lækjartorg og að Ráðhúsinu.</a>
+							<li><a href="javascript:showAreaPathAttraction(0, 2, 'orange');"><span class="badge" style="background-color:orange">&nbsp</span> Fugla- og dýralíf. Umhverfis Tjörnina, frá Lækjargötu, um Ráðhúsið og að Listasafni Íslands.</a>
+		        	
+	          </ul>
+	        </div>
+	    	</div>
+		</script>
+		
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">  
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Útikennslu app</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li id="main_menu_home" class="main_menu active"><a href="#heim">Heimsiða</a></li>
+              <li id="main_menu_about" class="main_menu"><a href="#verkefnid">Um verkefnið</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container"> 
+      <div class="row">      
+        <div class="span12">
+          <div id="map" style="height:400px;width:100%;"></div>
+        </div>
+    	</div>
+
+			<div id="target">
+			</div>
+      <hr>
+
+			<footer>
+        <p>&copy; Náttúruskóli Reykjavíkur</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>    
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			window.running_mobile = false;
+			var SiteRouter = Backbone.Router.extend({
+			
+			  routes: {
+			  	"": "home",
+			    "heim": "home",
+			    "verkefnid": "about",
+			    "kort_aag": "map_book_aag"
+			  },
+			
+			  home: function() {
+			  	$("#map").hide();
+			    var template = $("#content_home").html();
+			    $("#target").html(_.template(template));
+			    $(".main_menu").removeClass("active");
+			    $("#main_menu_home").addClass("active");
+			  },
+			
+			  about: function() {
+			  	$("#map").hide();
+					var template = $("#content_about").html();
+			    $("#target").html(_.template(template));
+			    $(".main_menu").removeClass("active");
+			    $("#main_menu_about").addClass("active");
+			  },
+			
+			  map_book_aag: function() {
+					$("#map").show();
+					var template = $("#map_book_item").html();
+			    $("#target").html(_.template(template));
+			    if (map){
+			    	map.invalidateSize();
+			    	map.setView([64.1366,-21.913520000000002], 12);
+			    }
+			  }
+			});
+			
+			var site_router = new SiteRouter();
+			Backbone.history.start();
+			
+			createIcons();
+
+		</script>
+		<script src="/js/path2.js"></script>
+
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ævintýr á gönguför - innskráning</title>
+    <title>ÚtikennsluApp - innskráning</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -44,6 +44,17 @@
       }
 
     </style>
+        
+			<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			  ga('create', 'UA-44015356-1', 'utikennsluapp.is');
+			  ga('send', 'pageview');
+			
+			</script>        
 
   </head>
 
@@ -72,7 +83,7 @@
   <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>  
   <script type="text/javascript">
   
-  	var menu = "<ul><li><a href='/'>Breyta texta á heimasiðu</a></li><li><a href='/edit/'>Bæta við gönguleiðir</a></li></ul>";
+  	var menu = "<ul><li><a href='/edit/'>Bæta við gönguleiðir</a></li></ul>";
 
  	function loginUserByThroughUI(){
   		$.couch.login({

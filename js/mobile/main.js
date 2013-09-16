@@ -15,8 +15,20 @@ function createMapOptions(clear) {
     return {
         'clear': clear,
         'fileSystem': FILESYSTEM,
-        'mapIDs': getMapIDs()
+        'mapIDs': getMapIDs(),
+        'zoom': true
     };
+}
+
+function loadMap(){
+  window.requestFileSystem(
+      LocalFileSystem.PERSISTENT, 0,
+      function(fs) { //success
+          FILESYSTEM = fs;
+          mapUtils.reloadMap(createMapOptions(false));
+      },
+      function() { alert("Failure accessing filesystem!"); } //filesystem failure
+  );
 }
 
 $(document).ready(function() {
@@ -27,73 +39,68 @@ $(document).ready(function() {
     .off("change")
     .on("change", function() { localStorage_MAPBOX_IDS_ = $(this).val(); });
     */
-    if (window.localStorage_MAPBOX_IDS_ == undefined){ window.localStorage_MAPBOX_IDS_ = "kajjjak.map-wgrdoudp"; }
 
     //Real page setup on phonegap initialization
     $(document).off("deviceready").on("deviceready", function() {
-	    //resizeMap();
+			loadMap();
 
-        window.requestFileSystem(
-            LocalFileSystem.PERSISTENT, 0,
-            function(fs) { //success
-                FILESYSTEM = fs;
-                mapUtils.reloadMap(createMapOptions(false));
-            },
-            function() { alert("Failure accessing filesystem!"); } //filesystem failure
-        );
-        
-        setTimeout(function(){prepLocalDatabase();}, 1000);
-
+				/*
         $("#clear").off("click").on("click", function() {
             localStorageClear();
         });
 
         $("#download").off("click").on("click", function() {
-        	//downloadMapTiles(64.1404809, -21.9113811);
-        	
-		    var pos = [64.1404809, -21.9113811];
-		    var mapboxIDs = getMapIDs();
-		    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
-		    fileUtils.bulkDownload(
-		       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
-		       'tiles',
-		       undefined, //$("#progress_modal"),
-		       function() {
-		           //alert("Download successful!");
-		           $.mobile.loading( 'hide');
-		           mapUtils.reloadMap(createMapOptions(false));
-		       }
-		    );
-        	
+			    var pos = [64.1404809, -21.9113811];
+			    var mapboxIDs = getMapIDs();
+			    if (mapboxIDs == null) { alert("Enter a MapBox Map ID"); return; } //no ids
+			    fileUtils.bulkDownload(
+			       tileUtils.pyramid(mapboxIDs, pos[0], pos[1], {}), //tile urls
+			       'tiles',
+			       undefined, //$("#progress_modal"),
+			       function() {
+			           //alert("Download successful!");
+			           $.mobile.loading( 'hide');
+			           mapUtils.reloadMap(createMapOptions(false));
+			       }
+			    );
         });
+        */
     });
 });
 
 function showLoadingAnimation(txt, max_timeout){
-	$.mobile.loading( 'show', {
-		text: txt,
-		textVisible: true,
-		theme: 'a',
-		html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
-	});	
-	setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	if (window.running_mobile){
+		$.mobile.loading( 'show', {
+			text: txt,
+			textVisible: true,
+			theme: 'a',
+			html: '' //'<div style="background-color:black;"><span class="ui-icon ui-icon-loading"></span><br> <div id="loading_tile"></div></div>'
+		});	
+		setTimeout(function(){hideLoadingAnimation();}, max_timeout)
+	}
 }
 
 function hideLoadingAnimation(){
-	$.mobile.loading( 'hide');
+	if (window.running_mobile){
+		$.mobile.loading( 'hide');
+	}
 }
-
+ 
 function prepLocalDatabase(){
-	window.localStorageDB = openDatabase('mapdata', '1.0', 'Offline map data', 150 * 1024 * 1024);
-	localStorageDB.transaction(function (tx) {
-	  tx.executeSql('CREATE TABLE IF NOT EXISTS tiles (id unique, text)', function(){ copyStorageFromSQL2Session(); });
-	});
-	setTimeout(function(){ if (!window.cache_copied){ copyStorageFromSQL2Session(); }}, 2000);
+	if(!window.running_mobile){ return; }
+	if(window.openDatabase){
+		window.localStorageDB = window.openDatabase('mapdata', '1.0', 'Offline map data', 30 * 1024 * 1024);
+		window.localStorageDB.transaction(function (tx) {
+		  tx.executeSql('CREATE TABLE IF NOT EXISTS tiles (id unique, text)', function(){ copyStorageFromSQL2Session(); });
+		});
+		setTimeout(function(){ if (!window.cache_copied){ copyStorageFromSQL2Session(); }}, 2000);
+	} 
 }
 
 function downloadMapTilesCurrentArea(){
 	var pos = [64.1404809, -21.9113811];
 	if (hasNetworkConnection()){
+		prepLocalDatabase();
 		if (window.map_bounds){
 			var c = window.map_bounds.getCenter();
 			pos = [c.lat, c.lng];
@@ -122,12 +129,13 @@ function downloadMapTiles(pos){
 
 /////////////
 function resizeMap() {
-
-	var mapheight = $(window).height()-100;
-	var mapwidth = $(window).width()-36;
-	$("#map").height(mapheight);
-	$("#map").width(mapwidth);
-	setTimeout(function(){map.invalidateSize(false);}, 500);
+	if(window.running_mobile == true){
+		var mapheight = $(window).height()-100;
+		var mapwidth = $(window).width()-36;
+		$("#map").height(mapheight);
+		$("#map").width(mapwidth);
+		setTimeout(function(){map.invalidateSize(false);}, 500);
+	}
 }
 
 MAP_MIN_ZOOM = 17; //16
@@ -158,27 +166,33 @@ var funcLayer = new L.TileLayer.Functional(function (view) {
 });
 
 function localStorageClearItemsDB(){
-	localStorageDB.transaction(function (tx) {tx.executeSql('DELETE FROM tiles WHERE id LIKE "%tile%" ');});
+	if (window.localStorageDB){
+		window.localStorageDB.transaction(function (tx) {tx.executeSql('DELETE FROM tiles WHERE id LIKE "%tile%" ');});
+	}
 }
 
 function localStorageSetItemDB(k, v){
-	localStorageDB.transaction(function (tx) {tx.executeSql('INSERT INTO tiles (id, text) VALUES (?, ?)', [k, v]);});
+	if (window.localStorageDB){
+		window.localStorageDB.transaction(function (tx) {tx.executeSql('INSERT INTO tiles (id, text) VALUES (?, ?)', [k, v]);});
 	//localStorageDB.transaction(function (tx) {tx.executeSql('UPDATE tiles WHERE id="'+k+'" SET VALUES (text, "'+v+'")');});
+	}
 }
 
 function copyStorageFromSQL2Session(){
 	window.cache_copied = true;
-	localStorageDB.transaction(function (tx) {
-		tx.executeSql('SELECT * FROM tiles', [], function (tx, results) {
-		  var len = results.rows.length, i;
-		  for (i = 0; i < len; i++) {
-		  	var k = results.rows.item(i).id;
-		  	var v = results.rows.item(i).text;
-		    console.info(v);
-		    sessionStorage.setItem(k, v)
-		  }
+	if (window.localStorageDB){
+		window.localStorageDB.transaction(function (tx) {
+			tx.executeSql('SELECT * FROM tiles', [], function (tx, results) {
+			  var len = results.rows.length, i;
+			  for (i = 0; i < len; i++) {
+			  	var k = results.rows.item(i).id;
+			  	var v = results.rows.item(i).text;
+			    console.info(v);
+			    sessionStorage.setItem(k, v)
+			  }
+			});	
 		});	
-	});	
+	}
 }
 
 function localStorageSetItem(k, v){
@@ -199,15 +213,29 @@ function localStorageGetItem(k, default_value){
     if(v && (v.length > 10)) return v;
     v = sessionStorage.getItem(k);
     if(v) return v;
-    return default_value;
+    return default_value;  
+}
+function nowStorageClearCache(S){
+	var v;
+	for(i in S){
+		v = S[i];
+		if(v.indexOf("data:image") == 0){
+			S.removeItem(i);
+		}
+	}	
 }
 
 function localStorageClear(){
-	if (localStorage.getItem("map_routes")){ window.map_routes_cache = localStorage.getItem("map_routes"); }
-    localStorage.clear();
-    sessionStorage.clear();
+	if (localStorage.getItem("map_routes_attractions2")){ window.map_routes_cache = localStorage.getItem("map_routes_attractions2"); }
+	if (localStorage.getItem("selected_map_area")){ window.map_routes_cache_selected_map_area = localStorage.getItem("selected_map_area"); }
+	if (localStorage.getItem("selected_map_path")){ window.map_routes_cache_selected_map_path = localStorage.getItem("selected_map_path"); }
+	
+    nowStorageClearCache(localStorage);
+    nowStorageClearCache(sessionStorage);
     localStorageClearItemsDB();
-    if (window.map_routes_cache){ localStorage.setItem("map_routes", window.map_routes_cache); }
+    if (window.map_routes_cache){ localStorage.setItem("map_routes_attractions2", window.map_routes_cache); }
+    if (window.map_routes_cache_selected_map_area){ localStorage.setItem("selected_map_area", window.map_routes_cache_selected_map_area); }
+    if (window.map_routes_cache_selected_map_path){ localStorage.setItem("selected_map_path", window.map_routes_cache_selected_map_path); }
 }        
 
 function LocalFileSystem () {

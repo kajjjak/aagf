@@ -8,7 +8,7 @@ function selectPath(path_name){
 		showAreaPath();
 	}else{
 		setTimeout("showAreaPath()", 1000);
-	}
+	} 
 }
 
 function selectPathAttraction(path_name){
@@ -30,7 +30,6 @@ function notifyDeveloper(message, title, state){
 	toastr.options.timeOut = 1000;
 	toastr.info(message, title);
 }
-
 
 function setSelectedMarker(marker){
 	var mdl = itemsList.get(marker.schema_id);
@@ -85,7 +84,6 @@ function updateScanRadius(map, latlng, rad){
 	var dt = new Date();
 	//$("#label_location_name").html("Staðsettning uppfært " + ("0" + dt.getHours()).slice(-2) + ":" + ("0" + dt.getMinutes()).slice(-2) + ":" + ("0" + dt.getSeconds()).slice(-2) + "");
 }
-
 
 function clearMarkers() {
 	for (var i = 0; i < markers.length; i++) {
@@ -189,12 +187,12 @@ function removeArea(){
 	}
 	//map.removeControl(layersControl);
 }
-
+/* NOT USED AND OVERRIDEN BY guimap.js */
 function showDescription(marker) {
     google.maps.event.addListener(marker, 'click', function() {
     	var infowindow_content = marker.attraction_descr;
-    	if (window.running_mobile && marker.attraction_content){
-    		infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\")'>meira</a>";
+    	if (window.running_mobile && marker.attraction_content){ 
+    		infowindow_content = marker.attraction_descr + "<br><a href='#' onclick='showAttractionInfo(\"" + marker.schema_id + "\")'>meira zzz</a>";
     	}
         infowindow.setContent(infowindow_content);
         infowindow.open(map, marker); //then opens the infowindow at the marker
