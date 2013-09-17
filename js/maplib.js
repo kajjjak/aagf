@@ -47,7 +47,7 @@
 						if(pathInfo[path_name]){
 							if(pathInfo[path_name].attraction){
 								var startInfo = pathInfo[path_name].attraction[0];
-								if (startInfo){ descr = startInfo.descr;}
+								if (startInfo){ descr = startInfo.descr;}   
 							}
 						}
 						$("#about_map_description").html(descr);
@@ -55,15 +55,16 @@
 
 					function showAreaPathAttraction(use_gps, area, path){
 						if (window.running_mobile){
-							if (use_gps){
-								window.map.locate({setView: true, watch: true, enableHighAccuracy: true});
-							} else {
-								//window.map.locate({setView: false, watch: false, enableHighAccuracy: false});
-								window.map.stopLocate();
+							if(use_gps){
+								if (window.user_marker){
+									setTimeout(function(){
+										window.map.setView(window.user_marker.getLatLng(), window.map.getZoom(), {animate: true});	
+									}, 1000);
+								} 
 							}
 						}
 						window.use_gps = use_gps;
-						setTimeout(function(){resizeMap();}, 1000);
+						setTimeout(function(){resizeMap();}, 1000); 
 						removeArea();
 						//if (window.map){
 						//	loadAreaPathAttraction(area_id, path_id);
