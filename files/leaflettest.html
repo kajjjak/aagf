@@ -1,54 +1,54 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Farskóli</title>
-    <meta 
-        name="viewport" 
-        content="height=device-height,width=device-width,initial-scale=1.0"
-    >
+	<title>Leaflet mobile example</title>
 
-    <!-- LINKS 
-        http://trippingthebits.com/webstorage/test.html
-        http://mapbox.com/
-        https://developer.mozilla.org/en-US/docs/DOM/Storage
-    -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ 
+	<link rel="stylesheet" href="../libs/leaflet/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
 
-    
-    <link rel="stylesheet" href="/ghostburster/_design/html/_rewrite/libs/leaflet/leaflet.css" />
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-    
-    <!-- 3rd party libraries -->
-    <script src="/ghostburster/_design/html/_rewrite/libs/jquery.min.js"></script>
-    <script src="/ghostburster/_design/html/_rewrite/libs/leaflet/leaflet.js"></script>
-    <script src="/ghostburster/_design/html/_rewrite/libs/leaflet.functionaltilelayer.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>  
-    <!-- offline mapping js -->
-    <script src="/ghostburster/_design/html/_rewrite/js/mobile/file.js"></script>
-    <script src="/ghostburster/_design/html/_rewrite/js/mobile/tile.js"></script>
-    <script src="/ghostburster/_design/html/_rewrite/js/mobile/map.js"></script>
-    <script src="/ghostburster/_design/html/_rewrite/js/mobile/main.js"></script>
+	<script src="../libs/leaflet/leaflet.js"></script>
+
+	<style>
+		body {
+			padding: 0; 
+			margin: 0; 
+		}
+		html, body, #map {
+			height: 100%;
+		}  
+	</style>
 </head>
 <body> 
-    <div id="map" style="height: 300px;"></div>
-    <div style="text-align:center;margin-top:20px;">
-      MapBox IDs: 
-      <input value="kajjjak.map-wgrdoudp" id="mapbox_id" type="text" size="30" placeholder="e.g. examples.map-yr0njcqy"> <br/><br/>
-      
-      <button id="download" style="padding:20px;">Download Tiles</button>
-      <button id="clear" style="padding:20px;">Clear Tiles</button>
-    </div>
+	<div id="map"></div> 
 
-    <!-- modal for progressbar -->
-	<div id="progress_modal" class="modal hide fade" role="dialog">
-	  <div class="modal-header">
-	    <h3>Downloading...</h3>
-	  </div>
-	  <div class="modal-body"></div>
-	</div>
+	<script>
+		var map = L.map('map'); 
+		var tile_path = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
+		L.tileLayer(tile_path, {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery Â© <a href="http://cloudmade.com">CloudMade</a>'
+		}).addTo(map);
 
-    <script type="text/javascript">
-    	pointLayer = new L.LayerGroup();
-        setTimeout(function(){$(document).trigger("deviceready");}, 1000);
-    </script>
+		function onLocationFound(e) {
+			var radius = e.accuracy / 2;
+
+			L.marker(e.latlng).addTo(map)
+				.bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+			L.circle(e.latlng, radius).addTo(map);
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		map.locate({setView: true, maxZoom: 16, enableHighAccuracy: true});
+	</script>
 </body>
 </html>
