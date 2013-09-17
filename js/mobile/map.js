@@ -56,6 +56,11 @@ function reloadMap(options) {
 				window.user_circle.setLatLng(e.latlng);
 				window.user_circle.setRadius(radius);
 			}
+			if(window.map){
+				if(window.use_gps){
+					window.map.setView(e.latlng, window.map.getZoom(), {animate: true});
+				}
+			}
 			locateNearbyMarkers(e.latlng);
 			$("#map-gps-notification").html("");
 		}
@@ -69,11 +74,12 @@ function reloadMap(options) {
 
 		MAP.on('locationfound', onLocationFound);
 		MAP.on('locationerror', onLocationError);
-		
+		window.map = MAP;
 		//if(window.running_mobile){MAP.locate({setView: true, watch: true, enableHighAccuracy: true});}
+		if(window.running_mobile){window.map.locate({watch: true, enableHighAccuracy: true});}
 
     }
-    window.map = MAP;
+    
     
 	window.resizeTimer;
 	$(window).resize(function() {
