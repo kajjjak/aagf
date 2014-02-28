@@ -2,7 +2,7 @@
 	/*
 	window.demo = { 
 		'version': '3.0-rc1',
-		'ga': 'UA-17614686-5',
+		'ga': 'UA-17614686-5', 
 		'primaryUrl': 'http://code.google.com/p/jquery-ui-map/',
 		'url': 'http://jquery-ui-map.googlecode.com/', 
 		'forum': 'http://groups.google.com/group/jquery-ui-map-discuss/feed/rss_v2_0_msgs.xml', 
