@@ -14,7 +14,7 @@
 
 					walking_path_polyline = [];
 					walking_path_attraction = []; 
-					pointLayers = {};
+					pointLayers = {}; 
 					function setSelectedArea(area_name){	 
 						window.selected_map_area = area_name;
 						sessionStorage.setItem('selected_map_area', area_name); //$.cookie('map_area', area_name);
