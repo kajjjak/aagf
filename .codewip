@@ -1,0 +1,44 @@
+{
+  "name": "Utikennslu app - website",
+  "version": "master",
+  "deployer": "oR4Map2z8",
+  "plugins": {
+    "oR4Map2z8": {
+      "server": "http://54.249.246.189/",
+      "username": "",
+      "password": "",
+      "database": "utikennsluapp2",
+      "preview": "website",
+      "domain": "utikennsluapp.is"
+    },
+    "bJ4feaAMu": {
+      "name": "Javascript"
+    },
+    "TL8ml51mE": {
+      "name": "CSS"
+    },
+    "ySC3tRlCN": {
+      "name": "Markdown"
+    },
+    "ASYeE4C1n": {
+      "name": "HTML preview"
+    },
+    "PG4U8wocc": {
+      "name": "HTML"
+    },
+    "github": {
+      "repobranch": "master",
+      "username": "",
+      "password": "",
+      "reponame": "aagf",
+      "repouser": "kajjjak",
+      "repopush_comment": "Works"
+    }
+  },
+  "created": 1393583364510,
+  "updated": 1393583364510,
+  "private": false,
+  "fork_id": "E75ezY8S9",
+  "description": "",
+  "preview": "lj1r28Zg6"
+}
