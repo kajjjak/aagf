@@ -290,7 +290,7 @@ $(function(){
   
   window.itemsListView = new ItemsListView();
   window.app = new App();	
-  /*if($.couch){
+  /*if($.couch){ 
   	window.app = new App();	
   }else{
 		$.getScript( '/_utils/script/jquery.couch.js', function(){
