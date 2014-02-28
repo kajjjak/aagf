@@ -15,11 +15,11 @@
     
     <style type="text/css">
       body { 
-        padding-top: 74px; 
-        padding-bottom: 40px; 
+        padding-top: 74px;  
+        padding-bottom: 40px;  
         background-color: rgb(23,175,145);
         color:rgb(248,248,248);
-				background-image:url('/__db/_design/media/green_background_tile.png');
+				background-image:url('http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/green_background_tile.png');
 				background-repeat:repeat;        
       } 
       .infowindow_content { 
@@ -204,14 +204,18 @@
 		<script type="text/html" id='content_home'>
 	      <!-- Main hero unit for a primary marketing message or call to action -->
 	      <div class="hero-unit" onclick="window.location='/mobile/'">
-	      	<img class="hidden-phone" src="/__db/_design/media/qrcode.png" style="height:100px;float:left;">
-	      	<img class="hidden-phone" src="/__db/_design/media/reykjavik_logo.png" style="height:54px;float:right;">
-	      	<center style="padding: 40px;height: 260px;">
-	      		<img src="/__db/_design/media/utikennsluapp_icon_padding.png" style="height:200px;height: 200px;right: 24px;position: relative;bottom: -9px;"><br>
-	      		<img src="/__db/_design/media/home_page_shadow.png"><br>
-	      		<img src="/__db/_design/media/utikennsluapp_logo_black.png" style="height:32px;position: relative;left: 10px;">
-	      		<p style="color:rgb(83, 83, 83);font-size:16px;">Forritið birtir kennsluverkefni á snjallsíma eða spjaldtölvu<br>á þeim stað sem notandinn er.</p>
-	      	</center>
+	      	<img class="hidden-phone" src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/reykjavik_logo.png" style="height:54px;float:right;">
+	      	<div style="float: left;width: 124px;text-align: center;display: inline-block;position: absolute;"> 
+	      	    <img class="hidden-phone" src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/qrcode.png" style="height:100px;"><br><br>
+          		<img class="hidden-phone" src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/BadgeAppStore_135x40.png" style="height:32px;" /><br>
+          		<img class="hidden-phone" src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/BadgeGooglePlay_h60.png" style="height:32px;" />
+	      	</div>
+	      	<div style="padding: 40px;height: 260px;text-align: center;">
+	      		<img src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/utikennsluapp_icon_padding.png" style="height: 200px;position: relative;bottom: -9px;min-width: 239px;display: inline-block;"/><br>
+	      		<img src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/home_page_shadow.png" style="min-width: 239px;"/><br>
+	      		<img src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/utikennsluapp_logo_black.png" style="height:32px;position: relative;left: 10px;" />
+	      		<p class="hidden-phone" style="color:rgb(83, 83, 83);font-size:16px;">Forritið birtir kennsluverkefni á snjallsíma eða spjaldtölvu<br>á þeim stað sem notandinn er.</p>
+	      	</div> 
 	        <br>
 	        <p><a href="/mobile/" style="float: right;" class="btn btn-custom">Skoða app &nbsp&nbsp<i class="icon-circle-arrow-right icon-white "></i></a></p>
 	      </div>
@@ -290,7 +294,7 @@
           </button>
           <div class="nav-collapse collapse">
             <ul class="nav">
-	            <li id="main_menu_logo" class="main_menu"><a href="#" style="padding:9px;font-size:25px;"><img src="/__db/_design/media/apple-touch-icon-57x57.png" style="height:32px"><img src="/__db/_design/media/utikennsluapp_logo_57x57.png" style="height:32px"></a></li>
+	            <li id="main_menu_logo" class="main_menu"><a href="#" style="padding:9px;font-size:25px;"><img src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/apple-touch-icon-57x57.png" style="height:32px"><img src="http://utikennsluapp.agamecompany.com/utikennsluapp/_design/media/utikennsluapp_logo_57x57.png" style="height:32px"></a></li>
               <li id="main_menu_home" class="main_menu active"><a href="#heim">Heimsiða</a></li>
               <li id="main_menu_about" class="main_menu"><a href="#verkefnid">Um verkefnið</a></li>
               <li id="main_menu_contact" class="main_menu"><a href="#hafa_samband">Hafa samband</a></li>
@@ -369,11 +373,25 @@
 			  }
 			});
 			
-			var site_router = new SiteRouter();
+			var site_router = new SiteRouter(); 
 			Backbone.history.start();
 			
 			createIcons();
-
+ 
+            jQuery.loadScript = function (url, callback) {
+                jQuery.ajax({
+                    url: url,
+                    dataType: 'script',
+                    success: callback,
+                    async: true
+                });
+            }   
+            setTimeout(function(){
+                $.loadScript('/_utils/script/jquery.couch.js', function(){
+                    //Stuff to do after someScript has loaded
+                });            
+            }, 2000);
+            
 		</script>
 		<script src="/js/path2.js"></script>
   </body>
