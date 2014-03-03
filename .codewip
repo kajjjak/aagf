@@ -1,5 +1,5 @@
 {
-  "name": "Utikennslu app - website",
+  "name": "Útikennslu app - Website",
   "version": "master",
   "deployer": "oR4Map2z8",
   "plugins": {
@@ -32,7 +32,7 @@
       "password": "",
       "reponame": "aagf",
       "repouser": "kajjjak",
-      "repopush_comment": "Works"
+      "repopush_comment": "Fixed front page"
     }
   },
   "created": 1393583364510,
